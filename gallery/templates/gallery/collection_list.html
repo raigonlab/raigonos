@@ -5,15 +5,18 @@
 {% block content %}
   <h1>Collections</h1>
 
-  <ul>
+  <ul class="card-grid">
     {% for collection in collections %}
-      <li>
+      <li class="card">
         <a href="{% url 'gallery:collection_detail' collection.slug %}">
-          {{ collection.title }}
+          {% if collection.cover_image %}
+            <img src="{{ collection.cover_image.url }}" alt="{{ collection.title }}">
+          {% endif %}
+          <span>{{ collection.title }}</span>
         </a>
       </li>
     {% empty %}
-      <li>No collections published yet.</li>
+      <li class="card-empty">No collections published yet.</li>
     {% endfor %}
   </ul>
 {% endblock %}

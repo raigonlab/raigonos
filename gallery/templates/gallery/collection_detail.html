@@ -6,17 +6,20 @@
   <h1>{{ collection.title }}</h1>
   <p>{{ collection.description }}</p>
 
-  <ul>
+  <ul class="card-grid">
     {% for artwork in collection.artworks.all %}
-      <li>
+      <li class="card">
         <a href="{% url 'gallery:artwork_detail' artwork.pk %}">
-          {{ artwork.title }}
+          <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}">
+          <span>{{ artwork.title }}</span>
         </a>
       </li>
     {% empty %}
-      <li>No artworks in this collection yet.</li>
+      <li class="card-empty">No artworks in this collection yet.</li>
     {% endfor %}
   </ul>
 
-  <p><a href="{% url 'gallery:collection_list' %}">&larr; Back to Collections</a></p>
+  <p class="back-link">
+    <a href="{% url 'gallery:collection_list' %}">&larr; Back to Collections</a>
+  </p>
 {% endblock %}
