@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ artwork.title }} — RaigonOS{% endblock %}
+
+{% block content %}
+  <h1>{{ artwork.title }}</h1>
+
+  {% if artwork.image %}
+    <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}">
+  {% endif %}
+
+  <p>
+    {{ artwork.medium }}
+    {% if artwork.year %}({{ artwork.year }}){% endif %}
+  </p>
+  <p>{{ artwork.description }}</p>
+
+  <p>
+    <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">
+      &larr; Back to {{ artwork.collection.title }}
+    </a>
+  </p>
+{% endblock %}

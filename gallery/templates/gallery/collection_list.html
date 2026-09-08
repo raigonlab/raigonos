@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Collections — RaigonOS{% endblock %}
+
+{% block content %}
+  <h1>Collections</h1>
+
+  <ul>
+    {% for collection in collections %}
+      <li>
+        <a href="{% url 'gallery:collection_detail' collection.slug %}">
+          {{ collection.title }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No collections published yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ collection.title }} — RaigonOS{% endblock %}
+
+{% block content %}
+  <h1>{{ collection.title }}</h1>
+  <p>{{ collection.description }}</p>
+
+  <ul>
+    {% for artwork in collection.artworks.all %}
+      <li>
+        <a href="{% url 'gallery:artwork_detail' artwork.pk %}">
+          {{ artwork.title }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No artworks in this collection yet.</li>
+    {% endfor %}
+  </ul>
+
+  <p><a href="{% url 'gallery:collection_list' %}">&larr; Back to Collections</a></p>
+{% endblock %}
