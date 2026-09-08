@@ -1,0 +1,19 @@
+# Environment variables / secrets - NEVER commit real values
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+env/
+*.egg-info/
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
