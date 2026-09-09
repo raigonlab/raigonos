@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'gallery',
 ]
 
@@ -154,9 +156,17 @@ STORAGES = {
     },
 }
 
-# User-uploaded media (artwork and collection cover images)
+# User-uploaded media (artwork and collection cover images).
+# Locally, files are saved to disk (MEDIA_ROOT). In production, Render's
+# filesystem is wiped on every deploy, so CLOUDINARY_URL (if set) switches
+# uploads to Cloudinary instead, where they persist permanently.
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+if os.environ.get('CLOUDINARY_URL'):
+    STORAGES['default'] = {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
