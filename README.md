@@ -51,8 +51,9 @@ gallery) carries over, as permitted by the assessment brief.
   entirely environment-variable driven, so the same codebase runs unchanged
   locally (SQLite) and in production (Render + PostgreSQL).
 - Uploaded images are stored on Cloudinary in production (switched on via
-  `CLOUDINARY_URL`), since Render's own filesystem is wiped on every
-  deploy and cannot be used for persistent user uploads.
+  `CLOUDINARY_CLOUD_NAME`/`CLOUDINARY_API_KEY`/`CLOUDINARY_API_SECRET`),
+  since Render's own filesystem is wiped on every deploy and cannot be
+  used for persistent user uploads.
 
 **Long-term vision (explicitly out of scope for this MVP)**
 
@@ -307,11 +308,12 @@ Deployment steps:
    - `ALLOWED_HOSTS` — the Render service hostname (e.g. `raigonos.onrender.com`)
    - `CSRF_TRUSTED_ORIGINS` — `https://raigonos.onrender.com`
    - `DATABASE_URL` — the Internal Database URL from step 1
-   - `CLOUDINARY_URL` — from your [Cloudinary](https://cloudinary.com)
-     dashboard ("API Environment variable"). Required so uploaded
-     Collection/Artwork images persist — Render's filesystem is wiped
-     on every deploy, so without this, uploaded images are served
-     correctly until the next deploy and then disappear.
+   - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
+     — copied individually from your [Cloudinary](https://cloudinary.com)
+     dashboard's Account Details. Required so uploaded Collection/Artwork
+     images persist — Render's filesystem is wiped on every deploy, so
+     without these, uploaded images work until the next deploy and then
+     disappear.
 6. Deploy. Render builds the app, runs migrations, and starts Gunicorn
    automatically on every push to `main`.
 
