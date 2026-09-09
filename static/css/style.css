@@ -3,11 +3,11 @@
    palette will be refined once final design assets are chosen. */
 
 :root {
-  --color-bg: #ffffff;
-  --color-surface: #f5f5f5;
-  --color-text: #111111;
-  --color-muted: #6b6b6b;
-  --color-border: #e0e0e0;
+  --color-bg: #f7f4ee;
+  --color-surface: #ffffff;
+  --color-text: #121212;
+  --color-muted: #8a8578;
+  --color-border: #e6e1d6;
   --radius: 12px;
   --gap: 1.5rem;
 
