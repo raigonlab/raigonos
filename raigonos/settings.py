@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
-from urllib.parse import urlparse
 
 import dj_database_url
 from dotenv import load_dotenv
@@ -164,14 +163,9 @@ STORAGES = {
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
-if CLOUDINARY_URL:
-    _cloudinary_url = urlparse(CLOUDINARY_URL)
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': _cloudinary_url.hostname,
-        'API_KEY': _cloudinary_url.username,
-        'API_SECRET': _cloudinary_url.password,
-    }
+if os.environ.get('CLOUDINARY_URL'):
+    # The cloudinary package reads CLOUDINARY_URL from the environment
+    # automatically on import — no manual parsing/config needed here.
     STORAGES['default'] = {
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     }
