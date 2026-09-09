@@ -45,7 +45,7 @@ img {
   border-radius: var(--radius);
 }
 
-/* Header / wordmark */
+/* Header / brand */
 
 header {
   padding: 1.5rem 2rem;
@@ -60,11 +60,14 @@ header nav {
   gap: 1rem;
 }
 
-header nav .wordmark {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.brand {
+  display: inline-flex;
+}
+
+.brand-logo {
+  height: 40px;
+  width: auto;
+  border-radius: 0;
 }
 
 header nav a:hover {

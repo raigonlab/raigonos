@@ -13,7 +13,9 @@
 <body>
   <header>
     <nav>
-      <a href="{% url 'gallery:collection_list' %}" class="wordmark">RaigonOS</a>
+      <a href="{% url 'gallery:collection_list' %}" class="brand">
+        <img src="{% static 'images/logo.svg' %}" alt="RaigonOS" class="brand-logo">
+      </a>
       <div class="nav-auth">
         {% if user.is_authenticated %}
           <a href="{% url 'gallery:dashboard' %}">Dashboard</a>
@@ -35,6 +37,7 @@
   </main>
 
   <footer>
+    <p class="eyebrow">Create &middot; Collect &middot; Legacy</p>
     <p>&copy; {% now "Y" %} Railson Gon&ccedil;alves</p>
   </footer>
 </body>
