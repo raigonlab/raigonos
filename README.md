@@ -58,7 +58,7 @@ The data model is designed so that a multi-artist mode could be added later
 is **not** part of this submission — see [Features](#features) below for the
 full MoSCoW breakdown of what is and isn't included now.
 
-#### 🚧 Live site → _to be added once deployed to Render_
+#### [Live site →](https://raigonos.onrender.com)
 
 ---
 
@@ -264,25 +264,33 @@ populated as issues are created.
 
 ### Live Website
 
-🚧 Not yet deployed. Target platform: [Render](https://render.com).
+Deployed on [Render](https://render.com), with a managed PostgreSQL
+instance in the same region.
 
-Planned deployment steps:
+Deployment steps:
 
-1. Create a new **Web Service** on Render, connected to this GitHub repository.
-2. Create a **PostgreSQL** instance on Render and copy its internal
-   connection string.
-3. In the Web Service's **Environment** settings, set:
-   - `SECRET_KEY`
+1. Create a **PostgreSQL** instance on Render and copy its **Internal
+   Database URL**.
+2. Create a **Web Service** on Render, connected to this GitHub repository
+   (`main` branch).
+3. Set the **Build Command**:
+   ```
+   pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
+   ```
+4. Set the **Start Command**:
+   ```
+   gunicorn raigonos.wsgi:application
+   ```
+5. In the Web Service's **Environment** settings, set:
+   - `SECRET_KEY` — generated via Render's own secure value generator
    - `DEBUG=False`
-   - `DATABASE_URL` (from the Postgres instance)
-   - `ALLOWED_HOSTS`
-   - `CSRF_TRUSTED_ORIGINS`
-4. Set the **Build Command** to install dependencies and collect static
-   files, and the **Start Command** to run Gunicorn.
-5. Deploy and confirm the live site matches local behaviour, with `DEBUG`
-   off and no secrets exposed.
+   - `ALLOWED_HOSTS` — the Render service hostname (e.g. `raigonos.onrender.com`)
+   - `CSRF_TRUSTED_ORIGINS` — `https://raigonos.onrender.com`
+   - `DATABASE_URL` — the Internal Database URL from step 1
+6. Deploy. Render builds the app, runs migrations, and starts Gunicorn
+   automatically on every push to `main`.
 
-**Live link:** 🚧 _to be added_
+**Live link:** [https://raigonos.onrender.com](https://raigonos.onrender.com)
 
 ### Local Development
 
