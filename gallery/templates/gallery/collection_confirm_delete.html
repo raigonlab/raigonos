@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Collection — RaigonOS{% endblock %}
+
+{% block content %}
+  <h1>Delete "{{ collection.title }}"?</h1>
+  <p>
+    This will also delete all {{ collection.artworks.count }} artwork(s)
+    inside it. This cannot be undone.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+  </form>
+
+  <p class="back-link"><a href="{% url 'gallery:dashboard' %}">Cancel</a></p>
+{% endblock %}

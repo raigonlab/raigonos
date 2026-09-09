@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if collection %}Edit Collection{% else %}New Collection{% endif %} — RaigonOS
+{% endblock %}
+
+{% block content %}
+  <h1>{% if collection %}Edit Collection{% else %}New Collection{% endif %}</h1>
+
+  <form method="post" enctype="multipart/form-data" class="model-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+
+  <p class="back-link"><a href="{% url 'gallery:dashboard' %}">&larr; Back to Dashboard</a></p>
+{% endblock %}

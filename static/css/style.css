@@ -213,6 +213,42 @@ button[type='submit']:hover {
   opacity: 0.85;
 }
 
+/* Dashboard (owner-only CRUD list) */
+
+.dashboard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboard-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+}
+
+.dashboard-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.dashboard-actions {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.dashboard-sublist {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
 .errorlist {
   color: #b00020;
   padding-left: 1.1rem;

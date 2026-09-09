@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if form.instance.pk %}Edit Artwork{% else %}New Artwork{% endif %} — RaigonOS
+{% endblock %}
+
+{% block content %}
+  <h1>
+    {% if form.instance.pk %}Edit Artwork{% else %}New Artwork{% endif %}
+    in "{{ collection.title }}"
+  </h1>
+
+  <form method="post" enctype="multipart/form-data" class="model-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+
+  <p class="back-link"><a href="{% url 'gallery:dashboard' %}">&larr; Back to Dashboard</a></p>
+{% endblock %}

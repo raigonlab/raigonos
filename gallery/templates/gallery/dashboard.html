@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard — RaigonOS{% endblock %}
+
+{% block content %}
+  <h1>My Collections</h1>
+  <p><a href="{% url 'gallery:collection_create' %}">+ New Collection</a></p>
+
+  <ul class="dashboard-list">
+    {% for collection in collections %}
+      <li class="dashboard-card">
+        <div class="dashboard-card-header">
+          <strong>{{ collection.title }}</strong>
+          <span class="artwork-meta">{{ collection.get_status_display }}</span>
+        </div>
+        <p class="dashboard-actions">
+          <a href="{% url 'gallery:collection_update' collection.slug %}">Edit</a>
+          &middot;
+          <a href="{% url 'gallery:collection_delete' collection.slug %}">Delete</a>
+          &middot;
+          <a href="{% url 'gallery:artwork_create' collection.slug %}">+ Artwork</a>
+        </p>
+
+        {% if collection.artworks.all %}
+          <ul class="dashboard-sublist">
+            {% for artwork in collection.artworks.all %}
+              <li>
+                {{ artwork.title }}
+                <a href="{% url 'gallery:artwork_update' artwork.pk %}">Edit</a>
+                &middot;
+                <a href="{% url 'gallery:artwork_delete' artwork.pk %}">Delete</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li class="card-empty">You haven't created any Collections yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
