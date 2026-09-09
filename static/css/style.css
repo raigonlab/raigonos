@@ -8,7 +8,8 @@
   --color-text: #121212;
   --color-muted: #8a8578;
   --color-border: #e6e1d6;
-  --radius: 12px;
+  --radius: 20px;
+  --radius-pill: 999px;
   --gap: 1.5rem;
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -203,18 +204,18 @@ form.model-form p {
 form.model-form input,
 form.model-form select,
 form.model-form textarea {
-  padding: 0.6rem 0.75rem;
+  padding: 0.85rem 1.25rem;
   border: 1px solid var(--color-border);
-  border-radius: calc(var(--radius) / 2);
+  border-radius: var(--radius);
   font: inherit;
-  background: var(--color-bg);
+  background: var(--color-surface);
   color: var(--color-text);
 }
 
 button[type='submit'] {
-  padding: 0.6rem 1.5rem;
+  padding: 0.75rem 2rem;
   border: 1px solid var(--color-text);
-  border-radius: calc(var(--radius) / 2);
+  border-radius: var(--radius-pill);
   background: var(--color-text);
   color: var(--color-bg);
   font: inherit;
