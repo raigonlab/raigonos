@@ -255,8 +255,9 @@ populated as issues are created.
 
 ## Testing
 
-🚧 Full manual and automated testing procedure will be documented in
-`TESTING.md` as features are built.
+Full manual and automated testing procedure, plus a log of bugs found
+and fixed during development, is documented in
+[TESTING.md](TESTING.md).
 
 ---
 

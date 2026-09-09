@@ -3,6 +3,7 @@
 {% block title %}Dashboard — RaigonOS{% endblock %}
 
 {% block content %}
+  <span class="eyebrow">Dashboard</span>
   <h1>My Collections</h1>
   <p><a href="{% url 'gallery:collection_create' %}">+ New Collection</a></p>
 
@@ -11,7 +12,7 @@
       <li class="dashboard-card">
         <div class="dashboard-card-header">
           <strong>{{ collection.title }}</strong>
-          <span class="artwork-meta">{{ collection.get_status_display }}</span>
+          <span class="eyebrow">{{ collection.get_status_display }}</span>
         </div>
         <p class="dashboard-actions">
           <a href="{% url 'gallery:collection_update' collection.slug %}">Edit</a>
