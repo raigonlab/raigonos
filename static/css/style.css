@@ -48,7 +48,15 @@ header {
   border-bottom: 1px solid var(--color-border);
 }
 
-header nav a {
+header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+header nav .wordmark {
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -58,6 +66,31 @@ header nav a {
 header nav a:hover {
   text-decoration: none;
   opacity: 0.7;
+}
+
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.nav-auth form {
+  margin: 0;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration: underline;
 }
 
 /* Layout */
@@ -135,4 +168,54 @@ h1 {
 .back-link {
   display: inline-block;
   margin-top: 2rem;
+}
+
+/* Forms (auth, and later CRUD) */
+
+.auth-form,
+form.model-form {
+  max-width: 420px;
+}
+
+.auth-form p,
+form.model-form p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0 0 1rem;
+}
+
+.auth-form input,
+.auth-form select,
+.auth-form textarea,
+form.model-form input,
+form.model-form select,
+form.model-form textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--radius) / 2);
+  font: inherit;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+button[type='submit'] {
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--color-text);
+  border-radius: calc(var(--radius) / 2);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font: inherit;
+  cursor: pointer;
+}
+
+button[type='submit']:hover {
+  opacity: 0.85;
+}
+
+.errorlist {
+  color: #b00020;
+  padding-left: 1.1rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
 }

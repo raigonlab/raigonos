@@ -100,6 +100,14 @@ DATABASES = {
 }
 
 
+# Authentication
+# https://docs.djangoproject.com/en/5.2/topics/auth/default/
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'gallery:collection_list'
+LOGOUT_REDIRECT_URL = 'gallery:collection_list'
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
