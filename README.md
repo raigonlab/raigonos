@@ -142,12 +142,22 @@ sketches → Figma wireframes). Will be added here once produced.
 
 #### 5. Surface
 
-**Visual Design (direction, not yet finalised in code)**
+**Visual Design (implemented)**
 
-- Black & white, gallery-like atmosphere — the artwork is the colour.
-- Rounded corners on images and UI elements (not strict 90°).
+- Warm, cream gallery atmosphere — white cards and form elements float
+  on a soft cream background, rather than a stark white/black contrast.
+- Large, consistently rounded corners on cards, images and form
+  elements; fully pill-shaped buttons.
 - Generous whitespace between elements.
-- Wordmark-style logo (styled text, no icon).
+- A serif display face (headings, with italic used for emphasis within
+  a heading) paired with a clean sans-serif for body text and UI.
+- Small, uppercase, letter-spaced "eyebrow" labels above page titles
+  (e.g. "Collection", "Dashboard") for wayfinding.
+- The RaigonOS logo mark: an "R" monogram inside a circular
+  "RAIGON · INK · MMXXIII" seal.
+- Tagline: **Create · Collect · Legacy** — mirroring the actual user
+  flow (create an Artwork, collect it into a Collection, build a
+  lasting portfolio).
 
 Visual language is inspired by [raigon.ch](https://www.raigon.ch) —
 **for aesthetic direction only**; no content, copy, or functionality from
@@ -157,23 +167,29 @@ that site is used here.
 
 ## Colour Scheme
 
-🚧 Draft palette, to be validated once templates are styled:
+Warm, neutral palette — cream background with white cards, so
+elements feel like they're placed on the page rather than boxed in:
 
 | Token | Value |
 | ------- | ------- |
-| Background | `#ffffff` |
-| Surface | `#f5f5f5` |
-| Text | `#111111` |
-| Muted text | `#6b6b6b` |
-| Border | `#e0e0e0` |
+| Background | `#f7f4ee` |
+| Surface (cards, inputs) | `#ffffff` |
+| Text | `#121212` |
+| Muted text / labels | `#8a8578` |
+| Border | `#e6e1d6` |
 
 ---
 
 ## Typography
 
-🚧 Not yet finalised. Direction: one distinctive serif or display face for
-the wordmark/headings, paired with a clean sans-serif for body text and UI
-labels — sourced from Google Fonts.
+- **Playfair Display** — used for page headings, including an italic
+  weight for emphasis within a heading (e.g. "My *Collections*").
+- **Inter** — used for body text, navigation, forms and UI labels.
+
+Both are sourced from [Google Fonts](https://fonts.google.com). The
+pairing gives the same editorial, gallery-catalogue feel as the
+`raigon.ch` reference: a confident serif voice for titles, a clean
+sans-serif for everything functional.
 
 ---
 
