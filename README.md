@@ -246,6 +246,114 @@ will list completed, working features (with screenshots) as they land.
 
 ---
 
+## Data Schema
+
+Two related models, deliberately kept minimal for the MVP:
+`Collection` belongs to a `User` (owner), and `Artwork` belongs to a
+`Collection` — a one-to-many relationship in each case. Deleting a
+Collection cascades to delete its Artworks.
+
+```mermaid
+erDiagram
+    USER ||--o{ COLLECTION : owns
+    COLLECTION ||--o{ ARTWORK : contains
+
+    USER {
+        int id PK
+        string username
+        string email
+        string password
+    }
+
+    COLLECTION {
+        int id PK
+        int owner_id FK
+        string title
+        string slug
+        text description
+        image cover_image
+        string status
+        datetime created_at
+        datetime updated_at
+    }
+
+    ARTWORK {
+        int id PK
+        int collection_id FK
+        string title
+        image image
+        string medium
+        int year
+        text description
+        int display_order
+        datetime created_at
+        datetime updated_at
+    }
+```
+
+**`Collection`**
+
+| Field | Type | Notes |
+| ----- | ---- | ----- |
+| `owner` | ForeignKey → `User` | `on_delete=CASCADE`; who manages this Collection |
+| `title` | CharField | |
+| `slug` | SlugField (unique) | Auto-generated from `title`; used in public URLs |
+| `description` | TextField | Optional |
+| `cover_image` | ImageField | Optional; stored on Cloudinary in production |
+| `status` | CharField (choices) | `draft` (owner-only) or `published` (public) |
+| `created_at` / `updated_at` | DateTimeField | Auto-managed |
+
+**`Artwork`**
+
+| Field | Type | Notes |
+| ----- | ---- | ----- |
+| `collection` | ForeignKey → `Collection` | `on_delete=CASCADE` |
+| `title` | CharField | |
+| `image` | ImageField | Required; stored on Cloudinary in production |
+| `medium` | CharField | Optional, e.g. "Digital painting" |
+| `year` | PositiveIntegerField | Optional |
+| `description` | TextField | Optional |
+| `display_order` | PositiveIntegerField | Controls ordering within a Collection |
+| `created_at` / `updated_at` | DateTimeField | Auto-managed |
+
+`User` is Django's built-in auth model — no custom user model was
+needed for this domain.
+
+---
+
+## Security
+
+- **Secrets** — `SECRET_KEY`, `DATABASE_URL`, Cloudinary credentials
+  and all other secrets are read from environment variables, never
+  hardcoded. `.env` (local secrets) is listed in `.gitignore` and has
+  never been committed; `.env.example` documents the required keys
+  with empty/placeholder values only.
+- **`DEBUG`** is `False` in production, confirmed by a real incident
+  during development: with it correctly off, a misconfiguration
+  produced only a generic error page, not a stack trace (see
+  [TESTING.md](TESTING.md) for the full account).
+- **Authentication & ownership** — every create/edit/delete view is
+  behind Django's `@login_required`. Editing or deleting another
+  user's Collection or Artwork returns `404 Not Found` rather than
+  `403 Forbidden`, so a logged-in user can't even confirm that another
+  user's private content exists. Covered by automated tests
+  (`DashboardPermissionTests`).
+- **Passwords** are never stored in plain text — Django's default
+  PBKDF2 password hashing is used unchanged.
+- **CSRF protection** is active project-wide via Django's
+  `CsrfViewMiddleware` (enabled by default, never disabled); every
+  form includes `{% csrf_token %}`, including the logout action, which
+  is a POST rather than a plain link.
+- **`ALLOWED_HOSTS`** is restricted to the actual production hostname,
+  not left open — this was verified the hard way when a typo in it
+  caused every production request to be rejected (see
+  [TESTING.md](TESTING.md)).
+- **File uploads** are validated as real images by Django's
+  `ImageField` (backed by Pillow) before being accepted, and are
+  stored on Cloudinary rather than the app server's own disk.
+
+---
+
 ## Tools & Technologies
 
 - Python
