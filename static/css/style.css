@@ -260,7 +260,22 @@ button[type='submit']:hover {
 .dashboard-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dashboard-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: calc(var(--radius) / 2);
+  flex-shrink: 0;
 }
 
 .dashboard-actions {
@@ -273,6 +288,13 @@ button[type='submit']:hover {
   padding-left: 1.1rem;
   font-size: 0.9rem;
   color: var(--color-muted);
+}
+
+.dashboard-sublist li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.35rem 0;
 }
 
 .errorlist {

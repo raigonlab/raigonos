@@ -11,7 +11,12 @@
     {% for collection in collections %}
       <li class="dashboard-card">
         <div class="dashboard-card-header">
-          <strong>{{ collection.title }}</strong>
+          <div class="dashboard-card-title">
+            {% if collection.cover_image %}
+              <img src="{{ collection.cover_image.url }}" alt="{{ collection.title }}" class="dashboard-thumb">
+            {% endif %}
+            <strong>{{ collection.title }}</strong>
+          </div>
           <span class="eyebrow">{{ collection.get_status_display }}</span>
         </div>
         <p class="dashboard-actions">
@@ -26,6 +31,9 @@
           <ul class="dashboard-sublist">
             {% for artwork in collection.artworks.all %}
               <li>
+                {% if artwork.image %}
+                  <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}" class="dashboard-thumb">
+                {% endif %}
                 {{ artwork.title }}
                 <a href="{% url 'gallery:artwork_update' artwork.pk %}">Edit</a>
                 &middot;
