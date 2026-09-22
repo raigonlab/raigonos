@@ -3,12 +3,6 @@
 {% block title %}{{ collection.title }} — RaigonOS{% endblock %}
 
 {% block content %}
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href="{% url 'gallery:collection_list' %}">Collections</a>
-    <span class="crumb-sep">/</span>
-    <span class="crumb-current">{{ collection.title }}</span>
-  </nav>
-
   <span class="eyebrow">Collection</span>
   <h1>{{ collection.title }}</h1>
   <p>{{ collection.description }}</p>
@@ -33,4 +27,16 @@
   <p class="back-link">
     <a href="{% url 'gallery:collection_list' %}">&larr; Back to Collections</a>
   </p>
+{% endblock %}
+
+{% block path_bar %}
+  <nav class="path-bar" aria-label="Breadcrumb">
+    <div class="path-bar-inner">
+      <a href="{% url 'gallery:artwork_gallery' %}">Artworks</a>
+      <span class="crumb-sep">/</span>
+      <a href="{% url 'gallery:collection_list' %}">Collections</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current">{{ collection.title }}</span>
+    </div>
+  </nav>
 {% endblock %}

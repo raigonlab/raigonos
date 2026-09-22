@@ -11,14 +11,6 @@
     </div>
 
     <div class="artwork-info">
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="{% url 'gallery:collection_list' %}">Collections</a>
-        <span class="crumb-sep">/</span>
-        <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">{{ artwork.collection.title }}</a>
-        <span class="crumb-sep">/</span>
-        <span class="crumb-current">{{ artwork.title }}</span>
-      </nav>
-
       <span class="eyebrow">Artwork</span>
       <h1>{{ artwork.title }}</h1>
 
@@ -35,4 +27,18 @@
       </p>
     </div>
   </div>
+{% endblock %}
+
+{% block path_bar %}
+  <nav class="path-bar" aria-label="Breadcrumb">
+    <div class="path-bar-inner">
+      <a href="{% url 'gallery:artwork_gallery' %}">Artworks</a>
+      <span class="crumb-sep">/</span>
+      <a href="{% url 'gallery:collection_list' %}">Collections</a>
+      <span class="crumb-sep">/</span>
+      <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">{{ artwork.collection.title }}</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current">{{ artwork.title }}</span>
+    </div>
+  </nav>
 {% endblock %}
