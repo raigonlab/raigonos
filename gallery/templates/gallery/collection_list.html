@@ -5,6 +5,7 @@
 {% block content %}
   <span class="eyebrow">Gallery</span>
   <h1>Collections</h1>
+  <p><a href="{% url 'gallery:artwork_gallery' %}">&larr; All Artworks</a></p>
 
   <ul class="card-grid">
     {% for collection in collections %}

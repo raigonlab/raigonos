@@ -76,6 +76,32 @@ class PublicGalleryViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class ArtworkGalleryViewTests(TestCase):
+    def setUp(self):
+        owner = User.objects.create_user('gallery_owner', password='pass12345')
+        published = Collection.objects.create(
+            owner=owner, title='Published Collection', status=Collection.STATUS_PUBLISHED
+        )
+        draft = Collection.objects.create(
+            owner=owner, title='Draft Collection', status=Collection.STATUS_DRAFT
+        )
+        Artwork.objects.create(
+            collection=published, title='Visible Piece', image=tiny_image()
+        )
+        Artwork.objects.create(
+            collection=draft, title='Hidden Piece', image=tiny_image()
+        )
+
+    def test_is_the_site_root(self):
+        response = self.client.get('/')
+        self.assertEqual(response.resolver_match.view_name, 'gallery:artwork_gallery')
+
+    def test_only_shows_artworks_from_published_collections(self):
+        response = self.client.get(reverse('gallery:artwork_gallery'))
+        self.assertContains(response, 'Visible Piece')
+        self.assertNotContains(response, 'Hidden Piece')
+
+
 class DashboardPermissionTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('owner3', password='pass12345')
