@@ -5,7 +5,8 @@ from . import views
 app_name = 'gallery'
 
 urlpatterns = [
-    path('', views.collection_list, name='collection_list'),
+    path('', views.artwork_gallery, name='artwork_gallery'),
+    path('collections/', views.collection_list, name='collection_list'),
     path(
         'collection/<slug:slug>/',
         views.collection_detail,

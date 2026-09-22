@@ -8,6 +8,13 @@ from .forms import ArtworkForm, CollectionForm
 from .models import Artwork, Collection
 
 
+def artwork_gallery(request):
+    artworks = Artwork.objects.filter(
+        collection__status=Collection.STATUS_PUBLISHED
+    ).select_related('collection')
+    return render(request, 'gallery/artwork_gallery.html', {'artworks': artworks})
+
+
 def collection_list(request):
     collections = Collection.objects.filter(status=Collection.STATUS_PUBLISHED)
     return render(
@@ -148,7 +155,7 @@ def artwork_delete(request, pk):
 
 def signup_view(request):
     if request.user.is_authenticated:
-        return redirect('gallery:collection_list')
+        return redirect('gallery:artwork_gallery')
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -156,7 +163,7 @@ def signup_view(request):
             user = form.save()
             login(request, user)
             messages.success(request, f'Welcome, {user.username}! Your account is ready.')
-            return redirect('gallery:collection_list')
+            return redirect('gallery:artwork_gallery')
     else:
         form = UserCreationForm()
 
