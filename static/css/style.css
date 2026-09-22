@@ -1371,11 +1371,19 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 /* Artwork lightbox: large view with Prev/Next, opened from an "Open"
    icon button. Always dark, regardless of dashboard theme, for image
-   contrast -- standard lightbox convention. */
+   contrast -- standard lightbox convention.
+
+   Stops short of the sidebar (left: 260px, matching its width) rather
+   than covering the full viewport: the dashboard's left column must stay
+   visible and usable at all times, even while viewing an Artwork large --
+   you're still inside the dashboard, not in a separate full-screen mode. */
 
 .dash-lightbox {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 260px;
   z-index: 50;
   display: flex;
   align-items: center;
