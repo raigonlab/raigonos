@@ -1,0 +1,83 @@
+{% extends 'gallery/dashboard_base.html' %}
+
+{% block title %}{{ collection.title }} — RaigonOS{% endblock %}
+
+{% block dash_breadcrumb %}
+  <span class="dash-crumb-sep">/</span>
+  <span class="dash-crumb-current">{{ collection.title }}</span>
+{% endblock %}
+
+{% block dash_content %}
+  <div class="dash-page-header">
+    <div>
+      <span class="eyebrow">Collections</span>
+      <h1>{{ collection.title }}</h1>
+      <div class="dash-collection-meta">
+        {% if collection.status == 'published' %}
+          <span class="dash-status dash-status-published">Published</span>
+        {% else %}
+          <span class="dash-status dash-status-draft">Draft</span>
+        {% endif %}
+        <span>{{ artworks.count }} artwork{{ artworks.count|pluralize }}</span>
+      </div>
+    </div>
+    <div class="dash-page-actions">
+      {% include 'gallery/_search_box.html' with search_placeholder='Search this Collection' %}
+      {% include 'gallery/_view_toggle.html' %}
+      <a href="{% url 'gallery:artwork_create' collection.slug %}" class="dash-btn dash-btn-primary">+ Add Artwork</a>
+    </div>
+  </div>
+
+  <div class="dash-collection-icon-actions dash-collection-manage-actions">
+    {% if collection.status == 'published' %}
+      <a href="{% url 'gallery:collection_detail' collection.slug %}" class="dash-icon-btn" title="View" aria-label="View published Collection">
+        <svg class="dash-icon"><use href="#icon-eye"></use></svg>
+      </a>
+    {% endif %}
+    <a href="{% url 'gallery:collection_update' collection.slug %}" class="dash-icon-btn" title="Edit Collection" aria-label="Edit Collection">
+      <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+    </a>
+    <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete Collection" aria-label="Delete Collection">
+      <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+    </a>
+  </div>
+
+  {% if artworks %}
+    <ul class="dash-artwork-list dash-artwork-list-flat" data-dash-view-target>
+      {% for artwork in artworks %}
+        <li class="dash-artwork-row">
+          {% if artwork.image %}
+            <img src="{{ artwork.image.url }}" alt="" class="dash-thumb">
+          {% else %}
+            <span class="dash-thumb-placeholder"></span>
+          {% endif %}
+          <span class="dash-artwork-title">{{ artwork.title }}</span>
+          <span class="dash-artwork-actions">
+            {% if artwork.image %}
+              <button type="button" class="dash-icon-btn" title="Open" aria-label="Open Artwork" data-dash-lightbox-trigger data-image="{{ artwork.image.url }}" data-title="{{ artwork.title }}">
+                <svg class="dash-icon"><use href="#icon-eye"></use></svg>
+              </button>
+            {% endif %}
+            <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-icon-btn" title="Edit" aria-label="Edit Artwork">
+              <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+            </a>
+            <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Artwork">
+              <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+            </a>
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+    {% include 'gallery/_lightbox.html' %}
+    {% include 'gallery/_view_init_script.html' %}
+  {% elif query %}
+    <div class="dash-empty">
+      <p>No Artworks match &ldquo;{{ query }}&rdquo;.</p>
+    </div>
+  {% else %}
+    <div class="dash-empty">
+      <p>No Artworks in this Collection yet.</p>
+      <a href="{% url 'gallery:artwork_create' collection.slug %}" class="dash-btn dash-btn-primary">+ Add Artwork</a>
+    </div>
+  {% endif %}
+{% endblock %}
