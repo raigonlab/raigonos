@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Page not found — RaigonOS{% endblock %}
+
+{% block content %}
+  <span class="eyebrow">Error 404</span>
+  <h1>This page doesn't exist.</h1>
+  <p>
+    The page you're looking for may have been moved, renamed, or never
+    existed. Let's get you back to the gallery.
+  </p>
+  <p>
+    <a href="{% url 'gallery:collection_list' %}" class="button-link">
+      Back to Gallery
+    </a>
+  </p>
+{% endblock %}
