@@ -40,19 +40,29 @@ def artwork_detail(request, pk):
 
 @login_required
 def dashboard(request):
+    query = request.GET.get('q', '').strip()
     collections = request.user.collections.all()
-    return render(request, 'gallery/dashboard.html', {'collections': collections})
+    if query:
+        collections = collections.filter(title__icontains=query)
+    return render(
+        request,
+        'gallery/dashboard.html',
+        {'collections': collections, 'query': query},
+    )
 
 
 @login_required
 def artwork_list(request):
+    query = request.GET.get('q', '').strip()
     artworks = Artwork.objects.filter(collection__owner=request.user).select_related(
         'collection'
     )
+    if query:
+        artworks = artworks.filter(title__icontains=query)
     return render(
         request,
         'gallery/artwork_list.html',
-        {'artworks': artworks, 'active_nav': 'artworks'},
+        {'artworks': artworks, 'active_nav': 'artworks', 'query': query},
     )
 
 
