@@ -32,8 +32,12 @@
             {{ artwork.collection.title }}
           </a>
           <span class="dash-artwork-actions">
-            <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-btn dash-btn-ghost dash-btn-sm">Edit</a>
-            <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-btn dash-btn-danger dash-btn-sm">Delete</a>
+            <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-icon-btn" title="Edit" aria-label="Edit Artwork">
+              <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+            </a>
+            <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Artwork">
+              <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+            </a>
           </span>
         </li>
       {% endfor %}
