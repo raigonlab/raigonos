@@ -242,10 +242,61 @@ h1 i {
   font-style: italic;
 }
 
-/* Artwork detail */
+/* Breadcrumbs (public pages) -- so a visitor always knows where they
+   are: Collections / <Collection> / <Artwork>. */
 
-.artwork-image {
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
   margin-bottom: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-text);
+}
+
+.breadcrumbs .crumb-sep {
+  opacity: 0.5;
+}
+
+.breadcrumbs .crumb-current {
+  color: var(--color-text);
+}
+
+/* Artwork detail: image and metadata side by side on wider screens, so
+   the image doesn't dominate the whole page height. Stacks on mobile. */
+
+.artwork-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 800px) {
+  .artwork-layout {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: start;
+  }
+}
+
+.artwork-media {
+  display: flex;
+  justify-content: center;
+}
+
+.artwork-media img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 70vh;
+}
+
+.artwork-info h1 {
+  margin-top: 0.25rem;
 }
 
 .artwork-meta {
