@@ -13,10 +13,13 @@
       <span class="eyebrow">Workspace</span>
       <h1>All Artworks</h1>
     </div>
+    <div class="dash-page-actions">
+      {% include 'gallery/_view_toggle.html' %}
+    </div>
   </div>
 
   {% if artworks %}
-    <ul class="dash-artwork-list dash-artwork-list-flat">
+    <ul class="dash-artwork-list dash-artwork-list-flat" data-dash-view-target>
       {% for artwork in artworks %}
         <li class="dash-artwork-row">
           {% if artwork.image %}
@@ -35,6 +38,7 @@
         </li>
       {% endfor %}
     </ul>
+    {% include 'gallery/_view_init_script.html' %}
   {% else %}
     <div class="dash-empty">
       <p>You haven't added any Artworks yet.</p>
