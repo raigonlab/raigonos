@@ -533,8 +533,12 @@ To run the project locally:
 
 - Code Institute materials
 - [Django documentation](https://docs.djangoproject.com/)
-- Claude (https://claude.com/) — coding assistant used for planning,
-  debugging and project support throughout development
+- [Claude](https://claude.com/) — AI coding assistant used throughout
+  development for planning, debugging and project support, and
+  specifically to help design and refine the owner-only dashboard's
+  UI (the dark/light theme system, grid/list views, and component
+  layout) in collaboration with the developer. This involvement is
+  reflected in the project's commit history.
 - [fonts.google.com](https://fonts.google.com) 🚧
 
 ### Media
