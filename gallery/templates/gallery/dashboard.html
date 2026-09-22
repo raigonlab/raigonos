@@ -42,7 +42,7 @@
 
               <div class="dash-collection-icon-actions">
                 {% if collection.status == 'published' %}
-                  <a href="{% url 'gallery:collection_detail' collection.slug %}" class="dash-icon-btn" title="View" aria-label="View published Collection" target="_blank" rel="noopener">
+                  <a href="{% url 'gallery:collection_detail' collection.slug %}" class="dash-icon-btn" title="View" aria-label="View published Collection">
                     <svg class="dash-icon"><use href="#icon-eye"></use></svg>
                   </a>
                 {% endif %}
