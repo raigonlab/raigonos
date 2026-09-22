@@ -1,0 +1,44 @@
+{% extends 'gallery/dashboard_base.html' %}
+
+{% block title %}All Artworks — RaigonOS{% endblock %}
+
+{% block dash_breadcrumb %}
+  <span class="dash-crumb-sep">/</span>
+  <span class="dash-crumb-current">All Artworks</span>
+{% endblock %}
+
+{% block dash_content %}
+  <div class="dash-page-header">
+    <div>
+      <span class="eyebrow">Workspace</span>
+      <h1>All Artworks</h1>
+    </div>
+  </div>
+
+  {% if artworks %}
+    <ul class="dash-artwork-list dash-artwork-list-flat">
+      {% for artwork in artworks %}
+        <li class="dash-artwork-row">
+          {% if artwork.image %}
+            <img src="{{ artwork.image.url }}" alt="" class="dash-thumb">
+          {% else %}
+            <span class="dash-thumb-placeholder"></span>
+          {% endif %}
+          <span class="dash-artwork-title">{{ artwork.title }}</span>
+          <a href="{% url 'gallery:collection_update' artwork.collection.slug %}" class="dash-artwork-collection">
+            {{ artwork.collection.title }}
+          </a>
+          <span class="dash-artwork-actions">
+            <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-btn dash-btn-ghost dash-btn-sm">Edit</a>
+            <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-btn dash-btn-danger dash-btn-sm">Delete</a>
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="dash-empty">
+      <p>You haven't added any Artworks yet.</p>
+      <a href="{% url 'gallery:dashboard' %}" class="dash-btn dash-btn-primary">Go to Collections</a>
+    </div>
+  {% endif %}
+{% endblock %}
