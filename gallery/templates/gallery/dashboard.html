@@ -1,50 +1,70 @@
-{% extends 'base.html' %}
+{% extends 'gallery/dashboard_base.html' %}
 
 {% block title %}Dashboard — RaigonOS{% endblock %}
 
-{% block content %}
-  <span class="eyebrow">Dashboard</span>
-  <h1>My Collections</h1>
-  <p><a href="{% url 'gallery:collection_create' %}">+ New Collection</a></p>
+{% block dash_content %}
+  <div class="dash-page-header">
+    <div>
+      <span class="eyebrow">Dashboard</span>
+      <h1>My Collections</h1>
+    </div>
+    <a href="{% url 'gallery:collection_create' %}" class="dash-btn dash-btn-primary">+ New Collection</a>
+  </div>
 
-  <ul class="dashboard-list">
-    {% for collection in collections %}
-      <li class="dashboard-card">
-        <div class="dashboard-card-header">
-          <div class="dashboard-card-title">
-            {% if collection.cover_image %}
-              <img src="{{ collection.cover_image.url }}" alt="{{ collection.title }}" class="dashboard-thumb">
+  {% if collections %}
+    <ul class="dash-collection-list">
+      {% for collection in collections %}
+        <li class="dash-collection-card">
+          <div class="dash-collection-header">
+            <div class="dash-collection-title">
+              {% if collection.cover_image %}
+                <img src="{{ collection.cover_image.url }}" alt="" class="dash-thumb">
+              {% else %}
+                <span class="dash-thumb-placeholder"></span>
+              {% endif %}
+              <strong>{{ collection.title }}</strong>
+            </div>
+            {% if collection.status == 'published' %}
+              <span class="dash-badge dash-badge-published">Published</span>
+            {% else %}
+              <span class="dash-badge dash-badge-draft">Draft</span>
             {% endif %}
-            <strong>{{ collection.title }}</strong>
           </div>
-          <span class="eyebrow">{{ collection.get_status_display }}</span>
-        </div>
-        <p class="dashboard-actions">
-          <a href="{% url 'gallery:collection_update' collection.slug %}">Edit</a>
-          &middot;
-          <a href="{% url 'gallery:collection_delete' collection.slug %}">Delete</a>
-          &middot;
-          <a href="{% url 'gallery:artwork_create' collection.slug %}">+ Artwork</a>
-        </p>
 
-        {% if collection.artworks.all %}
-          <ul class="dashboard-sublist">
-            {% for artwork in collection.artworks.all %}
-              <li>
-                {% if artwork.image %}
-                  <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}" class="dashboard-thumb">
-                {% endif %}
-                {{ artwork.title }}
-                <a href="{% url 'gallery:artwork_update' artwork.pk %}">Edit</a>
-                &middot;
-                <a href="{% url 'gallery:artwork_delete' artwork.pk %}">Delete</a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </li>
-    {% empty %}
-      <li class="card-empty">You haven't created any Collections yet.</li>
-    {% endfor %}
-  </ul>
+          <div class="dash-collection-actions">
+            <a href="{% url 'gallery:collection_update' collection.slug %}" class="dash-btn dash-btn-ghost dash-btn-sm">Edit</a>
+            <a href="{% url 'gallery:artwork_create' collection.slug %}" class="dash-btn dash-btn-ghost dash-btn-sm">+ Artwork</a>
+            <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-btn dash-btn-danger dash-btn-sm">Delete</a>
+          </div>
+
+          {% if collection.artworks.all %}
+            <details class="dash-artworks">
+              <summary>Artworks ({{ collection.artworks.count }})</summary>
+              <ul class="dash-artwork-list">
+                {% for artwork in collection.artworks.all %}
+                  <li class="dash-artwork-row">
+                    {% if artwork.image %}
+                      <img src="{{ artwork.image.url }}" alt="" class="dash-thumb">
+                    {% else %}
+                      <span class="dash-thumb-placeholder"></span>
+                    {% endif %}
+                    <span class="dash-artwork-title">{{ artwork.title }}</span>
+                    <span class="dash-artwork-actions">
+                      <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-btn dash-btn-ghost dash-btn-sm">Edit</a>
+                      <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-btn dash-btn-danger dash-btn-sm">Delete</a>
+                    </span>
+                  </li>
+                {% endfor %}
+              </ul>
+            </details>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="dash-empty">
+      <p>You haven't created any Collections yet.</p>
+      <a href="{% url 'gallery:collection_create' %}" class="dash-btn dash-btn-primary">+ New Collection</a>
+    </div>
+  {% endif %}
 {% endblock %}
