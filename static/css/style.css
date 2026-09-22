@@ -250,8 +250,8 @@ h1 i {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.82rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.75rem;
   color: var(--color-muted);
 }
 

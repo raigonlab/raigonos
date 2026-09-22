@@ -3,14 +3,6 @@
 {% block title %}{{ artwork.title }} — RaigonOS{% endblock %}
 
 {% block content %}
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href="{% url 'gallery:collection_list' %}">Collections</a>
-    <span class="crumb-sep">/</span>
-    <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">{{ artwork.collection.title }}</a>
-    <span class="crumb-sep">/</span>
-    <span class="crumb-current">{{ artwork.title }}</span>
-  </nav>
-
   <div class="artwork-layout">
     <div class="artwork-media">
       {% if artwork.image %}
@@ -19,6 +11,14 @@
     </div>
 
     <div class="artwork-info">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="{% url 'gallery:collection_list' %}">Collections</a>
+        <span class="crumb-sep">/</span>
+        <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">{{ artwork.collection.title }}</a>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-current">{{ artwork.title }}</span>
+      </nav>
+
       <span class="eyebrow">Artwork</span>
       <h1>{{ artwork.title }}</h1>
 
