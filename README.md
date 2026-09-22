@@ -97,6 +97,26 @@ The guiding principle behind all of the above: a platform artists can
 trust with their life's work, without extractive fees or unnecessary
 bureaucracy standing between them and presenting it to the world.
 
+**Comparable platforms (researched for direction, not copied from)**
+
+- [Artwork Archive](https://www.artworkarchive.com) — art inventory
+  software artists use to catalogue their full body of work: location,
+  exhibition history, sales, condition — closest existing parallel to
+  the "lifelong record" idea above.
+- [Niio](https://niio.com) — streams digital art to screens (TVs,
+  business/public displays), the closest existing model for the public
+  exhibition idea, though its catalogue includes AI-generated art,
+  which runs counter to this project's "verified human-made" principle.
+- [Content Credentials / C2PA](https://contentcredentials.org) — an
+  industry standard (backed by Adobe, Microsoft, Google, Meta, the BBC
+  and 500+ others) for attaching verifiable creation/edit history to a
+  file, distinguishing authentic from synthetically generated content.
+  The technical model closest to the authenticity idea above.
+- No existing platform combines all of the above (lifelong archive +
+  public exhibition + authenticity + third-party integration) in one
+  place — as far as this research found, that combination is an open
+  gap rather than something already solved elsewhere.
+
 #### [Live site →](https://raigonos.onrender.com)
 
 ---
