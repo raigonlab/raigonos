@@ -66,3 +66,45 @@
     } catch (e) {}
   });
 })();
+
+// Grid/List view toggle, shared by the Collections and All Artworks
+// pages. Preference remembered per browser via localStorage; the
+// matching inline script (_view_init_script.html) applies a saved
+// "grid" choice before first paint so there's no layout flash.
+(function () {
+  var VIEW_KEY = 'dash-view';
+  var group = document.querySelector('[data-dash-view-toggle]');
+  var target = document.querySelector('[data-dash-view-target]');
+
+  if (!group || !target) {
+    return;
+  }
+
+  var buttons = group.querySelectorAll('[data-dash-view]');
+
+  function apply(view) {
+    target.setAttribute('data-view', view);
+    buttons.forEach(function (btn) {
+      var active = btn.getAttribute('data-dash-view') === view;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
+
+  var stored = null;
+  try {
+    stored = localStorage.getItem(VIEW_KEY);
+  } catch (e) {}
+
+  apply(stored === 'grid' ? 'grid' : 'list');
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var view = btn.getAttribute('data-dash-view');
+      apply(view);
+      try {
+        localStorage.setItem(VIEW_KEY, view);
+      } catch (e) {}
+    });
+  });
+})();
