@@ -10,10 +10,14 @@
     {% for collection in collections %}
       <li class="card">
         <a href="{% url 'gallery:collection_detail' collection.slug %}">
-          {% if collection.cover_image %}
-            <img src="{{ collection.cover_image.url }}" alt="{{ collection.title }}">
-          {% endif %}
-          <span>{{ collection.title }}</span>
+          <div class="card-image">
+            {% if collection.cover_image %}
+              <img src="{{ collection.cover_image.url }}" alt="{{ collection.title }}">
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <span class="card-title">{{ collection.title }}</span>
+          </div>
         </a>
       </li>
     {% empty %}

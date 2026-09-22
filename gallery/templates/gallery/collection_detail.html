@@ -11,8 +11,12 @@
     {% for artwork in collection.artworks.all %}
       <li class="card">
         <a href="{% url 'gallery:artwork_detail' artwork.pk %}">
-          <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}">
-          <span>{{ artwork.title }}</span>
+          <div class="card-image">
+            <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}">
+          </div>
+          <div class="card-body">
+            <span class="card-title">{{ artwork.title }}</span>
+          </div>
         </a>
       </li>
     {% empty %}
