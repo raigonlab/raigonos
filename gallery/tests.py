@@ -139,6 +139,24 @@ class DashboardPermissionTests(TestCase):
         self.assertTrue(Artwork.objects.filter(pk=self.artwork.pk).exists())
 
 
+class DashboardSearchTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('searcher', password='pass12345')
+        self.client.login(username='searcher', password='pass12345')
+        Collection.objects.create(owner=self.owner, title='Nightfall Studies')
+        Collection.objects.create(owner=self.owner, title='Untitled Sketches')
+
+    def test_no_query_shows_everything(self):
+        response = self.client.get(reverse('gallery:dashboard'))
+        self.assertContains(response, 'Nightfall Studies')
+        self.assertContains(response, 'Untitled Sketches')
+
+    def test_query_filters_by_title_case_insensitive(self):
+        response = self.client.get(reverse('gallery:dashboard'), {'q': 'night'})
+        self.assertContains(response, 'Nightfall Studies')
+        self.assertNotContains(response, 'Untitled Sketches')
+
+
 class CollectionCrudTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('creator', password='pass12345')
@@ -211,3 +229,12 @@ class ArtworkListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'My Piece')
         self.assertNotContains(response, 'Their Piece')
+
+    def test_query_filters_by_title_case_insensitive(self):
+        self.client.login(username='lister', password='pass12345')
+        Artwork.objects.create(
+            collection=self.collection, title='Second Piece', image=tiny_image()
+        )
+        response = self.client.get(reverse('gallery:artwork_list'), {'q': 'my'})
+        self.assertContains(response, 'My Piece')
+        self.assertNotContains(response, 'Second Piece')
