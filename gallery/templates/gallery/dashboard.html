@@ -17,51 +17,74 @@
   {% if collections %}
     <ul class="dash-collection-list" data-dash-view-target>
       {% for collection in collections %}
-        <li class="dash-collection-card">
-          <div class="dash-collection-header">
-            <div class="dash-collection-title">
-              {% if collection.cover_image %}
-                <img src="{{ collection.cover_image.url }}" alt="" class="dash-thumb">
-              {% else %}
-                <span class="dash-thumb-placeholder"></span>
-              {% endif %}
-              <strong>{{ collection.title }}</strong>
+        {% with count=collection.artworks.count %}
+          <li class="dash-collection-card">
+            <div class="dash-collection-header">
+              <div class="dash-collection-cover">
+                {% if collection.cover_image %}
+                  <img src="{{ collection.cover_image.url }}" alt="" class="dash-thumb">
+                {% else %}
+                  <span class="dash-thumb-placeholder"></span>
+                {% endif %}
+              </div>
+
+              <div class="dash-collection-info">
+                <strong class="dash-collection-name">{{ collection.title }}</strong>
+                <div class="dash-collection-meta">
+                  {% if collection.status == 'published' %}
+                    <span class="dash-status dash-status-published">Published</span>
+                  {% else %}
+                    <span class="dash-status dash-status-draft">Draft</span>
+                  {% endif %}
+                  <span>{{ count }} artwork{{ count|pluralize }}</span>
+                </div>
+              </div>
+
+              <div class="dash-collection-icon-actions">
+                {% if collection.status == 'published' %}
+                  <a href="{% url 'gallery:collection_detail' collection.slug %}" class="dash-icon-btn" title="View" aria-label="View published Collection" target="_blank" rel="noopener">
+                    <svg class="dash-icon"><use href="#icon-eye"></use></svg>
+                  </a>
+                {% endif %}
+                <a href="{% url 'gallery:collection_update' collection.slug %}" class="dash-icon-btn" title="Edit" aria-label="Edit Collection">
+                  <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+                </a>
+                <a href="{% url 'gallery:artwork_create' collection.slug %}" class="dash-icon-btn" title="Add artwork" aria-label="Add Artwork">
+                  <svg class="dash-icon"><use href="#icon-plus"></use></svg>
+                </a>
+                <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Collection">
+                  <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+                </a>
+              </div>
             </div>
-            {% if collection.status == 'published' %}
-              <span class="dash-badge dash-badge-published">Published</span>
-            {% else %}
-              <span class="dash-badge dash-badge-draft">Draft</span>
+
+            {% if count %}
+              <details class="dash-artworks">
+                <summary>Artworks ({{ count }})</summary>
+                <ul class="dash-artwork-list">
+                  {% for artwork in collection.artworks.all %}
+                    <li class="dash-artwork-row">
+                      {% if artwork.image %}
+                        <img src="{{ artwork.image.url }}" alt="" class="dash-thumb">
+                      {% else %}
+                        <span class="dash-thumb-placeholder"></span>
+                      {% endif %}
+                      <span class="dash-artwork-title">{{ artwork.title }}</span>
+                      <span class="dash-artwork-actions">
+                        <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-icon-btn" title="Edit" aria-label="Edit Artwork">
+                          <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+                        </a>
+                        <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Artwork">
+                          <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+                        </a>
+                      </span>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </details>
             {% endif %}
-          </div>
-
-          <div class="dash-collection-actions">
-            <a href="{% url 'gallery:collection_update' collection.slug %}" class="dash-btn dash-btn-ghost dash-btn-sm">Edit</a>
-            <a href="{% url 'gallery:artwork_create' collection.slug %}" class="dash-btn dash-btn-ghost dash-btn-sm">+ Artwork</a>
-            <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-btn dash-btn-danger dash-btn-sm">Delete</a>
-          </div>
-
-          {% if collection.artworks.all %}
-            <details class="dash-artworks">
-              <summary>Artworks ({{ collection.artworks.count }})</summary>
-              <ul class="dash-artwork-list">
-                {% for artwork in collection.artworks.all %}
-                  <li class="dash-artwork-row">
-                    {% if artwork.image %}
-                      <img src="{{ artwork.image.url }}" alt="" class="dash-thumb">
-                    {% else %}
-                      <span class="dash-thumb-placeholder"></span>
-                    {% endif %}
-                    <span class="dash-artwork-title">{{ artwork.title }}</span>
-                    <span class="dash-artwork-actions">
-                      <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-btn dash-btn-ghost dash-btn-sm">Edit</a>
-                      <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-btn dash-btn-danger dash-btn-sm">Delete</a>
-                    </span>
-                  </li>
-                {% endfor %}
-              </ul>
-            </details>
-          {% endif %}
-        </li>
+          </li>
+        {% endwith %}
       {% endfor %}
     </ul>
     {% include 'gallery/_view_init_script.html' %}
