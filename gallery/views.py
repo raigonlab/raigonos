@@ -38,6 +38,18 @@ def dashboard(request):
 
 
 @login_required
+def artwork_list(request):
+    artworks = Artwork.objects.filter(collection__owner=request.user).select_related(
+        'collection'
+    )
+    return render(
+        request,
+        'gallery/artwork_list.html',
+        {'artworks': artworks, 'active_nav': 'artworks'},
+    )
+
+
+@login_required
 def collection_create(request):
     if request.method == 'POST':
         form = CollectionForm(request.POST, request.FILES)

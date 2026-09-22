@@ -13,6 +13,7 @@ urlpatterns = [
     ),
     path('artwork/<int:pk>/', views.artwork_detail, name='artwork_detail'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/artworks/', views.artwork_list, name='artwork_list'),
     path(
         'dashboard/collections/new/',
         views.collection_create,
