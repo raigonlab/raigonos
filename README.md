@@ -177,12 +177,13 @@ bureaucracy standing between them and presenting it to the world.
 
 **Information Architecture**
 
-🚧 Sitemap to be confirmed once URLs/views are implemented. Planned pages:
-
-- `/` — public gallery home (list of Collections)
+- `/` — public gallery home: every published Artwork, across all
+  Collections (the default a visitor lands on)
+- `/collections/` — browse published Artworks grouped by Collection instead
 - `/collection/<slug>/` — Collection detail (its Artworks)
 - `/artwork/<id>/` — Artwork detail
 - `/dashboard/` — owner-only management area (CRUD entry points)
+- `/dashboard/artworks/` — owner's Artworks across all Collections
 - `/accounts/login/`, `/accounts/logout/`, `/accounts/signup/`
 
 **User Flow**
