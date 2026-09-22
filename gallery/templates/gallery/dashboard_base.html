@@ -21,6 +21,7 @@
 {% endblock %}
 
 {% block content %}
+  {% include 'gallery/_icon_sprite.html' %}
   <div class="dash">
     <button type="button" class="dash-backdrop" data-dash-close aria-hidden="true"></button>
 
@@ -34,9 +35,11 @@
         <nav class="dash-nav" aria-label="Dashboard">
           <span class="dash-nav-label">Workspace</span>
           <a href="{% url 'gallery:dashboard' %}" class="dash-nav-link{% if nav == 'collections' %} is-active{% endif %}">
+            <svg class="dash-icon"><use href="#icon-collections"></use></svg>
             Collections
           </a>
           <a href="{% url 'gallery:artwork_list' %}" class="dash-nav-link{% if nav == 'artworks' %} is-active{% endif %}">
+            <svg class="dash-icon"><use href="#icon-artworks"></use></svg>
             All Artworks
           </a>
         </nav>
