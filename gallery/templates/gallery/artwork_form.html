@@ -1,20 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'gallery/dashboard_base.html' %}
 
 {% block title %}
   {% if form.instance.pk %}Edit Artwork{% else %}New Artwork{% endif %} — RaigonOS
 {% endblock %}
 
-{% block content %}
-  <h1>
-    {% if form.instance.pk %}Edit Artwork{% else %}New Artwork{% endif %}
-    in "{{ collection.title }}"
-  </h1>
+{% block dash_breadcrumb %}
+  <span class="dash-crumb-sep">/</span>
+  <span class="dash-crumb-current">{% if form.instance.pk %}Edit Artwork{% else %}New Artwork{% endif %}</span>
+{% endblock %}
 
-  <form method="post" enctype="multipart/form-data" class="model-form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-  </form>
+{% block dash_content %}
+  <div class="dash-page-header">
+    <div>
+      <span class="eyebrow">{{ collection.title }}</span>
+      <h1>{% if form.instance.pk %}Edit Artwork{% else %}New Artwork{% endif %}</h1>
+    </div>
+  </div>
 
-  <p class="back-link"><a href="{% url 'gallery:dashboard' %}">&larr; Back to Dashboard</a></p>
+  <div class="dash-card">
+    <form method="post" enctype="multipart/form-data" class="dash-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="dash-form-actions">
+        <button type="submit">Save</button>
+        <a href="{% url 'gallery:dashboard' %}" class="dash-btn dash-btn-ghost">Cancel</a>
+      </div>
+    </form>
+  </div>
 {% endblock %}
