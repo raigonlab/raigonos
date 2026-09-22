@@ -187,6 +187,59 @@ class CollectionManageViewTests(TestCase):
         self.assertContains(response, 'Piece I')
 
 
+class ArtworkManageViewTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('curator', password='pass12345')
+        self.other_user = User.objects.create_user('outsider', password='pass12345')
+        self.collection = Collection.objects.create(
+            owner=self.owner, title='Sequence'
+        )
+        self.first = Artwork.objects.create(
+            collection=self.collection,
+            title='First',
+            image=tiny_image(),
+            display_order=1,
+        )
+        self.second = Artwork.objects.create(
+            collection=self.collection,
+            title='Second',
+            image=tiny_image(),
+            display_order=2,
+        )
+        self.third = Artwork.objects.create(
+            collection=self.collection,
+            title='Third',
+            image=tiny_image(),
+            display_order=3,
+        )
+
+    def test_requires_login(self):
+        url = reverse('gallery:artwork_manage', args=[self.second.pk])
+        response = self.client.get(url)
+        self.assertRedirects(response, f'/accounts/login/?next={url}')
+
+    def test_other_user_gets_404(self):
+        self.client.login(username='outsider', password='pass12345')
+        url = reverse('gallery:artwork_manage', args=[self.second.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_middle_artwork_has_both_neighbours(self):
+        self.client.login(username='curator', password='pass12345')
+        url = reverse('gallery:artwork_manage', args=[self.second.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['previous_artwork'], self.first)
+        self.assertEqual(response.context['next_artwork'], self.third)
+
+    def test_first_artwork_has_no_previous(self):
+        self.client.login(username='curator', password='pass12345')
+        url = reverse('gallery:artwork_manage', args=[self.first.pk])
+        response = self.client.get(url)
+        self.assertIsNone(response.context['previous_artwork'])
+        self.assertEqual(response.context['next_artwork'], self.second)
+
+
 class CollectionCrudTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('creator', password='pass12345')
