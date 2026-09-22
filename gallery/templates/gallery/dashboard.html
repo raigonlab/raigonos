@@ -21,25 +21,27 @@
         {% with count=collection.artworks.count %}
           <li class="dash-collection-card">
             <div class="dash-collection-header">
-              <div class="dash-collection-cover">
-                {% if collection.cover_image %}
-                  <img src="{{ collection.cover_image.url }}" alt="" class="dash-thumb">
-                {% else %}
-                  <span class="dash-thumb-placeholder"></span>
-                {% endif %}
-              </div>
-
-              <div class="dash-collection-info">
-                <strong class="dash-collection-name">{{ collection.title }}</strong>
-                <div class="dash-collection-meta">
-                  {% if collection.status == 'published' %}
-                    <span class="dash-status dash-status-published">Published</span>
+              <a href="{% url 'gallery:collection_manage' collection.slug %}" class="dash-collection-link">
+                <div class="dash-collection-cover">
+                  {% if collection.cover_image %}
+                    <img src="{{ collection.cover_image.url }}" alt="" class="dash-thumb">
                   {% else %}
-                    <span class="dash-status dash-status-draft">Draft</span>
+                    <span class="dash-thumb-placeholder"></span>
                   {% endif %}
-                  <span>{{ count }} artwork{{ count|pluralize }}</span>
                 </div>
-              </div>
+
+                <div class="dash-collection-info">
+                  <strong class="dash-collection-name">{{ collection.title }}</strong>
+                  <div class="dash-collection-meta">
+                    {% if collection.status == 'published' %}
+                      <span class="dash-status dash-status-published">Published</span>
+                    {% else %}
+                      <span class="dash-status dash-status-draft">Draft</span>
+                    {% endif %}
+                    <span>{{ count }} artwork{{ count|pluralize }}</span>
+                  </div>
+                </div>
+              </a>
 
               <div class="dash-collection-icon-actions">
                 {% if collection.status == 'published' %}
