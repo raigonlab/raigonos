@@ -901,6 +901,32 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   flex-shrink: 0;
 }
 
+/* Flat "All Artworks" list (not nested inside a Collection card) */
+
+.dash-artwork-list-flat {
+  margin-top: 0;
+  gap: 0;
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  padding: 0.5rem;
+}
+
+.dash-artwork-list-flat .dash-artwork-row {
+  padding: 0.6rem 0.75rem;
+}
+
+.dash-artwork-collection {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  color: var(--dash-muted);
+  white-space: nowrap;
+}
+
+.dash-artwork-collection:hover {
+  color: var(--dash-accent-ink);
+}
+
 /* Empty state */
 
 .dash-empty {
