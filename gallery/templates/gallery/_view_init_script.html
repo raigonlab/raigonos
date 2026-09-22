@@ -1,0 +1,13 @@
+<script>
+  // Applied as soon as this script runs (right after the target list/grid
+  // element above it in the HTML) so a saved "grid" preference doesn't
+  // flash as a list first. dashboard.js (loaded later) wires up the
+  // toggle buttons themselves.
+  (function () {
+    try {
+      if (localStorage.getItem('dash-view') === 'grid') {
+        document.querySelector('[data-dash-view-target]').setAttribute('data-view', 'grid');
+      }
+    } catch (e) {}
+  })();
+</script>
