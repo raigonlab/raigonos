@@ -14,6 +14,7 @@
       <h1>All Artworks</h1>
     </div>
     <div class="dash-page-actions">
+      {% include 'gallery/_search_box.html' with search_placeholder='Search Artworks' %}
       {% include 'gallery/_view_toggle.html' %}
     </div>
   </div>
@@ -49,6 +50,10 @@
     </ul>
     {% include 'gallery/_lightbox.html' %}
     {% include 'gallery/_view_init_script.html' %}
+  {% elif query %}
+    <div class="dash-empty">
+      <p>No Artworks match &ldquo;{{ query }}&rdquo;.</p>
+    </div>
   {% else %}
     <div class="dash-empty">
       <p>You haven't added any Artworks yet.</p>

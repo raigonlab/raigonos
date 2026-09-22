@@ -9,6 +9,7 @@
       <h1>My Collections</h1>
     </div>
     <div class="dash-page-actions">
+      {% include 'gallery/_search_box.html' with search_placeholder='Search Collections' %}
       {% include 'gallery/_view_toggle.html' %}
       <a href="{% url 'gallery:collection_create' %}" class="dash-btn dash-btn-primary">+ New Collection</a>
     </div>
@@ -94,6 +95,10 @@
     </ul>
     {% include 'gallery/_lightbox.html' %}
     {% include 'gallery/_view_init_script.html' %}
+  {% elif query %}
+    <div class="dash-empty">
+      <p>No Collections match &ldquo;{{ query }}&rdquo;.</p>
+    </div>
   {% else %}
     <div class="dash-empty">
       <p>You haven't created any Collections yet.</p>
