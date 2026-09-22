@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}dashboard-shell{% endblock %}
+
+{% block site_header %}{% endblock %}
+{% block site_footer %}{% endblock %}
+
+{% block content %}
+  <div class="dash">
+    <button type="button" class="dash-backdrop" data-dash-close aria-hidden="true"></button>
+
+    <aside class="dash-sidebar">
+      <a href="{% url 'gallery:collection_list' %}" class="dash-brand">
+        <img src="{% static 'images/logo.svg' %}" alt="" class="dash-brand-logo">
+        <span>RaigonOS</span>
+      </a>
+
+      <nav class="dash-nav" aria-label="Dashboard">
+        <span class="dash-nav-label">Workspace</span>
+        <a href="{% url 'gallery:dashboard' %}" class="dash-nav-link is-active">
+          Collections
+        </a>
+      </nav>
+
+      <div class="dash-sidebar-footer">
+        <a href="{% url 'gallery:collection_list' %}" class="dash-nav-link dash-nav-link-muted" target="_blank" rel="noopener">
+          View public gallery ↗
+        </a>
+        <div class="dash-user">
+          <span class="dash-user-avatar">{{ user.username|slice:":1"|upper }}</span>
+          <span class="dash-user-name">{{ user.username }}</span>
+          <form method="post" action="{% url 'logout' %}" class="dash-logout-form">
+            {% csrf_token %}
+            <button type="submit" class="link-button dash-logout">Log out</button>
+          </form>
+        </div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-topbar">
+        <button type="button" class="dash-menu-toggle" data-dash-toggle aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="dash-breadcrumbs" aria-label="Breadcrumb">
+          <a href="{% url 'gallery:dashboard' %}">Dashboard</a>
+          {% block dash_breadcrumb %}{% endblock %}
+        </nav>
+      </header>
+
+      {% if messages %}
+        <ul class="messages dash-messages">
+          {% for message in messages %}
+            <li class="message message-{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="dash-content">
+        {% block dash_content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}
