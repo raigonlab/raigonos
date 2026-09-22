@@ -157,6 +157,36 @@ class DashboardSearchTests(TestCase):
         self.assertNotContains(response, 'Untitled Sketches')
 
 
+class CollectionManageViewTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('manager', password='pass12345')
+        self.other_user = User.objects.create_user('rival', password='pass12345')
+        self.collection = Collection.objects.create(
+            owner=self.owner, title='My Collection'
+        )
+        self.artwork = Artwork.objects.create(
+            collection=self.collection, title='Piece I', image=tiny_image()
+        )
+
+    def test_requires_login(self):
+        url = reverse('gallery:collection_manage', args=[self.collection.slug])
+        response = self.client.get(url)
+        self.assertRedirects(response, f'/accounts/login/?next={url}')
+
+    def test_other_user_gets_404(self):
+        self.client.login(username='rival', password='pass12345')
+        url = reverse('gallery:collection_manage', args=[self.collection.slug])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_owner_sees_its_artworks(self):
+        self.client.login(username='manager', password='pass12345')
+        url = reverse('gallery:collection_manage', args=[self.collection.slug])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Piece I')
+
+
 class CollectionCrudTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('creator', password='pass12345')
