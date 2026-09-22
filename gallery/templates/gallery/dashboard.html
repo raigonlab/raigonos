@@ -8,11 +8,14 @@
       <span class="eyebrow">Dashboard</span>
       <h1>My Collections</h1>
     </div>
-    <a href="{% url 'gallery:collection_create' %}" class="dash-btn dash-btn-primary">+ New Collection</a>
+    <div class="dash-page-actions">
+      {% include 'gallery/_view_toggle.html' %}
+      <a href="{% url 'gallery:collection_create' %}" class="dash-btn dash-btn-primary">+ New Collection</a>
+    </div>
   </div>
 
   {% if collections %}
-    <ul class="dash-collection-list">
+    <ul class="dash-collection-list" data-dash-view-target>
       {% for collection in collections %}
         <li class="dash-collection-card">
           <div class="dash-collection-header">
@@ -61,6 +64,7 @@
         </li>
       {% endfor %}
     </ul>
+    {% include 'gallery/_view_init_script.html' %}
   {% else %}
     <div class="dash-empty">
       <p>You haven't created any Collections yet.</p>
