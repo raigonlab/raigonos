@@ -65,7 +65,7 @@ header nav {
 }
 
 .brand-logo {
-  height: 60px;
+  height: 30px;
   width: auto;
   border-radius: 0;
 }
@@ -203,7 +203,10 @@ h1 i {
 
 .card a {
   display: block;
-  padding: 1rem;
+}
+
+.card-image {
+  background: var(--color-bg);
 }
 
 .card img {
@@ -211,6 +214,15 @@ h1 i {
   aspect-ratio: 4 / 3;
   object-fit: cover;
   width: 100%;
+}
+
+.card-body {
+  padding: 0.9rem 1.1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.card-title {
+  font-weight: 600;
 }
 
 .card-empty {
@@ -681,6 +693,79 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   line-height: 1.25;
 }
 
+.dash-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* Grid/List view toggle (Collections and All Artworks pages) */
+
+.dash-view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.dash-view-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: var(--dash-surface);
+  color: var(--dash-muted);
+  cursor: pointer;
+}
+
+.dash-view-btn + .dash-view-btn {
+  border-left: 1px solid var(--dash-border);
+}
+
+.dash-view-btn:hover {
+  background: var(--dash-card-hover);
+  color: var(--dash-text);
+}
+
+.dash-view-btn.is-active {
+  background: var(--dash-accent-soft);
+  color: var(--dash-accent-ink);
+}
+
+.dash-icon-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  width: 14px;
+}
+
+.dash-icon-list span {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.dash-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  width: 13px;
+  height: 13px;
+}
+
+.dash-icon-grid span {
+  display: block;
+  background: currentColor;
+  border-radius: 1px;
+}
+
 /* Buttons */
 
 .dash-btn {
@@ -829,6 +914,59 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   flex-wrap: wrap;
 }
 
+/* Grid view for the Collections list: cover-first tiles, no inline
+   actions/nested artworks (those stay in List view, where there's room
+   to show them properly). */
+
+[data-view='grid'].dash-collection-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+[data-view='grid'] .dash-collection-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+[data-view='grid'] .dash-collection-header {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+[data-view='grid'] .dash-collection-title {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+  padding: 0.9rem 1rem 0.5rem;
+}
+
+[data-view='grid'] .dash-collection-title strong {
+  white-space: normal;
+}
+
+[data-view='grid'] .dash-collection-title .dash-thumb,
+[data-view='grid'] .dash-collection-title .dash-thumb-placeholder {
+  width: 100%;
+  height: 150px;
+  border-radius: 0;
+}
+
+[data-view='grid'] .dash-collection-header .dash-badge {
+  align-self: flex-start;
+  margin: 0 1rem 0.75rem;
+}
+
+[data-view='grid'] .dash-collection-actions {
+  padding: 0 1rem 1rem;
+  margin-top: 0;
+}
+
+[data-view='grid'] .dash-artworks {
+  display: none;
+}
+
 /* Nested artworks (native <details> disclosure) */
 
 .dash-artworks {
@@ -925,6 +1063,45 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-artwork-collection:hover {
   color: var(--dash-accent-ink);
+}
+
+/* Grid view for the flat All Artworks list: image-first tiles. */
+
+[data-view='grid'].dash-artwork-list-flat {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.85rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+[data-view='grid'].dash-artwork-list-flat .dash-artwork-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  padding: 0.65rem;
+}
+
+[data-view='grid'] .dash-artwork-row .dash-thumb,
+[data-view='grid'] .dash-artwork-row .dash-thumb-placeholder {
+  width: 100%;
+  height: 130px;
+}
+
+[data-view='grid'] .dash-artwork-title {
+  white-space: normal;
+}
+
+[data-view='grid'] .dash-artwork-collection {
+  white-space: normal;
+}
+
+[data-view='grid'] .dash-artwork-actions {
+  margin-top: auto;
 }
 
 /* Empty state */
