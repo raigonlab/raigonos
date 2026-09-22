@@ -16,6 +16,11 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/artworks/', views.artwork_list, name='artwork_list'),
     path(
+        'dashboard/artworks/<int:pk>/',
+        views.artwork_manage,
+        name='artwork_manage',
+    ),
+    path(
         'dashboard/collections/new/',
         views.collection_create,
         name='collection_create',

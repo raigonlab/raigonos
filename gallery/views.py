@@ -67,6 +67,25 @@ def artwork_list(request):
 
 
 @login_required
+def artwork_manage(request, pk):
+    artwork = get_object_or_404(Artwork, pk=pk, collection__owner=request.user)
+    siblings = list(artwork.collection.artworks.all())
+    index = siblings.index(artwork)
+    previous_artwork = siblings[index - 1] if index > 0 else None
+    next_artwork = siblings[index + 1] if index < len(siblings) - 1 else None
+    return render(
+        request,
+        'gallery/artwork_manage.html',
+        {
+            'artwork': artwork,
+            'previous_artwork': previous_artwork,
+            'next_artwork': next_artwork,
+            'active_nav': 'collections',
+        },
+    )
+
+
+@login_required
 def collection_manage(request, slug):
     collection = get_object_or_404(Collection, slug=slug, owner=request.user)
     query = request.GET.get('q', '').strip()
