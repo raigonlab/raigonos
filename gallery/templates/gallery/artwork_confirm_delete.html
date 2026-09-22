@@ -1,15 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'gallery/dashboard_base.html' %}
 
 {% block title %}Delete Artwork — RaigonOS{% endblock %}
 
-{% block content %}
-  <h1>Delete "{{ artwork.title }}"?</h1>
-  <p>This cannot be undone.</p>
+{% block dash_breadcrumb %}
+  <span class="dash-crumb-sep">/</span>
+  <span class="dash-crumb-current">Delete Artwork</span>
+{% endblock %}
 
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, delete</button>
-  </form>
+{% block dash_content %}
+  <div class="dash-page-header">
+    <div>
+      <span class="eyebrow">{{ artwork.collection.title }}</span>
+      <h1>Delete "{{ artwork.title }}"?</h1>
+    </div>
+  </div>
 
-  <p class="back-link"><a href="{% url 'gallery:dashboard' %}">Cancel</a></p>
+  <div class="dash-confirm">
+    <div class="dash-card">
+      <p>This cannot be undone.</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="dash-confirm-actions">
+          <button type="submit">Yes, delete</button>
+          <a href="{% url 'gallery:dashboard' %}" class="dash-btn dash-btn-ghost">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
 {% endblock %}
