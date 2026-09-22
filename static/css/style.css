@@ -1256,6 +1256,111 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   background: var(--dash-danger-hover-soft);
 }
 
+/* Artwork lightbox: large view with Prev/Next, opened from an "Open"
+   icon button. Always dark, regardless of dashboard theme, for image
+   contrast -- standard lightbox convention. */
+
+.dash-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 12, 0.92);
+  padding: 3rem;
+}
+
+.dash-lightbox[hidden] {
+  display: none;
+}
+
+.dash-lightbox-body {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dash-lightbox-body img {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.dash-lightbox-caption {
+  color: #f2f0eb;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.dash-lightbox-close,
+.dash-lightbox-nav {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f2f0eb;
+  cursor: pointer;
+}
+
+.dash-lightbox-close:hover,
+.dash-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.dash-lightbox-close .dash-icon,
+.dash-lightbox-nav .dash-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.dash-lightbox-close {
+  top: 1.25rem;
+  right: 1.25rem;
+}
+
+.dash-lightbox-prev {
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dash-lightbox-next {
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 640px) {
+  .dash-lightbox {
+    padding: 1.25rem;
+  }
+
+  .dash-lightbox-close,
+  .dash-lightbox-nav {
+    width: 38px;
+    height: 38px;
+  }
+
+  .dash-lightbox-prev {
+    left: 0.5rem;
+  }
+
+  .dash-lightbox-next {
+    right: 0.5rem;
+  }
+}
+
 /* Responsive: collapse sidebar to an off-canvas panel */
 
 @media (max-width: 860px) {
