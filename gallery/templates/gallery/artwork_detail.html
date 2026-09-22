@@ -3,24 +3,36 @@
 {% block title %}{{ artwork.title }} — RaigonOS{% endblock %}
 
 {% block content %}
-  <span class="eyebrow">Artwork</span>
-  <h1>{{ artwork.title }}</h1>
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="{% url 'gallery:collection_list' %}">Collections</a>
+    <span class="crumb-sep">/</span>
+    <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">{{ artwork.collection.title }}</a>
+    <span class="crumb-sep">/</span>
+    <span class="crumb-current">{{ artwork.title }}</span>
+  </nav>
 
-  {% if artwork.image %}
-    <div class="artwork-image">
-      <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}">
+  <div class="artwork-layout">
+    <div class="artwork-media">
+      {% if artwork.image %}
+        <img src="{{ artwork.image.url }}" alt="{{ artwork.title }}">
+      {% endif %}
     </div>
-  {% endif %}
 
-  <p class="artwork-meta">
-    {{ artwork.medium }}
-    {% if artwork.year %}({{ artwork.year }}){% endif %}
-  </p>
-  <p>{{ artwork.description }}</p>
+    <div class="artwork-info">
+      <span class="eyebrow">Artwork</span>
+      <h1>{{ artwork.title }}</h1>
 
-  <p class="back-link">
-    <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">
-      &larr; Back to {{ artwork.collection.title }}
-    </a>
-  </p>
+      <p class="artwork-meta">
+        {{ artwork.medium }}
+        {% if artwork.year %}({{ artwork.year }}){% endif %}
+      </p>
+      <p>{{ artwork.description }}</p>
+
+      <p class="back-link">
+        <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">
+          &larr; Back to {{ artwork.collection.title }}
+        </a>
+      </p>
+    </div>
+  </div>
 {% endblock %}
