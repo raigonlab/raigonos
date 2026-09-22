@@ -10,7 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
+  {% block site_header %}
   <header>
     <nav>
       <a href="{% url 'gallery:collection_list' %}" class="brand">
@@ -31,22 +32,19 @@
       </div>
     </nav>
   </header>
+  {% endblock %}
 
   <main>
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li class="message message-{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-
     {% block content %}{% endblock %}
   </main>
 
+  {% block site_footer %}
   <footer>
     <p class="eyebrow">Create &middot; Collect &middot; Legacy</p>
     <p>&copy; {% now "Y" %} Railson Gon&ccedil;alves</p>
   </footer>
+  {% endblock %}
+
+  {% block extra_js %}{% endblock %}
 </body>
 </html>
