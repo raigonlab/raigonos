@@ -179,8 +179,18 @@ elements feel like they're placed on the page rather than boxed in:
 | Background | `#f7f4ee` |
 | Surface (cards, inputs) | `#ffffff` |
 | Text | `#121212` |
-| Muted text / labels | `#8a8578` |
+| Muted text / labels | `#6b6657` |
 | Border | `#e6e1d6` |
+
+**Accessibility note:** every text colour pairing above meets WCAG AA
+(4.5:1) against both the background and surface colours. The muted
+tone was deliberately darkened from an earlier, lighter draft
+(`#8a8578`, 3.35:1) after checking contrast ratios directly, since the
+lighter version failed AA for body-sized text. The one deliberate
+exception is the `Border` colour against the background (~1.2:1) —
+it's a decorative divider, not a text colour, and card/input
+boundaries are primarily conveyed through the white-surface-on-cream
+background contrast rather than the border line itself.
 
 ---
 
