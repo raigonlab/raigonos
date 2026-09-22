@@ -30,12 +30,17 @@
         <span>RaigonOS</span>
       </a>
 
-      <nav class="dash-nav" aria-label="Dashboard">
-        <span class="dash-nav-label">Workspace</span>
-        <a href="{% url 'gallery:dashboard' %}" class="dash-nav-link is-active">
-          Collections
-        </a>
-      </nav>
+      {% with nav=active_nav|default:'collections' %}
+        <nav class="dash-nav" aria-label="Dashboard">
+          <span class="dash-nav-label">Workspace</span>
+          <a href="{% url 'gallery:dashboard' %}" class="dash-nav-link{% if nav == 'collections' %} is-active{% endif %}">
+            Collections
+          </a>
+          <a href="{% url 'gallery:artwork_list' %}" class="dash-nav-link{% if nav == 'artworks' %} is-active{% endif %}">
+            All Artworks
+          </a>
+        </nav>
+      {% endwith %}
 
       <div class="dash-sidebar-footer">
         <a href="{% url 'gallery:collection_list' %}" class="dash-nav-link dash-nav-link-muted" target="_blank" rel="noopener">
