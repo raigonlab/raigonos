@@ -32,6 +32,11 @@
             {{ artwork.collection.title }}
           </a>
           <span class="dash-artwork-actions">
+            {% if artwork.image %}
+              <button type="button" class="dash-icon-btn" title="Open" aria-label="Open Artwork" data-dash-lightbox-trigger data-image="{{ artwork.image.url }}" data-title="{{ artwork.title }}">
+                <svg class="dash-icon"><use href="#icon-eye"></use></svg>
+              </button>
+            {% endif %}
             <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-icon-btn" title="Edit" aria-label="Edit Artwork">
               <svg class="dash-icon"><use href="#icon-edit"></use></svg>
             </a>
@@ -42,6 +47,7 @@
         </li>
       {% endfor %}
     </ul>
+    {% include 'gallery/_lightbox.html' %}
     {% include 'gallery/_view_init_script.html' %}
   {% else %}
     <div class="dash-empty">
