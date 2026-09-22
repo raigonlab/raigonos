@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -44,6 +45,7 @@ def collection_create(request):
             collection = form.save(commit=False)
             collection.owner = request.user
             collection.save()
+            messages.success(request, f'Collection "{collection.title}" created.')
             return redirect('gallery:dashboard')
     else:
         form = CollectionForm()
@@ -57,6 +59,7 @@ def collection_update(request, slug):
         form = CollectionForm(request.POST, request.FILES, instance=collection)
         if form.is_valid():
             form.save()
+            messages.success(request, f'Collection "{collection.title}" updated.')
             return redirect('gallery:dashboard')
     else:
         form = CollectionForm(instance=collection)
@@ -71,7 +74,9 @@ def collection_update(request, slug):
 def collection_delete(request, slug):
     collection = get_object_or_404(Collection, slug=slug, owner=request.user)
     if request.method == 'POST':
+        title = collection.title
         collection.delete()
+        messages.success(request, f'Collection "{title}" deleted.')
         return redirect('gallery:dashboard')
     return render(
         request, 'gallery/collection_confirm_delete.html', {'collection': collection}
@@ -87,6 +92,7 @@ def artwork_create(request, slug):
             artwork = form.save(commit=False)
             artwork.collection = collection
             artwork.save()
+            messages.success(request, f'Artwork "{artwork.title}" added.')
             return redirect('gallery:dashboard')
     else:
         form = ArtworkForm()
@@ -104,6 +110,7 @@ def artwork_update(request, pk):
         form = ArtworkForm(request.POST, request.FILES, instance=artwork)
         if form.is_valid():
             form.save()
+            messages.success(request, f'Artwork "{artwork.title}" updated.')
             return redirect('gallery:dashboard')
     else:
         form = ArtworkForm(instance=artwork)
@@ -118,7 +125,9 @@ def artwork_update(request, pk):
 def artwork_delete(request, pk):
     artwork = get_object_or_404(Artwork, pk=pk, collection__owner=request.user)
     if request.method == 'POST':
+        title = artwork.title
         artwork.delete()
+        messages.success(request, f'Artwork "{title}" deleted.')
         return redirect('gallery:dashboard')
     return render(
         request, 'gallery/artwork_confirm_delete.html', {'artwork': artwork}
@@ -134,6 +143,7 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, f'Welcome, {user.username}! Your account is ready.')
             return redirect('gallery:collection_list')
     else:
         form = UserCreationForm()

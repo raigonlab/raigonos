@@ -109,6 +109,40 @@ main {
   min-height: 60vh;
 }
 
+/* Feedback messages (django.contrib.messages) */
+
+.messages {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+
+.message {
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.message-success {
+  background: #eaf3ea;
+  color: #2b5c33;
+  border: 1px solid #cfe4cf;
+}
+
+.message-error {
+  background: #fbeaea;
+  color: #8a2f2f;
+  border: 1px solid #f0cfcf;
+}
+
+.message-info,
+.message-warning {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
 footer {
   padding: 2rem;
   text-align: center;
