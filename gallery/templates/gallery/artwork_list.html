@@ -22,33 +22,9 @@
   {% if artworks %}
     <ul class="dash-artwork-list dash-artwork-list-flat" data-dash-view-target>
       {% for artwork in artworks %}
-        <li class="dash-artwork-row">
-          {% if artwork.image %}
-            <img src="{{ artwork.image.url }}" alt="" class="dash-thumb">
-          {% else %}
-            <span class="dash-thumb-placeholder"></span>
-          {% endif %}
-          <span class="dash-artwork-title">{{ artwork.title }}</span>
-          <a href="{% url 'gallery:collection_update' artwork.collection.slug %}" class="dash-artwork-collection">
-            {{ artwork.collection.title }}
-          </a>
-          <span class="dash-artwork-actions">
-            {% if artwork.image %}
-              <button type="button" class="dash-icon-btn" title="Open" aria-label="Open Artwork" data-dash-lightbox-trigger data-image="{{ artwork.image.url }}" data-title="{{ artwork.title }}">
-                <svg class="dash-icon"><use href="#icon-eye"></use></svg>
-              </button>
-            {% endif %}
-            <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-icon-btn" title="Edit" aria-label="Edit Artwork">
-              <svg class="dash-icon"><use href="#icon-edit"></use></svg>
-            </a>
-            <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Artwork">
-              <svg class="dash-icon"><use href="#icon-trash"></use></svg>
-            </a>
-          </span>
-        </li>
+        {% include 'gallery/_artwork_row.html' with show_collection=True %}
       {% endfor %}
     </ul>
-    {% include 'gallery/_lightbox.html' %}
     {% include 'gallery/_view_init_script.html' %}
   {% elif query %}
     <div class="dash-empty">
