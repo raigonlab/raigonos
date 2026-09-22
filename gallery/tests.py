@@ -156,3 +156,32 @@ class CollectionCrudTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Collection.objects.filter(pk=collection.pk).exists())
         self.assertFalse(Artwork.objects.filter(title='Gone Too').exists())
+
+
+class ArtworkListViewTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('lister', password='pass12345')
+        self.other_user = User.objects.create_user('someone_else', password='pass12345')
+        self.collection = Collection.objects.create(owner=self.owner, title='Mine')
+        self.own_artwork = Artwork.objects.create(
+            collection=self.collection, title='My Piece', image=tiny_image()
+        )
+        other_collection = Collection.objects.create(
+            owner=self.other_user, title='Not Mine'
+        )
+        self.other_artwork = Artwork.objects.create(
+            collection=other_collection, title='Their Piece', image=tiny_image()
+        )
+
+    def test_requires_login(self):
+        response = self.client.get(reverse('gallery:artwork_list'))
+        self.assertRedirects(
+            response, f"/accounts/login/?next={reverse('gallery:artwork_list')}"
+        )
+
+    def test_only_shows_own_artworks(self):
+        self.client.login(username='lister', password='pass12345')
+        response = self.client.get(reverse('gallery:artwork_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'My Piece')
+        self.assertNotContains(response, 'Their Piece')
