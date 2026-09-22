@@ -835,29 +835,70 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   background: var(--dash-card);
   border: 1px solid var(--dash-border);
   border-radius: var(--dash-radius);
-  padding: 1.25rem 1.5rem;
+  padding: 0.85rem 1rem;
 }
 
 .dash-collection-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
   flex-wrap: wrap;
 }
 
-.dash-collection-title {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  flex: 1;
-  min-width: 0;
+.dash-collection-cover {
+  flex-shrink: 0;
 }
 
-.dash-collection-title strong {
-  font-size: 1.05rem;
+.dash-collection-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.dash-collection-name {
+  font-size: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.dash-collection-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--dash-muted);
+}
+
+.dash-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dash-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.dash-status-published {
+  color: var(--dash-success);
+}
+
+.dash-status-draft {
+  color: var(--dash-muted);
+}
+
+.dash-collection-icon-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
 }
 
 .dash-thumb {
@@ -877,46 +918,43 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   flex-shrink: 0;
 }
 
-.dash-badge {
+/* Small icon-only action buttons (edit/view/add/delete). Preferred over
+   text buttons for repeated per-row actions -- feedback that a row of
+   text buttons per Collection/Artwork was cluttered and didn't scale
+   down to small screens. */
+
+.dash-icon-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
   border-radius: var(--dash-radius-sm);
   border: 1px solid var(--dash-border);
-  background: var(--dash-surface);
-  font-size: 0.78rem;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.dash-badge::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  flex-shrink: 0;
-}
-
-.dash-badge-published {
-  color: var(--dash-success);
-}
-
-.dash-badge-draft {
+  background: transparent;
   color: var(--dash-muted);
+  cursor: pointer;
 }
 
-.dash-collection-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
+.dash-icon-btn:hover {
+  background: var(--dash-card-hover);
+  color: var(--dash-text);
+  text-decoration: none;
 }
 
-/* Grid view for the Collections list: cover-first tiles, no inline
-   actions/nested artworks (those stay in List view, where there's room
-   to show them properly). */
+.dash-icon-btn .dash-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.dash-icon-btn-danger:hover {
+  background: var(--dash-danger-hover-soft);
+  color: var(--dash-danger);
+  border-color: var(--dash-danger-border);
+}
+
+/* Grid view for the Collections list: cover-first tiles, nested artworks
+   hidden (List view is where there's room to show them properly). */
 
 [data-view='grid'].dash-collection-list {
   display: grid;
@@ -935,32 +973,23 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   gap: 0;
 }
 
-[data-view='grid'] .dash-collection-title {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 0.65rem;
-  padding: 0.9rem 1rem 0.5rem;
-}
-
-[data-view='grid'] .dash-collection-title strong {
-  white-space: normal;
-}
-
-[data-view='grid'] .dash-collection-title .dash-thumb,
-[data-view='grid'] .dash-collection-title .dash-thumb-placeholder {
+[data-view='grid'] .dash-collection-cover .dash-thumb,
+[data-view='grid'] .dash-collection-cover .dash-thumb-placeholder {
   width: 100%;
   height: 150px;
   border-radius: 0;
 }
 
-[data-view='grid'] .dash-collection-header .dash-badge {
-  align-self: flex-start;
-  margin: 0 1rem 0.75rem;
+[data-view='grid'] .dash-collection-info {
+  padding: 0.85rem 1rem 0.5rem;
 }
 
-[data-view='grid'] .dash-collection-actions {
+[data-view='grid'] .dash-collection-name {
+  white-space: normal;
+}
+
+[data-view='grid'] .dash-collection-icon-actions {
   padding: 0 1rem 1rem;
-  margin-top: 0;
 }
 
 [data-view='grid'] .dash-artworks {
