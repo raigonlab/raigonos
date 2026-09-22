@@ -57,10 +57,45 @@ gallery) carries over, as permitted by the assessment brief.
 
 **Long-term vision (explicitly out of scope for this MVP)**
 
-The data model is designed so that a multi-artist mode could be added later
-(each artist owning their own Collections), but public multi-artist sign-up
-is **not** part of this submission — see [Features](#features) below for the
-full MoSCoW breakdown of what is and isn't included now.
+Beyond this submission, RaigonOS is conceived as something bigger than a
+single-artist portfolio tool: a secure, lifelong archive where any artist
+can catalogue their entire body of work as it grows — a robust visual
+record of their artistic journey, not just a gallery for the present.
+None of the following is built or planned for this cycle; it's recorded
+here to document the reasoning behind decisions like the extensible
+`owner`-based data model.
+
+- **A record of the artist's evolution.** Because Collections and
+  Artworks are timestamped and organised chronologically, the platform
+  is naturally positioned to show how an artist's style and body of
+  work developed over their career, not just a snapshot of current
+  pieces.
+- **Public exhibition beyond the site itself.** Artwork catalogued here
+  could be surfaced into real public spaces — museum displays, electronic
+  street billboards, screens on public transport — in the spirit of how
+  platforms like Unsplash license imagery for public use, but for
+  original, human-made art rather than stock photography.
+- **Authenticity and provenance.** As AI-generated imagery becomes
+  harder to distinguish from human work, a documented, timestamped
+  record of an artwork's creation — tied to a verified artist — becomes
+  valuable in itself: proof that a piece is genuinely human-made. This
+  could evolve into part of the platform's core value, not just a
+  cataloguing convenience.
+- **Multi-artist mode.** The data model is already shaped for this
+  (`Collection.owner` is a `User` foreign key), but public multi-artist
+  sign-up is explicitly **not** part of this submission — see
+  [Features](#features) below for the full MoSCoW breakdown of what is
+  and isn't included now.
+- **An integration layer, not a walled garden.** Rather than being the
+  only place an artist's work lives, the catalogued archive could be
+  exposed (via an API or embeddable widget) so other platforms — social
+  media, online stores, third-party portfolio sites — can plug into it
+  and reuse the same catalogued data, instead of the artist re-uploading
+  their work separately everywhere.
+
+The guiding principle behind all of the above: a platform artists can
+trust with their life's work, without extractive fees or unnecessary
+bureaucracy standing between them and presenting it to the world.
 
 #### [Live site →](https://raigonos.onrender.com)
 
