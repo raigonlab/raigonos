@@ -300,13 +300,41 @@ button[type='submit']:hover {
 
 /* ==========================================================================
    Dashboard shell (owner-only CRUD area)
-   A separate, app-like visual language from the public gallery above:
-   dark neutral surfaces with a warm gold accent (ties back to the brand's
-   cream/gold palette instead of a generic SaaS blue). Scoped entirely to
-   `body.dashboard-shell` so it never touches public gallery pages.
+   An app-like visual language (sidebar, cards, compact chips) separate
+   from the public gallery above, in the spirit of Notion/Linear/macOS
+   Settings. Default theme is light — the same warm cream/gold palette as
+   the public site — with an opt-in dark theme via a sidebar toggle
+   (see dashboard.js), switched with the [data-dash-theme] attribute on
+   <html>. Scoped entirely to `body.dashboard-shell` so none of this
+   touches public gallery pages.
    ========================================================================== */
 
 body.dashboard-shell {
+  --dash-bg: #f7f4ee;
+  --dash-surface: #ffffff;
+  --dash-card: #ffffff;
+  --dash-card-hover: #f3efe6;
+  --dash-border: #e6e1d6;
+  --dash-text: #121212;
+  --dash-muted: #6b6657;
+  --dash-accent: #d9ad64;
+  --dash-accent-ink: #9c6b2c;
+  --dash-accent-soft: rgba(185, 134, 63, 0.14);
+  --dash-accent-text: #1c1400;
+  --dash-danger: #c8373d;
+  --dash-danger-soft: rgba(200, 55, 61, 0.08);
+  --dash-danger-border: rgba(200, 55, 61, 0.32);
+  --dash-danger-hover-soft: rgba(200, 55, 61, 0.16);
+  --dash-success: #2b8a57;
+  --dash-success-soft: rgba(43, 138, 87, 0.08);
+  --dash-radius: 12px;
+  --dash-radius-sm: 8px;
+
+  background: var(--dash-bg);
+  color: var(--dash-text);
+}
+
+html[data-dash-theme='dark'] body.dashboard-shell {
   --dash-bg: #0e0e12;
   --dash-surface: #17171c;
   --dash-card: #1c1c22;
@@ -315,16 +343,15 @@ body.dashboard-shell {
   --dash-text: #eceae4;
   --dash-muted: #9d9a92;
   --dash-accent: #d1a35c;
+  --dash-accent-ink: #d1a35c;
   --dash-accent-soft: rgba(209, 163, 92, 0.14);
   --dash-accent-text: #14140f;
   --dash-danger: #ff6b6f;
   --dash-danger-soft: rgba(255, 107, 111, 0.1);
+  --dash-danger-border: rgba(255, 107, 111, 0.32);
+  --dash-danger-hover-soft: rgba(255, 107, 111, 0.18);
   --dash-success: #6fd19a;
-  --dash-radius: 14px;
-  --dash-radius-sm: 8px;
-
-  background: var(--dash-bg);
-  color: var(--dash-text);
+  --dash-success-soft: rgba(111, 209, 154, 0.1);
 }
 
 body.dashboard-shell main {
@@ -361,9 +388,9 @@ body.dashboard-shell main {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1rem;
   color: var(--dash-text);
   margin-bottom: 2rem;
 }
@@ -374,9 +401,12 @@ body.dashboard-shell main {
 }
 
 .dash-brand-logo {
-  height: 28px;
+  height: 26px;
   width: auto;
   border-radius: 0;
+}
+
+html[data-dash-theme='dark'] .dash-brand-logo {
   filter: invert(1) brightness(1.6);
 }
 
@@ -411,7 +441,7 @@ body.dashboard-shell main {
 
 .dash-nav-link.is-active {
   background: var(--dash-accent-soft);
-  color: var(--dash-accent);
+  color: var(--dash-accent-ink);
   font-weight: 600;
 }
 
@@ -428,6 +458,70 @@ body.dashboard-shell main {
   font-size: 0.85rem;
 }
 
+/* Theme toggle (light default, dark opt-in) */
+
+.dash-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.dash-theme-toggle-label {
+  font-size: 0.85rem;
+  color: var(--dash-muted);
+}
+
+.dash-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dash-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.dash-switch-track {
+  position: absolute;
+  inset: 0;
+  background: var(--dash-border);
+  border-radius: var(--radius-pill);
+  transition: background 0.15s ease;
+}
+
+.dash-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--dash-surface);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.dash-switch input:checked ~ .dash-switch-track {
+  background: var(--dash-accent);
+}
+
+.dash-switch input:checked ~ .dash-switch-track .dash-switch-thumb {
+  transform: translateX(16px);
+}
+
+.dash-switch input:focus-visible ~ .dash-switch-track {
+  outline: 2px solid var(--dash-accent);
+  outline-offset: 2px;
+}
+
 .dash-user {
   display: flex;
   align-items: center;
@@ -442,7 +536,7 @@ body.dashboard-shell main {
   height: 28px;
   border-radius: 50%;
   background: var(--dash-accent-soft);
-  color: var(--dash-accent);
+  color: var(--dash-accent-ink);
   font-size: 0.8rem;
   font-weight: 700;
   flex-shrink: 0;
@@ -545,15 +639,15 @@ body.dashboard-shell main {
 }
 
 .dashboard-shell .message-success {
-  background: rgba(111, 209, 154, 0.1);
+  background: var(--dash-success-soft);
   color: var(--dash-success);
-  border: 1px solid rgba(111, 209, 154, 0.25);
+  border: 1px solid var(--dash-success-soft);
 }
 
 .dashboard-shell .message-error {
   background: var(--dash-danger-soft);
   color: var(--dash-danger);
-  border: 1px solid rgba(255, 107, 111, 0.25);
+  border: 1px solid var(--dash-danger-border);
 }
 
 .dashboard-shell .message-info,
@@ -575,14 +669,16 @@ body.dashboard-shell main {
 }
 
 .dash-page-header .eyebrow {
-  color: var(--dash-accent);
+  color: var(--dash-accent-ink);
 }
 
 .dash-page-header h1 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
+  font-weight: 700;
   color: var(--dash-text);
   margin: 0;
-  font-size: 1.9rem;
+  font-size: 1.6rem;
+  line-height: 1.25;
 }
 
 /* Buttons */
@@ -626,7 +722,7 @@ body.dashboard-shell main {
 
 .dash-btn-danger {
   background: transparent;
-  border-color: rgba(255, 107, 111, 0.35);
+  border-color: var(--dash-danger-border);
   color: var(--dash-danger);
 }
 
@@ -697,25 +793,33 @@ body.dashboard-shell main {
 }
 
 .dash-badge {
-  display: inline-block;
-  padding: 0.25rem 0.7rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+  border-radius: var(--dash-radius-sm);
+  border: 1px solid var(--dash-border);
+  background: var(--dash-surface);
+  font-size: 0.78rem;
+  font-weight: 500;
   white-space: nowrap;
 }
 
+.dash-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
 .dash-badge-published {
-  background: rgba(111, 209, 154, 0.12);
   color: var(--dash-success);
 }
 
 .dash-badge-draft {
-  background: var(--dash-surface);
   color: var(--dash-muted);
-  border: 1px solid var(--dash-border);
 }
 
 .dash-collection-actions {
@@ -890,7 +994,7 @@ body.dashboard-shell main {
 }
 
 .dash-confirm .dash-card {
-  border-color: rgba(255, 107, 111, 0.3);
+  border-color: var(--dash-danger-border);
 }
 
 .dash-confirm p {
@@ -906,7 +1010,7 @@ body.dashboard-shell main {
 
 .dash-confirm-actions button[type='submit'] {
   padding: 0.6rem 1.4rem;
-  border: 1px solid rgba(255, 107, 111, 0.4);
+  border: 1px solid var(--dash-danger-border);
   border-radius: var(--dash-radius-sm);
   background: var(--dash-danger-soft);
   color: var(--dash-danger);
@@ -917,7 +1021,7 @@ body.dashboard-shell main {
 }
 
 .dash-confirm-actions button[type='submit']:hover {
-  background: rgba(255, 107, 111, 0.18);
+  background: var(--dash-danger-hover-soft);
 }
 
 /* Responsive: collapse sidebar to an off-canvas panel */
