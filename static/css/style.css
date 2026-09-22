@@ -1184,16 +1184,44 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   gap: 0.6rem;
 }
 
+/* Each row is its own card (own background + border), not just a flex
+   item inside one big container -- feedback that a list of artworks
+   read as a single undifferentiated mass. Small gap between rows
+   (.dash-artwork-list's 0.6rem) does the vertical separation. */
+
 .dash-artwork-row {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.5rem 0.6rem;
+  padding: 0.6rem 0.75rem;
   border-radius: var(--dash-radius-sm);
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
 }
 
 .dash-artwork-row:hover {
   background: var(--dash-card-hover);
+  border-color: var(--dash-accent-ink);
+}
+
+/* Wraps thumb + title (+ Collection label) so the whole row opens the
+   Artwork on click -- not just a small icon. Actions stay a separate
+   sibling so they keep working on their own. */
+.dash-artwork-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+}
+
+.dash-artwork-link:hover {
+  text-decoration: none;
+}
+
+.dash-artwork-link:hover .dash-artwork-title {
+  text-decoration: underline;
 }
 
 .dash-artwork-title {
@@ -1211,25 +1239,30 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   height: 32px;
 }
 
+.dash-artwork-chevron {
+  flex-shrink: 0;
+  color: var(--dash-muted);
+  opacity: 0;
+  transform: translateX(-2px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.dash-artwork-row:hover .dash-artwork-chevron {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .dash-artwork-actions {
   display: flex;
   gap: 0.4rem;
   flex-shrink: 0;
 }
 
-/* Flat "All Artworks" list (not nested inside a Collection card) */
+/* Flat "All Artworks" list (not nested inside a Collection card) --
+   just needs the top margin reset, rows style themselves now. */
 
 .dash-artwork-list-flat {
   margin-top: 0;
-  gap: 0;
-  background: var(--dash-card);
-  border: 1px solid var(--dash-border);
-  border-radius: var(--dash-radius);
-  padding: 0.5rem;
-}
-
-.dash-artwork-list-flat .dash-artwork-row {
-  padding: 0.6rem 0.75rem;
 }
 
 .dash-artwork-collection {
@@ -1239,28 +1272,22 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   white-space: nowrap;
 }
 
-.dash-artwork-collection:hover {
-  color: var(--dash-accent-ink);
-}
-
 /* Grid view for the flat All Artworks list: image-first tiles. */
 
 [data-view='grid'].dash-artwork-list-flat {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 0.85rem;
-  background: transparent;
-  border: none;
-  padding: 0;
 }
 
-[data-view='grid'].dash-artwork-list-flat .dash-artwork-row {
+[data-view='grid'].dash-artwork-list-flat .dash-artwork-row,
+[data-view='grid'] .dash-artwork-link {
   flex-direction: column;
   align-items: stretch;
   gap: 0.5rem;
-  background: var(--dash-card);
-  border: 1px solid var(--dash-border);
-  border-radius: var(--dash-radius);
+}
+
+[data-view='grid'].dash-artwork-list-flat .dash-artwork-row {
   padding: 0.65rem;
 }
 
@@ -1280,6 +1307,10 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 [data-view='grid'] .dash-artwork-actions {
   margin-top: auto;
+}
+
+[data-view='grid'] .dash-artwork-chevron {
+  display: none;
 }
 
 /* Empty state */
@@ -1405,117 +1436,73 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   background: var(--dash-danger-hover-soft);
 }
 
-/* Artwork lightbox: large view with Prev/Next, opened from an "Open"
-   icon button. Always dark, regardless of dashboard theme, for image
-   contrast -- standard lightbox convention.
+/* Artwork preview page (artwork_manage): replaces the old modal
+   lightbox. A real page within the dashboard shell -- sidebar and
+   breadcrumb stay put, image and metadata sit side by side, Prev/Next
+   are ordinary links at the bottom. Nothing here is a popup. */
 
-   Stops short of the sidebar (left: 260px, matching its width) rather
-   than covering the full viewport: the dashboard's left column must stay
-   visible and usable at all times, even while viewing an Artwork large --
-   you're still inside the dashboard, not in a separate full-screen mode. */
+.dash-artwork-preview {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
 
-.dash-lightbox {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 260px;
-  z-index: 50;
+@media (min-width: 800px) {
+  .dash-artwork-preview {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: start;
+  }
+}
+
+.dash-artwork-preview-media {
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: rgba(10, 10, 12, 0.92);
-  padding: 3rem;
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  padding: 1rem;
 }
 
-.dash-lightbox[hidden] {
-  display: none;
-}
-
-.dash-lightbox-body {
-  margin: 0;
+.dash-artwork-preview-media img {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 70vh;
+  border-radius: var(--dash-radius-sm);
+}
+
+.dash-artwork-meta-list {
+  margin: 1.25rem 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
-.dash-lightbox-body img {
-  max-width: 100%;
-  max-height: 80vh;
-  border-radius: 4px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+.dash-artwork-meta-list > div {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.88rem;
 }
 
-.dash-lightbox-caption {
-  color: #f2f0eb;
-  font-size: 0.9rem;
-  text-align: center;
+.dash-artwork-meta-list dt {
+  width: 90px;
+  flex-shrink: 0;
+  color: var(--dash-muted);
 }
 
-.dash-lightbox-close,
-.dash-lightbox-nav {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  color: #f2f0eb;
-  cursor: pointer;
+.dash-artwork-meta-list dd {
+  margin: 0;
 }
 
-.dash-lightbox-close:hover,
-.dash-lightbox-nav:hover {
-  background: rgba(255, 255, 255, 0.16);
+.dash-artwork-description {
+  color: var(--dash-text);
+  line-height: 1.6;
 }
 
-.dash-lightbox-close .dash-icon,
-.dash-lightbox-nav .dash-icon {
-  width: 20px;
-  height: 20px;
-}
-
-.dash-lightbox-close {
-  top: 1.25rem;
-  right: 1.25rem;
-}
-
-.dash-lightbox-prev {
-  left: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.dash-lightbox-next {
-  right: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-@media (max-width: 640px) {
-  .dash-lightbox {
-    padding: 1.25rem;
-  }
-
-  .dash-lightbox-close,
-  .dash-lightbox-nav {
-    width: 38px;
-    height: 38px;
-  }
-
-  .dash-lightbox-prev {
-    left: 0.5rem;
-  }
-
-  .dash-lightbox-next {
-    right: 0.5rem;
-  }
+.dash-artwork-nav {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--dash-border);
 }
 
 /* Responsive: collapse sidebar to an off-canvas panel */
