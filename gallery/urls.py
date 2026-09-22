@@ -21,6 +21,11 @@ urlpatterns = [
         name='collection_create',
     ),
     path(
+        'dashboard/collections/<slug:slug>/',
+        views.collection_manage,
+        name='collection_manage',
+    ),
+    path(
         'dashboard/collections/<slug:slug>/edit/',
         views.collection_update,
         name='collection_update',

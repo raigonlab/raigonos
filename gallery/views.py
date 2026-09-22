@@ -67,6 +67,25 @@ def artwork_list(request):
 
 
 @login_required
+def collection_manage(request, slug):
+    collection = get_object_or_404(Collection, slug=slug, owner=request.user)
+    query = request.GET.get('q', '').strip()
+    artworks = collection.artworks.all()
+    if query:
+        artworks = artworks.filter(title__icontains=query)
+    return render(
+        request,
+        'gallery/collection_manage.html',
+        {
+            'collection': collection,
+            'artworks': artworks,
+            'query': query,
+            'active_nav': 'collections',
+        },
+    )
+
+
+@login_required
 def collection_create(request):
     if request.method == 'POST':
         form = CollectionForm(request.POST, request.FILES)
