@@ -106,8 +106,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.2/topics/auth/default/
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'gallery:collection_list'
-LOGOUT_REDIRECT_URL = 'gallery:collection_list'
+LOGIN_REDIRECT_URL = 'gallery:artwork_gallery'
+LOGOUT_REDIRECT_URL = 'gallery:artwork_gallery'
 
 
 # Password validation

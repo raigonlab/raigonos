@@ -25,7 +25,7 @@
     <button type="button" class="dash-backdrop" data-dash-close aria-hidden="true"></button>
 
     <aside class="dash-sidebar">
-      <a href="{% url 'gallery:collection_list' %}" class="dash-brand">
+      <a href="{% url 'gallery:artwork_gallery' %}" class="dash-brand">
         <img src="{% static 'images/logo.svg' %}" alt="" class="dash-brand-logo">
         <span>RaigonOS</span>
       </a>
@@ -43,8 +43,8 @@
       {% endwith %}
 
       <div class="dash-sidebar-footer">
-        <a href="{% url 'gallery:collection_list' %}" class="dash-nav-link dash-nav-link-muted" target="_blank" rel="noopener">
-          View public gallery ↗
+        <a href="{% url 'gallery:artwork_gallery' %}" class="dash-nav-link dash-nav-link-muted" target="_blank" rel="noopener">
+          View public gallery
         </a>
 
         <label class="dash-theme-toggle">
