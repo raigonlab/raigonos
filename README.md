@@ -182,8 +182,12 @@ bureaucracy standing between them and presenting it to the world.
 - `/collections/` — browse published Artworks grouped by Collection instead
 - `/collection/<slug>/` — Collection detail (its Artworks)
 - `/artwork/<id>/` — Artwork detail
-- `/dashboard/` — owner-only management area (CRUD entry points)
+- `/dashboard/` — owner-only management area: list of the owner's Collections
+- `/dashboard/collections/<slug>/` — one Collection's own dashboard page
+  (its Artworks, Edit/Delete/View actions)
 - `/dashboard/artworks/` — owner's Artworks across all Collections
+- `/dashboard/artworks/<id>/` — Artwork preview (full page, not a modal),
+  with Previous/Next through the rest of its Collection
 - `/accounts/login/`, `/accounts/logout/`, `/accounts/signup/`
 
 **User Flow**
@@ -213,8 +217,9 @@ sketches → Figma wireframes). Will be added here once produced.
   a heading) paired with a clean sans-serif for body text and UI.
 - Small, uppercase, letter-spaced "eyebrow" labels above page titles
   (e.g. "Collection", "Dashboard") for wayfinding.
-- The RaigonOS logo mark: an "R" monogram inside a circular
-  "RAIGON · INK · MMXXIII" seal.
+- The RaigonOS logo mark: a bold "R" monogram (simplified from an
+  earlier circular-seal design, which read as illegible noise at the
+  sizes the logo is actually displayed).
 - Tagline: **Create · Collect · Legacy** — mirroring the actual user
   flow (create an Artwork, collect it into a Collection, build a
   lasting portfolio).
@@ -222,6 +227,23 @@ sketches → Figma wireframes). Will be added here once produced.
 Visual language is inspired by [raigon.ch](https://www.raigon.ch) —
 **for aesthetic direction only**; no content, copy, or functionality from
 that site is used here.
+
+**Dashboard (owner-only) visual system — deliberately distinct from the
+public gallery above**
+
+- App-like rather than editorial: a persistent left sidebar (Collections,
+  All Artworks), a top bar with a breadcrumb, and a small hand-drawn line-icon
+  set (in the spirit of Notion/Linear/macOS) instead of text buttons.
+- Light by default — the same cream palette as the public site — with an
+  explicit dark-mode toggle, remembered per browser. The public gallery
+  itself has no dark mode; only the dashboard does.
+- Sidebar and breadcrumb are present on *every* dashboard screen, including
+  the Artwork preview page — nothing (not even a "quick look") ever covers
+  or hides them, so the owner always knows which workspace they're in and
+  can navigate away at any time.
+- Grid/List is one underlying list rendered two ways (CSS only, same
+  markup), not two different interfaces — the owner's choice is
+  remembered per browser too.
 
 ---
 
@@ -253,8 +275,12 @@ background contrast rather than the border line itself.
 ## Typography
 
 - **Playfair Display** — used for page headings, including an italic
-  weight for emphasis within a heading (e.g. "My *Collections*").
-- **Inter** — used for body text, navigation, forms and UI labels.
+  weight for emphasis within a heading (e.g. "My *Collections*"), on
+  public pages only.
+- **Inter** — used for body text, navigation, forms and UI labels
+  everywhere, and for headings in the dashboard (kept sans-serif there
+  to read as an app, not a gallery page). A light (300) weight is used
+  for the small captions under public gallery cards.
 
 Both are sourced from [Google Fonts](https://fonts.google.com). The
 pairing gives the same editorial, gallery-catalogue feel as the
@@ -292,8 +318,55 @@ GitHub Issues using MoSCoW prioritisation — see
 
 ### Existing Features
 
-🚧 None shipped yet — this project is in active development. This section
-will list completed, working features (with screenshots) as they land.
+**Public gallery**
+
+- Home page (`/`) lists every published Artwork across all Collections in a
+  uniform 4:5 portrait grid (1/2/4 columns depending on screen width) —
+  the default a visitor lands on.
+- `/collections/` lists published Collections instead, for browsing by
+  series rather than a flat feed.
+- Collection and Artwork detail pages.
+- A persistent **path bar** fixed to the bottom of every public page
+  (`Artworks / Collections / <Collection> / <Artwork>`) shows exactly
+  where you are at all times, in the spirit of the Finder path bar —
+  deliberately not an inline breadcrumb, which shifted page content
+  between pages of different depth.
+- Artwork detail: image and metadata/description side by side on wider
+  screens (image capped at 70vh so it never dominates the page).
+
+**Authentication**
+
+- Signup, login, logout, with every mutating view behind
+  `@login_required` and an ownership check.
+
+**Dashboard (owner-only)**
+
+- Full CRUD on `Collection` and `Artwork`, always scoped to
+  `request.user` — editing or deleting someone else's content 404s
+  rather than 403s.
+- A dedicated page per Collection (`/dashboard/collections/<slug>/`)
+  showing just its Artworks — reached by clicking anywhere on the
+  Collection's card, not just a small icon.
+- **All Artworks** — every Artwork the owner has, across Collections,
+  flattened into one list.
+- **Artwork preview** — a full page (not a modal) showing one Artwork
+  large with its metadata, plus Previous/Next links to browse the rest
+  of its Collection without returning to the list. A Close (X) icon and
+  the Escape key both lead back to the Collection.
+- Title **search** (`?q=`, server-rendered, no JS) on Collections, All
+  Artworks, and within a single Collection.
+- **Grid/List toggle**, remembered per browser, available everywhere
+  Artworks or Collections are listed — both are the same underlying
+  list, rendered two ways in CSS.
+- **Light/dark theme toggle** for the dashboard specifically (light by
+  default, matching the public site's palette); the public gallery has
+  no dark mode by design.
+- A persistent left sidebar and a breadcrumb in the top bar are present
+  on every dashboard screen, including the Artwork preview — nothing
+  ever hides them.
+- A small hand-drawn SVG icon set replaces text buttons for repeated
+  row actions (edit, delete, add, view), keeping rows usable on small
+  screens.
 
 ### Planned Features (MoSCoW)
 
@@ -304,11 +377,12 @@ will list completed, working features (with screenshots) as they land.
 | Must-have | `Artwork` model with full CRUD (linked to Collection) |
 | Must-have | Authentication: login, logout, signup and ownership restriction |
 | Must-have | Public gallery pages: browse Collections and Artworks |
-| Should-have | Templates and CSS: black & white visual identity |
+| Should-have | Templates and CSS: warm editorial identity (public) plus a separate app-like dashboard system (sidebar, path bar, icons, light/dark) |
+| Should-have | Title search across Collections and Artworks |
 | Could-have | Invitation system for private Collections |
 | Could-have | Contact/inquiry form for direct messages to the artist |
 | Won't-have (this cycle) | Multi-artist public sign-up (marketplace mode) |
-| Won't-have (this cycle) | Search and filtering across Collections and Artworks |
+| Won't-have (this cycle) | Advanced filtering (by medium, year, status) beyond title search |
 
 ---
 
@@ -536,10 +610,12 @@ To run the project locally:
 - [Django documentation](https://docs.djangoproject.com/)
 - [Claude](https://claude.com/) — AI coding assistant used throughout
   development for planning, debugging and project support, and
-  specifically to help design and refine the owner-only dashboard's
-  UI (the dark/light theme system, grid/list views, and component
-  layout) in collaboration with the developer. This involvement is
-  reflected in the project's commit history.
+  specifically to help design and build the owner-only dashboard's
+  UI/UX system in collaboration with the developer: the persistent
+  sidebar/breadcrumb navigation model, the light/dark theme, the
+  Grid/List toggle, the per-Collection and Artwork preview pages, the
+  fixed path bar on public pages, search, and the hand-drawn icon set.
+  This involvement is reflected in the project's commit history.
 - [fonts.google.com](https://fonts.google.com) 🚧
 
 ### Media
