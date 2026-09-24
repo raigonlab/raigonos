@@ -6,12 +6,7 @@
 
 {% block hero %}
   <section class="hero">
-    <div class="hero-copy">
-      <span class="eyebrow">RaigonOS</span>
-      <h1>A calm place to <em>keep and show</em> an artist&rsquo;s work.</h1>
-      <p class="hero-lede">An artist&rsquo;s work ends up scattered across drives, phones and feeds. RaigonOS gathers it into Collections you own, and shows it to the world with the art always first.</p>
-      <p class="hero-link"><a href="{% url 'gallery:collection_list' %}">View by Collection &rarr;</a></p>
-    </div>
+    <h1 class="hero-welcome">Welcome to <em>{{ artist_name }}</em>&rsquo;s gallery</h1>
 
     {% if artworks %}
       {# Decorative only: the same artworks are listed (with links) below. #}

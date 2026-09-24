@@ -370,11 +370,13 @@ GitHub Issues using MoSCoW prioritisation — see
 
 - Home page (`/`) lists every published Artwork across all Collections in a
   uniform 4:5 portrait grid (1/2/4 columns depending on screen width) —
-  the default a visitor lands on. It opens with a dark hero band: the
-  intro sentence, then the published artworks drifting slowly past
-  (CSS-only, decorative, paused on hover, off for visitors who prefer
-  reduced motion) — a small glimpse of the moving-exhibition idea under
-  the long-term vision.
+  the default a visitor lands on. It is the artist's storefront, so it
+  opens with a dark band holding just a quiet "Welcome to <artist>'s
+  gallery" line (the name comes from the `ARTIST_NAME` setting) and the
+  published artworks drifting slowly past (CSS-only, decorative, paused on
+  hover, off for visitors who prefer reduced motion) — a small glimpse of
+  the moving-exhibition idea under the long-term vision. Nothing pitches
+  the product here; the work is what's shown.
 - `/collections/` lists published Collections instead, for browsing by
   series rather than a flat feed.
 - Collection and Artwork detail pages.
@@ -386,7 +388,7 @@ GitHub Issues using MoSCoW prioritisation — see
   so the bar would only repeat the page you're already on.
 - The public header is deliberately bare: signed-in, just a Dashboard
   link (Log out lives in the dashboard's Account menu); signed-out,
-  Log in / Sign up.
+  Log in / Sign up. A Collections link is always there.
 - Artwork detail: image and metadata/description side by side on wider
   screens (image capped at 70vh so it never dominates the page).
 
@@ -644,6 +646,8 @@ Deployment steps:
    - `ALLOWED_HOSTS` — the Render service hostname (e.g. `raigonos.onrender.com`)
    - `CSRF_TRUSTED_ORIGINS` — `https://raigonos.onrender.com`
    - `DATABASE_URL` — the Internal Database URL from step 1
+   - `ARTIST_NAME` — optional; the name in the home page's welcome line
+     (defaults to the site owner's)
    - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
      — copied individually from your [Cloudinary](https://cloudinary.com)
      dashboard's Account Details. Required so uploaded Collection/Artwork

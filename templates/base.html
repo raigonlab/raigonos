@@ -19,6 +19,7 @@
         <img src="{% static 'images/logo.svg' %}" alt="RaigonOS" class="brand-logo">
       </a>
       <div class="nav-auth">
+        <a href="{% url 'gallery:collection_list' %}">Collections</a>
         {% if user.is_authenticated %}
           <a href="{% url 'gallery:dashboard' %}">Dashboard</a>
         {% else %}

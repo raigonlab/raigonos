@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -14,7 +15,11 @@ def artwork_gallery(request):
     artworks = Artwork.objects.filter(
         collection__status=Collection.STATUS_PUBLISHED
     ).select_related('collection')
-    return render(request, 'gallery/artwork_gallery.html', {'artworks': artworks})
+    return render(
+        request,
+        'gallery/artwork_gallery.html',
+        {'artworks': artworks, 'artist_name': settings.ARTIST_NAME},
+    )
 
 
 def collection_list(request):

@@ -2,7 +2,7 @@ import io
 
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from PIL import Image
 
@@ -100,6 +100,11 @@ class ArtworkGalleryViewTests(TestCase):
         response = self.client.get(reverse('gallery:artwork_gallery'))
         self.assertContains(response, 'Visible Piece')
         self.assertNotContains(response, 'Hidden Piece')
+
+    @override_settings(ARTIST_NAME='Test Artist')
+    def test_welcomes_visitors_to_the_artists_gallery(self):
+        response = self.client.get(reverse('gallery:artwork_gallery'))
+        self.assertContains(response, 'Welcome to <em>Test Artist</em>')
 
 
 class DashboardPermissionTests(TestCase):

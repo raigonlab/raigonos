@@ -31,6 +31,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
+# Whose gallery the public home welcomes visitors to (single-artist for now).
+ARTIST_NAME = os.environ.get('ARTIST_NAME', 'Railson Gonçalves').strip()
+
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.environ.get('ALLOWED_HOSTS', '').split(',')

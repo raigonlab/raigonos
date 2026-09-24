@@ -265,53 +265,37 @@ h1 i {
   font-style: italic;
 }
 
-/* Public home hero -- a dark band: the intro sentence, then a slow drift
-   of published artworks, a glimpse of the exhibition-in-motion idea (see
-   README, long-term vision). CSS only; the animation stops for visitors
-   who ask for reduced motion. */
+/* Public home hero -- the artist's storefront: a quiet welcome line, then
+   the published artworks drifting slowly past, a glimpse of the
+   exhibition-in-motion idea (see README, long-term vision). CSS only; the
+   animation stops for visitors who ask for reduced motion. */
 
 .hero {
   overflow: hidden;
-  padding: 4.5rem 2rem 0;
+  padding: 2.75rem 2rem 0;
   background: #0d0d0e;
   color: #ece9e2;
 }
 
-.hero-copy {
+.hero-welcome {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.hero .eyebrow {
-  color: #c9a45c;
-}
-
-.hero h1 {
-  max-width: 52rem;
-  margin-bottom: 1.5rem;
-  font-size: clamp(2.4rem, 7vw, 4.75rem);
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-
-.hero-lede {
-  max-width: 36rem;
-  margin: 0 0 1.5rem;
-  font-size: 1.1rem;
-  line-height: 1.65;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   color: #a19d92;
 }
 
-.hero-link {
-  margin: 0;
-}
-
-.hero-link a {
+.hero-welcome em {
   color: #ece9e2;
 }
 
+.hero-welcome:last-child {
+  padding-bottom: 2.75rem;
+}
+
 .hero-drift {
-  margin: 2.5rem -2rem 0;
+  margin: 2rem -2rem 0;
   padding-bottom: 3rem;
 }
 
