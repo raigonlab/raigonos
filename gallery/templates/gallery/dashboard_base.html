@@ -50,26 +50,34 @@
       {% endwith %}
 
       <div class="dash-sidebar-footer">
-        <a href="{% url 'gallery:artwork_gallery' %}" class="dash-nav-link dash-nav-link-muted">
-          View public gallery
-        </a>
+        <div class="dash-sidebar-settings">
+          <a href="{% url 'gallery:artwork_gallery' %}" class="dash-foot-row dash-foot-link">
+            <span>Public Gallery</span>
+            <svg class="dash-icon dash-foot-icon"><use href="#icon-external"></use></svg>
+          </a>
 
-        <label class="dash-theme-toggle">
-          <span class="dash-theme-toggle-label">Dark mode</span>
-          <span class="dash-switch">
-            <input type="checkbox" data-dash-theme-toggle>
-            <span class="dash-switch-track"><span class="dash-switch-thumb"></span></span>
-          </span>
-        </label>
-
-        <div class="dash-user">
-          <span class="dash-user-avatar">{{ user.username|slice:":1"|upper }}</span>
-          <span class="dash-user-name">{{ user.username }}</span>
-          <form method="post" action="{% url 'logout' %}" class="dash-logout-form">
-            {% csrf_token %}
-            <button type="submit" class="link-button dash-logout">Log out</button>
-          </form>
+          <label class="dash-foot-row dash-theme-toggle">
+            <span class="dash-theme-toggle-label">Dark mode</span>
+            <span class="dash-switch">
+              <input type="checkbox" data-dash-theme-toggle>
+              <span class="dash-switch-track"><span class="dash-switch-thumb"></span></span>
+            </span>
+          </label>
         </div>
+
+        <details class="dash-menu dash-account" data-dash-menu>
+          <summary class="dash-foot-row dash-account-toggle" aria-label="Account menu">
+            <span class="dash-user-avatar">{{ user.username|slice:":1"|upper }}</span>
+            <span class="dash-user-name">Account</span>
+            <svg class="dash-icon dash-foot-icon"><use href="#icon-more"></use></svg>
+          </summary>
+          <div class="dash-menu-panel dash-account-panel">
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="dash-menu-item dash-menu-item-danger">Log out</button>
+            </form>
+          </div>
+        </details>
       </div>
     </aside>
 

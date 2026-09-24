@@ -599,17 +599,45 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   font-weight: 500;
 }
 
+/* Sidebar footer: quiet settings group, then a minimal account entry.
+   Rows share the nav links' horizontal padding so everything lines up. */
+
 .dash-sidebar-footer {
   margin-top: auto;
-  padding-top: 1.5rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--dash-border);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.dash-nav-link-muted {
-  font-size: 1.0625rem;
+.dash-sidebar-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dash-foot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--dash-radius-sm);
+  font-size: 0.875rem;
+  color: var(--dash-muted);
+}
+
+.dash-foot-link:hover {
+  text-decoration: none;
+  background: var(--dash-card);
+  color: var(--dash-text);
+}
+
+.dash-foot-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--dash-faint);
 }
 
 /* Theme toggle (light default, dark opt-in) */
@@ -623,8 +651,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-theme-toggle-label {
-  font-size: 1.0625rem;
-  color: var(--dash-muted);
+  font-size: 0.875rem;
 }
 
 .dash-switch {
@@ -676,45 +703,59 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   outline-offset: 2px;
 }
 
-.dash-user {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
 .dash-user-avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--dash-card-hover);
   color: var(--dash-muted);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   flex-shrink: 0;
 }
 
 .dash-user-name {
-  font-size: 1.0156rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   flex: 1;
+  font-size: 0.875rem;
+  color: var(--dash-text);
 }
 
-.dash-logout-form {
+.dash-account {
+  position: relative;
+}
+
+.dash-account-toggle {
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+.dash-account-toggle:hover,
+.dash-account[open] > .dash-account-toggle {
+  background: var(--dash-card);
+}
+
+.dash-account .dash-account-panel {
+  top: auto;
+  bottom: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+}
+
+.dash-account-panel form {
   margin: 0;
 }
 
-.dash-logout {
-  font-size: 1rem;
-  color: var(--dash-muted);
-}
-
-.dash-logout:hover {
-  color: var(--dash-danger);
+.dashboard-shell .dash-account-panel .dash-menu-item {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
 }
 
 /* Main column */
