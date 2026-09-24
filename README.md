@@ -184,7 +184,8 @@ bureaucracy standing between them and presenting it to the world.
 - `/artwork/<id>/` — Artwork detail
 - `/dashboard/` — owner-only management area: list of the owner's Collections
 - `/dashboard/collections/<slug>/` — one Collection's own dashboard page
-  (its Artworks, Edit/Delete/View actions)
+  (its Artworks; View/Edit/Archive as a quiet action row, Delete in a
+  "..." overflow menu)
 - `/dashboard/archive/` — owner's archived Collections (kept on record,
   never public); archive/unarchive are single-click POST actions
 - `/dashboard/artworks/` — owner's Artworks across all Collections
@@ -359,8 +360,8 @@ GitHub Issues using MoSCoW prioritisation — see
   public without a deliberate re-publish).
 - **Artwork preview** — a full page (not a modal) showing one Artwork
   large with its metadata, plus Previous/Next links to browse the rest
-  of its Collection without returning to the list. A Close (X) icon and
-  the Escape key both lead back to the Collection.
+  of its Collection without returning to the list. The Escape key and
+  the Collection link in the breadcrumb both lead back to the Collection.
 - Title **search** (`?q=`, server-rendered, no JS) on Collections, All
   Artworks, and within a single Collection.
 - **Grid/List toggle**, remembered per browser, available everywhere
@@ -373,8 +374,16 @@ GitHub Issues using MoSCoW prioritisation — see
   on every dashboard screen, including the Artwork preview — nothing
   ever hides them.
 - A small hand-drawn SVG icon set replaces text buttons for repeated
-  row actions (edit, delete, add, view), keeping rows usable on small
-  screens.
+  row actions, keeping rows usable on small screens. Artwork cards stay
+  image-first: they show no persistent Edit/Delete icons, only a subtle
+  "..." overflow menu (Edit artwork / Delete artwork) revealed on hover
+  or focus.
+- The **Edit Artwork** and **Edit Collection** forms show the current
+  image as a thumbnail (a custom `ImagePreviewInput` widget) instead of
+  Django's raw "Currently: path" text, so the owner can see what they
+  are replacing.
+- The public home opens with a one-sentence introduction for first-time
+  visitors, above the grid of published Artworks.
 
 ### Planned Features (MoSCoW)
 
