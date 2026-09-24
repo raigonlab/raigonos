@@ -1,0 +1,76 @@
+{% extends 'gallery/dashboard_base.html' %}
+
+{% block title %}Archive — RaigonOS{% endblock %}
+
+{% block dash_breadcrumb %}
+  <span class="dash-crumb-sep">/</span>
+  <span class="dash-crumb-current">Archive</span>
+{% endblock %}
+
+{% block dash_content %}
+  <div class="dash-page-header">
+    <div>
+      <span class="eyebrow">Workspace</span>
+      <h1>Archive</h1>
+      <p class="dash-page-intro">Collections kept on record but never published.</p>
+    </div>
+    <div class="dash-page-actions">
+      {% include 'gallery/_search_box.html' with search_placeholder='Search Archive' %}
+      {% include 'gallery/_view_toggle.html' %}
+    </div>
+  </div>
+
+  {% if collections %}
+    <ul class="dash-collection-list" data-dash-view-target>
+      {% for collection in collections %}
+        {% with count=collection.artworks.count %}
+          <li class="dash-collection-card">
+            <div class="dash-collection-header">
+              <a href="{% url 'gallery:collection_manage' collection.slug %}" class="dash-collection-link">
+                <div class="dash-collection-cover">
+                  {% if collection.cover_image %}
+                    <img src="{{ collection.cover_image.url }}" alt="" class="dash-thumb">
+                  {% else %}
+                    <span class="dash-thumb-placeholder"></span>
+                  {% endif %}
+                </div>
+
+                <div class="dash-collection-info">
+                  <strong class="dash-collection-name">{{ collection.title }}</strong>
+                  <div class="dash-collection-meta">
+                    <span class="dash-status dash-status-draft">Archived</span>
+                    <span>{{ count }} artwork{{ count|pluralize }}</span>
+                  </div>
+                </div>
+              </a>
+
+              <div class="dash-collection-icon-actions">
+                <form method="post" action="{% url 'gallery:collection_unarchive' collection.slug %}" class="dash-inline-form">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-icon-btn" title="Restore to Draft" aria-label="Restore Collection to Draft">
+                    <svg class="dash-icon"><use href="#icon-archive"></use></svg>
+                  </button>
+                </form>
+                <a href="{% url 'gallery:collection_update' collection.slug %}" class="dash-icon-btn" title="Edit" aria-label="Edit Collection">
+                  <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+                </a>
+                <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Collection">
+                  <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+                </a>
+              </div>
+            </div>
+          </li>
+        {% endwith %}
+      {% endfor %}
+    </ul>
+    {% include 'gallery/_view_init_script.html' %}
+  {% elif query %}
+    <div class="dash-empty">
+      <p>No archived Collections match &ldquo;{{ query }}&rdquo;.</p>
+    </div>
+  {% else %}
+    <div class="dash-empty">
+      <p>Nothing archived yet. Archive a Collection from its page to keep it on record without publishing it.</p>
+    </div>
+  {% endif %}
+{% endblock %}

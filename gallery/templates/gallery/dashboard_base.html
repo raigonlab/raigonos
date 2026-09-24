@@ -42,6 +42,10 @@
             <svg class="dash-icon"><use href="#icon-collections"></use></svg>
             Collections
           </a>
+          <a href="{% url 'gallery:collection_archive_list' %}" class="dash-nav-link{% if nav == 'archive' %} is-active{% endif %}">
+            <svg class="dash-icon"><use href="#icon-archive"></use></svg>
+            Archive
+          </a>
         </nav>
       {% endwith %}
 
