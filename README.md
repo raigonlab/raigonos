@@ -376,11 +376,12 @@ GitHub Issues using MoSCoW prioritisation — see
   the published artworks, in random order, drifting slowly past each other
   in a mostly empty room, with the ones far from the centre softened,
   faded and shrunk for depth. Drag, swipe or scroll to move them, or just
-  watch. A small tools pill in the bottom-left corner holds play/pause, a
+  watch. One quiet bar at the bottom holds everything: play/pause, a
   light/dark theme switch, a direction switch (rows drifting sideways, or
-  columns falling top to bottom) and full screen; the theme and direction
-  are remembered in the browser. A second pill in the bottom centre
-  switches to the plain **Grid** or goes to Collections. The motion is a small vanilla
+  columns falling top to bottom) and full screen, then a hairline and the
+  views — the exhibition itself, the plain **Grid**, and Collections (as
+  icons on narrow screens). Theme and direction are remembered in the
+  browser. The motion is a small vanilla
   JavaScript file (`static/js/exhibition.js`) whose concept follows an
   earlier Raigon Lab project, [raigon-mmxi](https://raigonlab.github.io/raigon-mmxi/),
   rewritten for RaigonOS. Without JavaScript, or after choosing Grid, the

@@ -474,8 +474,7 @@ html.is-exhibition {
 }
 
 .ex-link,
-.ex-pill a,
-.ex-pill button {
+.ex-view {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -483,8 +482,7 @@ html.is-exhibition {
 }
 
 .ex-link:hover,
-.ex-pill a:hover,
-.ex-pill button:hover {
+.ex-view:hover {
   color: var(--hd-text);
   text-decoration: none;
 }
@@ -540,37 +538,56 @@ html[data-home-theme='light'] .ex-show-light,
   display: block;
 }
 
-.ex-tools,
-.ex-pill {
+/* One bar for everything: viewing tools, a hairline, then the views. */
+
+.ex-bar {
   position: absolute;
+  left: 50%;
   bottom: 1.5rem;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
+  padding: 0.3rem;
   border: 1px solid var(--hd-line-strong);
   border-radius: var(--radius-pill);
   background: var(--hd-pill);
   backdrop-filter: blur(6px);
 }
 
-.ex-tools {
-  left: 2rem;
+.ex-bar-group {
+  display: flex;
+  align-items: center;
   gap: 0.15rem;
-  padding: 0.3rem;
 }
 
-.ex-pill {
-  left: 50%;
-  transform: translateX(-50%);
-  gap: 1.5rem;
-  padding: 0.4rem 1.5rem 0.4rem 0.4rem;
+.ex-bar-divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 0.6rem;
+  background: var(--hd-line-strong);
 }
 
-.ex-pill button {
-  padding: 0;
+.ex-view {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 0.9rem;
   border: none;
+  border-radius: var(--radius-pill);
   background: none;
   font-family: inherit;
   cursor: pointer;
+}
+
+.ex-view svg {
+  display: none;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .ex-pill-current {
@@ -603,10 +620,24 @@ html[data-home-theme='light'] .ex-show-light,
     top: 4.5rem;
   }
 
-  .ex-tools {
-    left: 50%;
-    bottom: 4.9rem;
-    transform: translateX(-50%);
+  /* Narrow screens: the two text views become icons so the bar fits. */
+
+  .ex-bar-divider {
+    margin: 0 0.35rem;
+  }
+
+  .ex-view {
+    justify-content: center;
+    width: 36px;
+    padding: 0;
+  }
+
+  .ex-view svg {
+    display: block;
+  }
+
+  .ex-view-label {
+    display: none;
   }
 }
 
