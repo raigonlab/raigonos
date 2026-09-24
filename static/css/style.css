@@ -460,6 +460,7 @@ body.dashboard-shell {
   --dash-text: #2a2824;
   --dash-muted: #6f6a5f;
   --dash-faint: #9a9588;
+  --dash-zebra: rgba(70, 55, 30, 0.045);
   --dash-accent: #d9ad64;
   --dash-accent-ink: #9c6b2c;
   --dash-accent-soft: rgba(185, 134, 63, 0.14);
@@ -490,6 +491,7 @@ html[data-dash-theme='dark'] body.dashboard-shell {
   --dash-text: #e7e5e2;
   --dash-muted: #a8a5a0;
   --dash-faint: #77746f;
+  --dash-zebra: rgba(255, 255, 255, 0.03);
   --dash-accent: #d1a35c;
   --dash-accent-ink: #d1a35c;
   --dash-accent-soft: rgba(209, 163, 92, 0.14);
@@ -1243,6 +1245,33 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   color: var(--dash-danger);
 }
 
+/* List view, Finder-style: no box around each row -- rows alternate
+   between the page colour and a barely-there tint, so the eye is guided
+   without an outline competing with the artwork. Grid view keeps its
+   cards, where the frame is what separates one image from the next. */
+
+.dash-collection-list:not([data-view='grid']),
+.dash-artwork-list:not([data-view='grid']) {
+  gap: 0;
+}
+
+.dash-collection-list:not([data-view='grid']) > .dash-collection-card,
+.dash-artwork-list:not([data-view='grid']) > .dash-artwork-row {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--dash-radius-sm);
+}
+
+.dash-collection-list:not([data-view='grid']) > .dash-collection-card:nth-child(even),
+.dash-artwork-list:not([data-view='grid']) > .dash-artwork-row:nth-child(even) {
+  background: var(--dash-zebra);
+}
+
+.dash-collection-list:not([data-view='grid']) > .dash-collection-card:hover,
+.dash-artwork-list:not([data-view='grid']) > .dash-artwork-row:hover {
+  background: var(--dash-card-hover);
+}
+
 /* Grid view for the Collections list: cover-first tiles, nested artworks
    hidden (List view is where there's room to show them properly). */
 
@@ -1565,7 +1594,9 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   user-select: none;
 }
 
-.is-selecting > li.is-selected {
+.is-selecting > li.is-selected,
+.dash-collection-list.is-selecting > li.is-selected,
+.dash-artwork-list.is-selecting > li.is-selected {
   border-color: var(--dash-accent);
   box-shadow: 0 0 0 1px var(--dash-accent);
 }
