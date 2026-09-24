@@ -368,7 +368,10 @@ GitHub Issues using MoSCoW prioritisation — see
   Artworks, and within a single Collection.
 - **Grid/List toggle**, remembered per browser, available everywhere
   Artworks or Collections are listed — both are the same underlying
-  list, rendered two ways in CSS.
+  list, rendered two ways in CSS. List view is Finder-style: borderless
+  rows that alternate between the page colour and a faint tint (zebra
+  striping), so no outline competes with the artwork; Grid view keeps
+  its cards.
 - **Bulk management** — a "Select" button next to the search box turns
   the current list (Collections, All Artworks, or one Collection's
   Artworks) into selectable cards with a contextual action bar: Move to
