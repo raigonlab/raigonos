@@ -109,9 +109,38 @@
   });
 })();
 
-// Artwork preview page: Escape follows the same link as the visible
-// "Close" (X) button, so keyboard users can leave without hunting for
-// the breadcrumb -- even though this is a real page, not a modal.
+// Overflow menus (<details data-dash-menu>): close on outside click or
+// Escape, like a native menu.
+(function () {
+  var menus = document.querySelectorAll('[data-dash-menu]');
+
+  if (!menus.length) {
+    return;
+  }
+
+  function closeAll(except) {
+    menus.forEach(function (menu) {
+      if (menu !== except) {
+        menu.removeAttribute('open');
+      }
+    });
+  }
+
+  document.addEventListener('click', function (event) {
+    closeAll(event.target.closest('[data-dash-menu]'));
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      closeAll(null);
+    }
+  });
+})();
+
+// Artwork preview page: Escape follows the same link as the Collection
+// breadcrumb (marked data-dash-escape-close), so keyboard users can
+// leave without hunting for it -- even though this is a real page, not
+// a modal.
 (function () {
   var closeLink = document.querySelector('[data-dash-escape-close]');
 
