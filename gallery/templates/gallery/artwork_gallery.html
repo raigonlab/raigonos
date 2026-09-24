@@ -3,9 +3,12 @@
 {% block title %}Artworks — RaigonOS{% endblock %}
 
 {% block content %}
-  <span class="eyebrow">Gallery</span>
-  <h1>Artworks</h1>
-  <p><a href="{% url 'gallery:collection_list' %}">View by Collection &rarr;</a></p>
+  <section class="intro">
+    <span class="eyebrow">RaigonOS</span>
+    <h1>A calm place to <em>keep and show</em> an artist&rsquo;s work.</h1>
+    <p class="intro-lede">RaigonOS is a gallery platform for artists: work is catalogued into Collections and published here for anyone to browse, with the art always first.</p>
+    <p class="intro-link"><a href="{% url 'gallery:collection_list' %}">View by Collection &rarr;</a></p>
+  </section>
 
   <ul class="card-grid">
     {% for artwork in artworks %}
