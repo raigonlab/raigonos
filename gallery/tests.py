@@ -285,6 +285,95 @@ class CollectionCrudTests(TestCase):
         self.assertFalse(Artwork.objects.filter(title='Gone Too').exists())
 
 
+class BulkActionTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('bulk_owner', password='pass12345')
+        self.other = User.objects.create_user('bulk_other', password='pass12345')
+        self.client.login(username='bulk_owner', password='pass12345')
+        self.c1 = Collection.objects.create(
+            owner=self.owner, title='One', status=Collection.STATUS_PUBLISHED
+        )
+        self.c2 = Collection.objects.create(
+            owner=self.owner, title='Two', status=Collection.STATUS_PUBLISHED
+        )
+        self.foreign = Collection.objects.create(
+            owner=self.other, title='Foreign', status=Collection.STATUS_PUBLISHED
+        )
+        self.url = reverse('gallery:collection_bulk_action')
+
+    def test_bulk_move_to_draft(self):
+        response = self.client.post(
+            self.url, {'ids': [self.c1.pk, self.c2.pk], 'action': 'draft'}
+        )
+        self.assertRedirects(response, reverse('gallery:dashboard'))
+        self.c1.refresh_from_db()
+        self.c2.refresh_from_db()
+        self.assertEqual(self.c1.status, Collection.STATUS_DRAFT)
+        self.assertEqual(self.c2.status, Collection.STATUS_DRAFT)
+
+    def test_bulk_archive(self):
+        self.client.post(self.url, {'ids': [self.c1.pk], 'action': 'archive'})
+        self.c1.refresh_from_db()
+        self.assertEqual(self.c1.status, Collection.STATUS_ARCHIVED)
+
+    def test_cannot_touch_another_users_collection(self):
+        self.client.post(
+            self.url, {'ids': [self.foreign.pk], 'action': 'draft'}
+        )
+        self.foreign.refresh_from_db()
+        self.assertEqual(self.foreign.status, Collection.STATUS_PUBLISHED)
+        response = self.client.post(
+            self.url, {'ids': [self.foreign.pk], 'action': 'delete', 'confirm': '1'}
+        )
+        self.assertTrue(Collection.objects.filter(pk=self.foreign.pk).exists())
+
+    def test_delete_asks_for_confirmation_first(self):
+        response = self.client.post(
+            self.url, {'ids': [self.c1.pk], 'action': 'delete'}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Delete 1 Collection')
+        self.assertTrue(Collection.objects.filter(pk=self.c1.pk).exists())
+
+    def test_confirmed_delete_removes_collections_and_artworks(self):
+        Artwork.objects.create(collection=self.c1, title='Inside', image=tiny_image())
+        self.client.post(
+            self.url, {'ids': [self.c1.pk], 'action': 'delete', 'confirm': '1'}
+        )
+        self.assertFalse(Collection.objects.filter(pk=self.c1.pk).exists())
+        self.assertFalse(Artwork.objects.filter(title='Inside').exists())
+
+    def test_requires_post_and_login(self):
+        self.assertEqual(self.client.get(self.url).status_code, 405)
+        self.client.logout()
+        response = self.client.post(self.url, {'ids': [self.c1.pk], 'action': 'draft'})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/accounts/login/', response['Location'])
+
+    def test_garbage_ids_are_ignored(self):
+        response = self.client.post(self.url, {'ids': ['abc', ''], 'action': 'draft'})
+        self.assertEqual(response.status_code, 302)
+
+    def test_external_next_is_ignored(self):
+        response = self.client.post(
+            self.url,
+            {'ids': [self.c1.pk], 'action': 'draft', 'next': 'https://evil.example/'},
+        )
+        self.assertRedirects(response, reverse('gallery:dashboard'))
+
+    def test_bulk_delete_artworks_scoped_to_owner(self):
+        mine = Artwork.objects.create(collection=self.c1, title='Mine', image=tiny_image())
+        theirs = Artwork.objects.create(
+            collection=self.foreign, title='Theirs', image=tiny_image()
+        )
+        url = reverse('gallery:artwork_bulk_delete')
+        confirm = self.client.post(url, {'ids': [mine.pk, theirs.pk]})
+        self.assertContains(confirm, 'Delete 1 Artwork')
+        self.client.post(url, {'ids': [mine.pk, theirs.pk], 'confirm': '1'})
+        self.assertFalse(Artwork.objects.filter(pk=mine.pk).exists())
+        self.assertTrue(Artwork.objects.filter(pk=theirs.pk).exists())
+
+
 class EditFormThumbnailTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('thumb_owner', password='pass12345')
