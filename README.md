@@ -393,8 +393,11 @@ GitHub Issues using MoSCoW prioritisation — see
   image as a thumbnail (a custom `ImagePreviewInput` widget) instead of
   Django's raw "Currently: path" text, so the owner can see what they
   are replacing.
-- The public home opens with a one-sentence introduction for first-time
-  visitors, above the grid of published Artworks.
+- The public home opens with the project's sentence as its centrepiece —
+  large editorial type, no stock imagery — plus one line on the problem
+  it solves (work scattered across drives, phones and feeds). Public
+  Artwork/Collection cards are frameless: no box around the work, just
+  the image and a quiet caption, so the art is what you see.
 
 ### Planned Features (MoSCoW)
 
