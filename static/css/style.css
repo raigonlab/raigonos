@@ -196,7 +196,7 @@ h1 i {
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--gap);
+  gap: 2.25rem var(--gap);
 }
 
 @media (min-width: 560px) {
@@ -211,16 +211,20 @@ h1 i {
   }
 }
 
+/* Public cards are frameless: no box around the work, so the art itself
+   is what you see. The title is a quiet caption underneath. */
+
 .card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: transform 0.15s ease;
+  background: none;
+  border: none;
 }
 
-.card:hover {
-  transform: translateY(-2px);
+.card img {
+  transition: opacity 0.2s ease;
+}
+
+.card:hover img {
+  opacity: 0.88;
 }
 
 .card a {
@@ -229,6 +233,8 @@ h1 i {
 
 .card-image {
   background: var(--color-bg);
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .card img {
@@ -239,8 +245,7 @@ h1 i {
 }
 
 .card-body {
-  padding: 0.6rem 0.8rem;
-  border-top: 1px solid var(--color-border);
+  padding: 0.6rem 0 0;
 }
 
 .card-title {
@@ -260,18 +265,23 @@ h1 i {
    artwork grid */
 
 .intro {
-  max-width: 40rem;
-  margin: 0 0 3rem;
+  max-width: 52rem;
+  margin: 0 0 5rem;
+  padding-top: 2rem;
 }
 
 .intro h1 {
-  margin-bottom: 1rem;
-  font-size: clamp(2rem, 5vw, 3.25rem);
+  margin-bottom: 1.5rem;
+  font-size: clamp(2.4rem, 7vw, 4.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
 }
 
 .intro-lede {
-  margin: 0 0 1.25rem;
-  font-size: 1.05rem;
+  max-width: 36rem;
+  margin: 0 0 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.65;
   color: var(--color-muted);
 }
 
