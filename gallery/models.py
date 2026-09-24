@@ -8,9 +8,11 @@ class Collection(models.Model):
 
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
+    STATUS_ARCHIVED = 'archived'
     STATUS_CHOICES = [
         (STATUS_DRAFT, 'Draft (only visible to you)'),
         (STATUS_PUBLISHED, 'Published (visible in the public gallery)'),
+        (STATUS_ARCHIVED, 'Archived (kept on record, never public)'),
     ]
 
     owner = models.ForeignKey(
