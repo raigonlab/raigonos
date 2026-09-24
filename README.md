@@ -185,6 +185,8 @@ bureaucracy standing between them and presenting it to the world.
 - `/dashboard/` — owner-only management area: list of the owner's Collections
 - `/dashboard/collections/<slug>/` — one Collection's own dashboard page
   (its Artworks, Edit/Delete/View actions)
+- `/dashboard/archive/` — owner's archived Collections (kept on record,
+  never public); archive/unarchive are single-click POST actions
 - `/dashboard/artworks/` — owner's Artworks across all Collections
 - `/dashboard/artworks/<id>/` — Artwork preview (full page, not a modal),
   with Previous/Next through the rest of its Collection
@@ -349,6 +351,12 @@ GitHub Issues using MoSCoW prioritisation — see
   Collection's card, not just a small icon.
 - **All Artworks** — every Artwork the owner has, across Collections,
   flattened into one list.
+- **Archive** — a third Collection status alongside Draft and Published,
+  for work stored in the catalogue but never published. Archived
+  Collections disappear from the main Collections list and from the
+  public site, and live in their own sidebar section; restoring one
+  returns it to Draft (never straight to Published, so nothing goes
+  public without a deliberate re-publish).
 - **Artwork preview** — a full page (not a modal) showing one Artwork
   large with its metadata, plus Previous/Next links to browse the rest
   of its Collection without returning to the list. A Close (X) icon and
@@ -440,7 +448,7 @@ erDiagram
 | `slug` | SlugField (unique) | Auto-generated from `title`; used in public URLs |
 | `description` | TextField | Optional |
 | `cover_image` | ImageField | Optional; stored on Cloudinary in production |
-| `status` | CharField (choices) | `draft` (owner-only) or `published` (public) |
+| `status` | CharField (choices) | `draft` (owner-only, not ready yet), `published` (public) or `archived` (kept on record in the owner's Archive section, never public) |
 | `created_at` / `updated_at` | DateTimeField | Auto-managed |
 
 **`Artwork`**
