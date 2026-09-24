@@ -265,45 +265,74 @@ h1 i {
   font-style: italic;
 }
 
-/* Public home -- deep black, artwork first. Two views of the same work:
-   the exhibition (a full-screen room of slowly drifting artworks, driven
-   by static/js/exhibition.js) and, underneath, the plain grid, which is
-   what you get without JavaScript or after choosing "Grid". */
+/* Public home -- deep black by default, artwork first. Two views of the
+   same work: the exhibition (a full-screen room of slowly drifting
+   artworks, driven by static/js/exhibition.js) and, underneath, the plain
+   grid, which is what you get without JavaScript or after choosing
+   "Grid". The viewer can switch the whole home to a light theme; both
+   themes are just these variables. */
 
 body.home-dark {
-  background: #0a0a0a;
-  color: #ece9e2;
+  --hd-bg: #0a0a0a;
+  --hd-text: #ece9e2;
+  --hd-muted: #a19d92;
+  --hd-faint: #77746f;
+  --hd-line: #1b1b1b;
+  --hd-line-strong: #2a2a2a;
+  --hd-card: #141414;
+  --hd-chip: #1c1c1c;
+  --hd-shadow: rgba(0, 0, 0, 0.65);
+  --hd-pill: rgba(10, 10, 10, 0.7);
+  --hd-logo-filter: invert(1);
+
+  background: var(--hd-bg);
+  color: var(--hd-text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+html[data-home-theme='light'] body.home-dark {
+  --hd-bg: #f4f1ea;
+  --hd-text: #1d1d1b;
+  --hd-muted: #6b6657;
+  --hd-faint: #9a9588;
+  --hd-line: #e6e1d6;
+  --hd-line-strong: #d8d3c6;
+  --hd-card: #ebe7dd;
+  --hd-chip: #e6e1d6;
+  --hd-shadow: rgba(40, 30, 10, 0.28);
+  --hd-pill: rgba(244, 241, 234, 0.75);
+  --hd-logo-filter: none;
 }
 
 body.home-dark header {
-  border-bottom-color: #1b1b1b;
+  border-bottom-color: var(--hd-line);
 }
 
 body.home-dark .brand-logo {
-  filter: invert(1);
+  filter: var(--hd-logo-filter);
 }
 
 body.home-dark .nav-auth {
-  color: #a19d92;
+  color: var(--hd-muted);
 }
 
 body.home-dark .nav-auth a:hover {
-  color: #ece9e2;
+  color: var(--hd-text);
   text-decoration: none;
 }
 
 body.home-dark footer {
-  border-top-color: #1b1b1b;
-  color: #77746f;
+  border-top-color: var(--hd-line);
+  color: var(--hd-faint);
 }
 
 body.home-dark .card-image {
-  background: #141414;
+  background: var(--hd-card);
 }
 
 body.home-dark .card-title,
 body.home-dark .card-empty {
-  color: #a19d92;
+  color: var(--hd-muted);
 }
 
 .home-head {
@@ -320,11 +349,11 @@ body.home-dark .card-empty {
   font-size: 1.05rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  color: #a19d92;
+  color: var(--hd-muted);
 }
 
 .home-welcome em {
-  color: #ece9e2;
+  color: var(--hd-text);
 }
 
 .home-toggle {
@@ -335,12 +364,12 @@ body.home-dark .card-empty {
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #a19d92;
+  color: var(--hd-muted);
   cursor: pointer;
 }
 
 .home-toggle:hover {
-  color: #ece9e2;
+  color: var(--hd-text);
 }
 
 /* The exhibition: hidden until the script switches it on (html.is-exhibition). */
@@ -351,12 +380,13 @@ body.home-dark .card-empty {
   inset: 0;
   z-index: 100;
   overflow: hidden;
-  background: #0a0a0a;
-  color: #a19d92;
+  background: var(--hd-bg);
+  color: var(--hd-muted);
   cursor: grab;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  transition: background 0.3s ease;
 }
 
 html.is-exhibition .exhibition {
@@ -383,6 +413,10 @@ html.is-exhibition {
   will-change: transform;
 }
 
+.ex-row.is-vertical {
+  flex-direction: column;
+}
+
 .ex-card {
   flex: none;
   display: flex;
@@ -400,11 +434,11 @@ html.is-exhibition {
   width: auto;
   object-fit: contain;
   border-radius: 3px;
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 14px 44px var(--hd-shadow);
   -webkit-user-drag: none;
 }
 
-/* Quiet chrome: logo, welcome, a couple of links, a player, a pill. */
+/* Quiet chrome: logo, welcome, a login link, a tools pill, a views pill. */
 
 .ex-logo {
   position: absolute;
@@ -413,7 +447,7 @@ html.is-exhibition {
   height: 26px;
   width: auto;
   border-radius: 0;
-  filter: invert(1);
+  filter: var(--hd-logo-filter);
   opacity: 0.9;
 }
 
@@ -426,20 +460,17 @@ html.is-exhibition {
   font-family: var(--font-serif);
   font-size: 0.95rem;
   white-space: nowrap;
-  color: #77746f;
+  color: var(--hd-faint);
 }
 
 .ex-welcome em {
-  color: #a19d92;
+  color: var(--hd-muted);
 }
 
 .ex-top {
   position: absolute;
-  top: 1.5rem;
+  top: 1.75rem;
   right: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
 }
 
 .ex-link,
@@ -448,13 +479,13 @@ html.is-exhibition {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #a19d92;
+  color: var(--hd-muted);
 }
 
 .ex-link:hover,
 .ex-pill a:hover,
 .ex-pill button:hover {
-  color: #ece9e2;
+  color: var(--hd-text);
   text-decoration: none;
 }
 
@@ -462,18 +493,19 @@ html.is-exhibition {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   border: none;
   border-radius: 50%;
   background: none;
-  color: #a19d92;
+  color: var(--hd-muted);
   cursor: pointer;
 }
 
 .ex-icon-btn:hover {
-  color: #ece9e2;
+  color: var(--hd-text);
+  background: var(--hd-chip);
 }
 
 .ex-icon-btn svg {
@@ -486,54 +518,51 @@ html.is-exhibition {
   stroke-linejoin: round;
 }
 
-.ex-icon-play,
-.ex-icon-btn.is-paused .ex-icon-pause {
-  display: none;
-}
-
-.ex-icon-btn.is-paused .ex-icon-play {
-  display: block;
+.ex-icon-btn svg.ex-fill {
   fill: currentColor;
   stroke: none;
 }
 
-.ex-player {
+/* Each tool shows the icon of the state it will switch to. */
+
+.ex-show-paused,
+.ex-show-light,
+.ex-show-vertical,
+.ex-icon-btn.is-paused .ex-show-playing,
+html[data-home-theme='light'] .ex-show-dark,
+.ex-icon-btn.is-vertical .ex-show-horizontal {
+  display: none;
+}
+
+.ex-icon-btn.is-paused .ex-show-paused,
+html[data-home-theme='light'] .ex-show-light,
+.ex-icon-btn.is-vertical .ex-show-vertical {
+  display: block;
+}
+
+.ex-tools,
+.ex-pill {
   position: absolute;
-  left: 2rem;
-  bottom: 1.75rem;
+  bottom: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  border: 1px solid var(--hd-line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--hd-pill);
+  backdrop-filter: blur(6px);
 }
 
-.ex-progress {
-  display: block;
-  width: 150px;
-  height: 1px;
-  background: #2a2a2a;
-}
-
-.ex-progress-fill {
-  display: block;
-  width: 0;
-  height: 100%;
-  background: #c9a45c;
-  opacity: 0.7;
+.ex-tools {
+  left: 2rem;
+  gap: 0.15rem;
+  padding: 0.3rem;
 }
 
 .ex-pill {
-  position: absolute;
   left: 50%;
-  bottom: 1.5rem;
   transform: translateX(-50%);
-  display: flex;
-  align-items: center;
   gap: 1.5rem;
   padding: 0.4rem 1.5rem 0.4rem 0.4rem;
-  border: 1px solid #2a2a2a;
-  border-radius: var(--radius-pill);
-  background: rgba(10, 10, 10, 0.7);
-  backdrop-filter: blur(6px);
 }
 
 .ex-pill button {
@@ -551,8 +580,8 @@ html.is-exhibition {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #1c1c1c;
-  color: #ece9e2;
+  background: var(--hd-chip);
+  color: var(--hd-text);
 }
 
 .ex-pill-current svg {
@@ -574,8 +603,10 @@ html.is-exhibition {
     top: 4.5rem;
   }
 
-  .ex-player {
-    display: none;
+  .ex-tools {
+    left: 50%;
+    bottom: 4.9rem;
+    transform: translateX(-50%);
   }
 }
 

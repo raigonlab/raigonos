@@ -2,7 +2,9 @@
 // Rows of artworks drift slowly past in a dark, mostly empty room; the
 // ones far from the centre soften, fade and shrink a little, like objects
 // at different depths. Drag, swipe or scroll to move things along, or just
-// stay and look. Without JavaScript the plain grid underneath is shown.
+// stay and look. A small tools pill switches the drift on and off, flips
+// the theme, and turns the rows into columns that fall top to bottom.
+// Without JavaScript the plain grid underneath is shown.
 (function () {
   var root = document.querySelector('[data-exhibition]');
   var dataEl = document.getElementById('exhibition-data');
@@ -26,14 +28,16 @@
   var doc = document.documentElement;
   var stage = root.querySelector('.ex-stage');
   var pauseButton = root.querySelector('[data-exhibition-pause]');
+  var themeButton = root.querySelector('[data-exhibition-theme]');
+  var directionButton = root.querySelector('[data-exhibition-direction]');
   var fullscreenButton = root.querySelector('[data-exhibition-fullscreen]');
-  var progress = root.querySelector('.ex-progress-fill');
   var reducedMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Vertical position (share of the viewport height), relative size and
-  // drift speed (px per second) of each row. Rows share a direction but
-  // not a speed, so they slide against each other.
+  // Position of each lane across the screen (share of the viewport height
+  // for rows, of the width for columns), relative size and drift speed
+  // (px per second). Lanes share a direction but not a speed, so they
+  // slide against each other.
   var ROWS = [
     { y: 0.23, size: 1, speed: 20 },
     { y: 0.53, size: 0.85, speed: 15 },
@@ -58,24 +62,29 @@
   var last = 0;
   var viewW = 0;
   var viewH = 0;
+  var vertical = false;
   var mouseX = 0;
-  var mouseTarget = 0;
+  var mouseY = 0;
+  var mouseTargetX = 0;
+  var mouseTargetY = 0;
   var dragging = false;
   var dragX = 0;
+  var dragY = 0;
   var dragDistance = 0;
   var suppressClick = false;
 
-  function remember(view) {
+  // Small per-viewer conveniences; the page works the same without them.
+  function remember(store, key, value) {
     try {
-      sessionStorage.setItem('raigonos-home-view', view);
+      window[store].setItem('raigonos-home-' + key, value);
     } catch (err) {
       // Private mode etc.: the choice just isn't remembered.
     }
   }
 
-  function remembered() {
+  function remembered(store, key) {
     try {
-      return sessionStorage.getItem('raigonos-home-view');
+      return window[store].getItem('raigonos-home-' + key);
     } catch (err) {
       return null;
     }
@@ -103,23 +112,32 @@
     viewW = root.clientWidth;
     viewH = root.clientHeight;
 
-    var layout = viewH < 560 ? ROWS_COMPACT : ROWS;
-    var slot = Math.max(viewW * 0.38, 260);
+    var layout;
+
+    if (vertical) {
+      layout = viewW < 520 ? ROWS_COMPACT : ROWS;
+    } else {
+      layout = viewH < 560 ? ROWS_COMPACT : ROWS;
+    }
+
+    var span = vertical ? viewH : viewW;
+    var lane = vertical ? viewW * (layout.length > 2 ? 0.28 : 0.4) : 0;
+    var slot = Math.max(span * (vertical ? 0.4 : 0.38), 260);
     var baseHeight = Math.min(Math.max(viewH * 0.165, 96), 190);
 
     layout.forEach(function (config, rowIndex) {
       var pool = shuffle(works.slice());
 
-      // With plenty of work, each row shows its own share, so the same
-      // piece is not on screen twice. With little, every row shows all.
+      // With plenty of work, each lane shows its own share, so the same
+      // piece is not on screen twice. With little, every lane shows all.
       if (works.length >= layout.length * 4) {
         pool = pool.filter(function (work, i) {
           return i % layout.length === rowIndex;
         });
       }
 
-      // Repeat the row's sequence until one lap is wider than the screen.
-      var repeats = Math.max(1, Math.ceil((viewW * 1.5) / (pool.length * slot)));
+      // Repeat the lane's sequence until one lap is longer than the screen.
+      var repeats = Math.max(1, Math.ceil((span * 1.5) / (pool.length * slot)));
       var count = pool.length * repeats;
       var period = count * slot;
       var heights = [];
@@ -130,11 +148,18 @@
         heights.push(Math.round(baseHeight * config.size * (0.85 + Math.random() * 0.3)));
       }
 
-      el.className = 'ex-row';
-      el.style.top = (config.y * 100) + '%';
-      // Three identical laps, starting one lap to the left, so there is
-      // always artwork on both sides of the visible window.
-      el.style.left = (-period) + 'px';
+      el.className = 'ex-row' + (vertical ? ' is-vertical' : '');
+
+      // Three identical laps, starting one lap back, so there is always
+      // artwork on both sides of the visible window.
+      if (vertical) {
+        el.style.left = (config.y * 100) + '%';
+        el.style.top = (-period) + 'px';
+        el.style.width = lane + 'px';
+      } else {
+        el.style.top = (config.y * 100) + '%';
+        el.style.left = (-period) + 'px';
+      }
 
       for (var copy = 0; copy < 3; copy++) {
         for (var i = 0; i < count; i++) {
@@ -144,14 +169,20 @@
 
           link.className = 'ex-card';
           link.href = work.url;
-          link.style.width = slot + 'px';
+
+          if (vertical) {
+            link.style.width = lane + 'px';
+            link.style.height = slot + 'px';
+          } else {
+            link.style.width = slot + 'px';
+          }
 
           img.src = thumb(work.src);
           img.alt = work.title;
           img.draggable = false;
           img.decoding = 'async';
           img.style.height = heights[i] + 'px';
-          img.style.maxWidth = Math.round(slot * 0.7) + 'px';
+          img.style.maxWidth = Math.round((vertical ? lane : slot) * 0.7) + 'px';
 
           link.appendChild(img);
           el.appendChild(link);
@@ -183,15 +214,18 @@
 
     var dt = Math.min(now - last, 64) / 1000;
     var ease = 1 - Math.pow(1 - EASE, dt * 60);
-    var center = viewW / 2;
-    var reach = viewW * REACH;
+    var span = vertical ? viewH : viewW;
+    var center = span / 2;
+    var reach = span * REACH;
 
     last = now;
-    mouseX += (mouseTarget - mouseX) * ease;
+    mouseX += (mouseTargetX - mouseX) * ease;
+    mouseY += (mouseTargetY - mouseY) * ease;
 
     rows.forEach(function (row, rowIndex) {
       if (!paused && !reducedMotion && !dragging) {
-        row.target -= row.speed * dt;
+        // Sideways drift goes left; the vertical one falls downwards.
+        row.target += (vertical ? 1 : -1) * row.speed * dt;
       }
 
       // Keep one lap's worth of travel; the laps are identical, so the
@@ -208,14 +242,17 @@
 
       row.offset += (row.target - row.offset) * ease;
 
-      var shift = row.offset - mouseX * 18 * (rowIndex + 1);
+      var tilt = (vertical ? mouseY : mouseX) * 18 * (rowIndex + 1);
+      var shift = row.offset - tilt;
 
-      row.el.style.transform = 'translate3d(' + shift.toFixed(2) + 'px,0,0) translateY(-50%)';
+      row.el.style.transform = vertical ?
+        'translate3d(0,' + shift.toFixed(2) + 'px,0) translateX(-50%)' :
+        'translate3d(' + shift.toFixed(2) + 'px,0,0) translateY(-50%)';
 
       row.cards.forEach(function (card) {
         var x = card.index * row.slot + row.slot / 2 - row.period + shift;
 
-        if (x < -row.slot || x > viewW + row.slot) {
+        if (x < -row.slot || x > span + row.slot) {
           return;
         }
 
@@ -227,13 +264,6 @@
         card.el.style.zIndex = Math.round((1 - t) * 10);
       });
     });
-
-    if (progress && rows.length) {
-      var lap = rows[0];
-      var position = ((-lap.offset % lap.period) + lap.period) % lap.period;
-
-      progress.style.width = ((position / lap.period) * 100).toFixed(1) + '%';
-    }
 
     requestAnimationFrame(frame);
   }
@@ -255,13 +285,13 @@
 
   function show() {
     doc.classList.add('is-exhibition');
-    remember('exhibition');
+    remember('sessionStorage', 'view', 'exhibition');
     start();
   }
 
   function hide() {
     doc.classList.remove('is-exhibition');
-    remember('grid');
+    remember('sessionStorage', 'view', 'grid');
     stop();
 
     if (document.fullscreenElement && document.exitFullscreen) {
@@ -286,24 +316,27 @@
 
     dragging = true;
     dragX = event.clientX;
+    dragY = event.clientY;
     dragDistance = 0;
   });
 
   window.addEventListener('pointermove', function (event) {
-    if (viewW) {
-      mouseTarget = event.clientX / viewW - 0.5;
+    if (viewW && viewH) {
+      mouseTargetX = event.clientX / viewW - 0.5;
+      mouseTargetY = event.clientY / viewH - 0.5;
     }
 
     if (!dragging) {
       return;
     }
 
-    var dx = event.clientX - dragX;
+    var moved = vertical ? event.clientY - dragY : event.clientX - dragX;
 
     dragX = event.clientX;
-    dragDistance += Math.abs(dx);
+    dragY = event.clientY;
+    dragDistance += Math.abs(moved);
     rows.forEach(function (row) {
-      row.target += dx * row.depth;
+      row.target += moved * row.depth;
     });
   });
 
@@ -343,6 +376,53 @@
     });
   }
 
+  function setTheme(theme) {
+    if (theme === 'light') {
+      doc.setAttribute('data-home-theme', 'light');
+    } else {
+      doc.removeAttribute('data-home-theme');
+    }
+
+    if (themeButton) {
+      themeButton.setAttribute(
+        'aria-label',
+        theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'
+      );
+    }
+  }
+
+  function setDirection(isVertical) {
+    vertical = isVertical;
+
+    if (directionButton) {
+      directionButton.classList.toggle('is-vertical', vertical);
+      directionButton.setAttribute(
+        'aria-label',
+        vertical ? 'Drift sideways' : 'Drift top to bottom'
+      );
+    }
+  }
+
+  if (themeButton) {
+    themeButton.addEventListener('click', function () {
+      var next = doc.getAttribute('data-home-theme') === 'light' ? 'dark' : 'light';
+
+      setTheme(next);
+      remember('localStorage', 'theme', next);
+    });
+  }
+
+  if (directionButton) {
+    directionButton.addEventListener('click', function () {
+      setDirection(!vertical);
+      remember('localStorage', 'direction', vertical ? 'vertical' : 'horizontal');
+
+      if (running) {
+        build();
+      }
+    });
+  }
+
   if (fullscreenButton) {
     if (!root.requestFullscreen) {
       fullscreenButton.hidden = true;
@@ -374,7 +454,10 @@
     }, 250);
   });
 
-  if (remembered() !== 'grid') {
+  setTheme(remembered('localStorage', 'theme'));
+  setDirection(remembered('localStorage', 'direction') === 'vertical');
+
+  if (remembered('sessionStorage', 'view') !== 'grid') {
     show();
   }
 })();
