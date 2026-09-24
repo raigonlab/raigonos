@@ -321,3 +321,74 @@ class ArtworkListViewTests(TestCase):
         response = self.client.get(reverse('gallery:artwork_list'), {'q': 'my'})
         self.assertContains(response, 'My Piece')
         self.assertNotContains(response, 'Second Piece')
+
+
+class CollectionArchiveTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('keeper', password='pass12345')
+        self.other_user = User.objects.create_user('nosy', password='pass12345')
+        self.archived = Collection.objects.create(
+            owner=self.owner,
+            title='Stored Away',
+            status=Collection.STATUS_ARCHIVED,
+        )
+        Artwork.objects.create(
+            collection=self.archived, title='Kept Piece', image=tiny_image()
+        )
+        self.active = Collection.objects.create(
+            owner=self.owner,
+            title='Active Work',
+            status=Collection.STATUS_PUBLISHED,
+        )
+
+    def test_archived_collection_is_hidden_from_public_pages(self):
+        home = self.client.get(reverse('gallery:artwork_gallery'))
+        listing = self.client.get(reverse('gallery:collection_list'))
+        detail = self.client.get(
+            reverse('gallery:collection_detail', args=[self.archived.slug])
+        )
+        self.assertNotContains(home, 'Kept Piece')
+        self.assertNotContains(listing, 'Stored Away')
+        self.assertEqual(detail.status_code, 404)
+
+    def test_dashboard_excludes_archived_collections(self):
+        self.client.login(username='keeper', password='pass12345')
+        response = self.client.get(reverse('gallery:dashboard'))
+        self.assertContains(response, 'Active Work')
+        self.assertNotContains(response, 'Stored Away')
+
+    def test_archive_list_requires_login(self):
+        url = reverse('gallery:collection_archive_list')
+        response = self.client.get(url)
+        self.assertRedirects(response, f'/accounts/login/?next={url}')
+
+    def test_archive_list_shows_only_archived_collections(self):
+        self.client.login(username='keeper', password='pass12345')
+        response = self.client.get(reverse('gallery:collection_archive_list'))
+        self.assertContains(response, 'Stored Away')
+        self.assertNotContains(response, 'Active Work')
+
+    def test_archive_action_sets_status_via_post_only(self):
+        self.client.login(username='keeper', password='pass12345')
+        url = reverse('gallery:collection_archive', args=[self.active.slug])
+        self.client.get(url)
+        self.active.refresh_from_db()
+        self.assertEqual(self.active.status, Collection.STATUS_PUBLISHED)
+        self.client.post(url)
+        self.active.refresh_from_db()
+        self.assertEqual(self.active.status, Collection.STATUS_ARCHIVED)
+
+    def test_other_user_cannot_archive_someone_elses_collection(self):
+        self.client.login(username='nosy', password='pass12345')
+        url = reverse('gallery:collection_archive', args=[self.active.slug])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 404)
+        self.active.refresh_from_db()
+        self.assertEqual(self.active.status, Collection.STATUS_PUBLISHED)
+
+    def test_unarchive_restores_to_draft_not_published(self):
+        self.client.login(username='keeper', password='pass12345')
+        url = reverse('gallery:collection_unarchive', args=[self.archived.slug])
+        self.client.post(url)
+        self.archived.refresh_from_db()
+        self.assertEqual(self.archived.status, Collection.STATUS_DRAFT)
