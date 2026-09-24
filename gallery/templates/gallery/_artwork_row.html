@@ -18,12 +18,19 @@
     {% endif %}
     <svg class="dash-icon dash-artwork-chevron"><use href="#icon-chevron-right"></use></svg>
   </a>
-  <span class="dash-artwork-actions">
-    <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-icon-btn" title="Edit" aria-label="Edit Artwork">
-      <svg class="dash-icon"><use href="#icon-edit"></use></svg>
-    </a>
-    <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Artwork">
-      <svg class="dash-icon"><use href="#icon-trash"></use></svg>
-    </a>
-  </span>
+  <details class="dash-menu dash-artwork-menu" data-dash-menu>
+    <summary class="dash-icon-btn" aria-label="More actions for {{ artwork.title }}" title="More">
+      <svg class="dash-icon"><use href="#icon-more"></use></svg>
+    </summary>
+    <div class="dash-menu-panel dash-menu-panel-right">
+      <a href="{% url 'gallery:artwork_update' artwork.pk %}" class="dash-menu-item">
+        <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+        Edit artwork
+      </a>
+      <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-menu-item dash-menu-item-danger">
+        <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+        Delete artwork
+      </a>
+    </div>
+  </details>
 </li>
