@@ -92,6 +92,34 @@ here to document the reasoning behind decisions like the extensible
   media, online stores, third-party portfolio sites — can plug into it
   and reuse the same catalogued data, instead of the artist re-uploading
   their work separately everywhere.
+- **The public gallery as an exhibition in motion.** The public side is
+  meant to be experienced, not browsed: artworks drift slowly through a
+  dark, mostly empty viewport, like objects floating in an exhibition
+  space, with almost invisible controls. Movement can respond to scroll,
+  pointer/touch or discreet navigation, but the visitor can also simply
+  stay and contemplate. The conceptual reference is an earlier Raigon Lab
+  project, [raigon-mmxi](https://raigonlab.github.io/raigon-mmxi/) — an
+  inspiration for the motion and atmosphere, not something to copy; it
+  will be redesigned in the RaigonOS visual language (deep black, soft
+  contrast, subtle type, very restrained gold). It is deliberately **not**
+  built in this milestone, so that a visually complex feature cannot put
+  the core CRUD work at risk; the current public pages are the simple
+  version, and the routes are already separate from the dashboard so the
+  experience can replace them later.
+- **A way in for street artists.** Street art is ephemeral — pieces are
+  painted over and documentation ends up scattered across phone galleries
+  and feeds. A free, low-barrier place to catalogue and organise that
+  work (a Collection per wall, series or crew project) is a natural
+  audience for the platform.
+- **A toolbox and a storefront.** Beyond the archive, optional "toolbox"
+  modules could reuse the same Collections and Artworks data — the first
+  being a storefront that turns catalogued work into a shop (originals,
+  prints, digital files) without re-uploading anything.
+- **The Maker.** A dedicated page for the person behind the work, in
+  keeping with a system about documenting and preserving work rather than
+  building a public persona. Shown as "Coming soon" in the dashboard
+  sidebar so the direction is visible without spending development time
+  on it.
 
 The guiding principle behind all of the above: a platform artists can
 trust with their life's work, without extractive fees or unnecessary
@@ -194,6 +222,21 @@ bureaucracy standing between them and presenting it to the world.
 - `/dashboard/artworks/<id>/` — Artwork preview (full page, not a modal),
   with Previous/Next through the rest of its Collection
 - `/accounts/login/`, `/accounts/logout/`, `/accounts/signup/`
+
+**Three surfaces**
+
+RaigonOS is designed as three separate surfaces, even though only two are
+built today:
+
+1. **RaigonOS landing page** — introduces the product/platform
+   (future; today `/` doubles as the gallery home).
+2. **Public artist gallery** — what visitors see of an artist's published
+   work. Today a conventional page (`/`, `/collections/`,
+   `/collection/<slug>/`, `/artwork/<id>/`); planned to become the moving
+   exhibition described under the long-term vision. The dashboard's
+   "Public Gallery" link opens this surface.
+3. **Private dashboard** — where the artist manages Collections,
+   Artworks and the Archive (`/dashboard/...`).
 
 **User Flow**
 
@@ -416,6 +459,9 @@ GitHub Issues using MoSCoW prioritisation — see
 | Could-have | Invitation system for private Collections |
 | Could-have | Contact/inquiry form for direct messages to the artist |
 | Won't-have (this cycle) | Multi-artist public sign-up (marketplace mode) |
+| Won't-have (this cycle) | Public gallery as a moving exhibition (structure prepared, experience deferred) |
+| Won't-have (this cycle) | "The Maker" profile page (shown as "Coming soon" in the sidebar) |
+| Won't-have (this cycle) | Street-artist onboarding, toolbox and storefront |
 | Won't-have (this cycle) | Advanced filtering (by medium, year, status) beyond title search |
 
 ---
