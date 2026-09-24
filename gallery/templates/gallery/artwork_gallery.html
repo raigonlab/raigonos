@@ -2,14 +2,35 @@
 
 {% block title %}Artworks — RaigonOS{% endblock %}
 
-{% block content %}
-  <section class="intro">
-    <span class="eyebrow">RaigonOS</span>
-    <h1>A calm place to <em>keep and show</em> an artist&rsquo;s work.</h1>
-    <p class="intro-lede">An artist&rsquo;s work ends up scattered across drives, phones and feeds. RaigonOS gathers it into Collections you own, and shows it to the world with the art always first.</p>
-    <p class="intro-link"><a href="{% url 'gallery:collection_list' %}">View by Collection &rarr;</a></p>
-  </section>
+{% block body_class %}no-path-bar{% endblock %}
 
+{% block hero %}
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">RaigonOS</span>
+      <h1>A calm place to <em>keep and show</em> an artist&rsquo;s work.</h1>
+      <p class="hero-lede">An artist&rsquo;s work ends up scattered across drives, phones and feeds. RaigonOS gathers it into Collections you own, and shows it to the world with the art always first.</p>
+      <p class="hero-link"><a href="{% url 'gallery:collection_list' %}">View by Collection &rarr;</a></p>
+    </div>
+
+    {% if artworks %}
+      {# Decorative only: the same artworks are listed (with links) below. #}
+      <div class="hero-drift" aria-hidden="true">
+        <div class="hero-track">
+          {% for copy in '12' %}
+            <div class="hero-strip">
+              {% for artwork in artworks|slice:":12" %}
+                <img src="{{ artwork.image.url }}" alt="" loading="lazy">
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}
+
+{% block content %}
   <ul class="card-grid">
     {% for artwork in artworks %}
       <li class="card">
@@ -26,12 +47,4 @@
       <li class="card-empty">No artworks published yet.</li>
     {% endfor %}
   </ul>
-{% endblock %}
-
-{% block path_bar %}
-  <nav class="path-bar" aria-label="Breadcrumb">
-    <div class="path-bar-inner">
-      <span class="crumb-current">Artworks</span>
-    </div>
-  </nav>
 {% endblock %}

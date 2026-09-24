@@ -370,15 +370,23 @@ GitHub Issues using MoSCoW prioritisation — see
 
 - Home page (`/`) lists every published Artwork across all Collections in a
   uniform 4:5 portrait grid (1/2/4 columns depending on screen width) —
-  the default a visitor lands on.
+  the default a visitor lands on. It opens with a dark hero band: the
+  intro sentence, then the published artworks drifting slowly past
+  (CSS-only, decorative, paused on hover, off for visitors who prefer
+  reduced motion) — a small glimpse of the moving-exhibition idea under
+  the long-term vision.
 - `/collections/` lists published Collections instead, for browsing by
   series rather than a flat feed.
 - Collection and Artwork detail pages.
 - A persistent **path bar** fixed to the bottom of every public page
-  (`Artworks / Collections / <Collection> / <Artwork>`) shows exactly
-  where you are at all times, in the spirit of the Finder path bar —
+  except the home (`Gallery / Collections / <Collection> / <Artwork>`)
+  shows exactly where you are, in the spirit of the Finder path bar —
   deliberately not an inline breadcrumb, which shifted page content
-  between pages of different depth.
+  between pages of different depth. The home has none: it is the root,
+  so the bar would only repeat the page you're already on.
+- The public header is deliberately bare: signed-in, just a Dashboard
+  link (Log out lives in the dashboard's Account menu); signed-out,
+  Log in / Sign up.
 - Artwork detail: image and metadata/description side by side on wider
   screens (image capped at 70vh so it never dominates the page).
 

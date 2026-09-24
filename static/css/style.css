@@ -37,6 +37,10 @@ body:not(.dashboard-shell) {
   padding-bottom: 44px;
 }
 
+body.no-path-bar {
+  padding-bottom: 0;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -261,32 +265,107 @@ h1 i {
   font-style: italic;
 }
 
-/* Public home intro -- one sentence for first-time visitors, above the
-   artwork grid */
+/* Public home hero -- a dark band: the intro sentence, then a slow drift
+   of published artworks, a glimpse of the exhibition-in-motion idea (see
+   README, long-term vision). CSS only; the animation stops for visitors
+   who ask for reduced motion. */
 
-.intro {
-  max-width: 52rem;
-  margin: 0 0 5rem;
-  padding-top: 2rem;
+.hero {
+  overflow: hidden;
+  padding: 4.5rem 2rem 0;
+  background: #0d0d0e;
+  color: #ece9e2;
 }
 
-.intro h1 {
+.hero-copy {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero .eyebrow {
+  color: #c9a45c;
+}
+
+.hero h1 {
+  max-width: 52rem;
   margin-bottom: 1.5rem;
   font-size: clamp(2.4rem, 7vw, 4.75rem);
   line-height: 1.05;
   letter-spacing: -0.015em;
 }
 
-.intro-lede {
+.hero-lede {
   max-width: 36rem;
   margin: 0 0 1.5rem;
   font-size: 1.1rem;
   line-height: 1.65;
-  color: var(--color-muted);
+  color: #a19d92;
 }
 
-.intro-link {
+.hero-link {
   margin: 0;
+}
+
+.hero-link a {
+  color: #ece9e2;
+}
+
+.hero-drift {
+  margin: 2.5rem -2rem 0;
+  padding-bottom: 3rem;
+}
+
+.hero-track {
+  display: flex;
+  width: max-content;
+  animation: hero-drift 120s linear infinite;
+}
+
+.hero-drift:hover .hero-track {
+  animation-play-state: paused;
+}
+
+/* Each strip is at least one viewport wide, so the loop (-50%) is
+   seamless even with only a few artworks. */
+
+.hero-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 3.5rem;
+  min-width: 100vw;
+  padding: 0 1.75rem;
+  height: 19rem;
+}
+
+.hero-strip img {
+  width: auto;
+  height: 12rem;
+  border-radius: 4px;
+  opacity: 0.88;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+}
+
+.hero-strip img:nth-child(3n + 1) {
+  height: 14rem;
+  align-self: flex-start;
+}
+
+.hero-strip img:nth-child(3n + 2) {
+  height: 10rem;
+  align-self: flex-end;
+}
+
+@keyframes hero-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-track {
+    animation: none;
+  }
 }
 
 /* Path bar (public pages) -- a persistent, fixed strip at the bottom of
