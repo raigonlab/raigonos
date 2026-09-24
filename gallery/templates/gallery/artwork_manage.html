@@ -4,7 +4,7 @@
 
 {% block dash_breadcrumb %}
   <span class="dash-crumb-sep">/</span>
-  <a href="{% url 'gallery:collection_manage' artwork.collection.slug %}">{{ artwork.collection.title }}</a>
+  <a href="{% url 'gallery:collection_manage' artwork.collection.slug %}" data-dash-escape-close>{{ artwork.collection.title }}</a>
   <span class="dash-crumb-sep">/</span>
   <span class="dash-crumb-current">{{ artwork.title }}</span>
 {% endblock %}
@@ -29,9 +29,6 @@
           </a>
           <a href="{% url 'gallery:artwork_delete' artwork.pk %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Artwork">
             <svg class="dash-icon"><use href="#icon-trash"></use></svg>
-          </a>
-          <a href="{% url 'gallery:collection_manage' artwork.collection.slug %}" class="dash-icon-btn" title="Close" aria-label="Close Artwork preview" data-dash-escape-close>
-            <svg class="dash-icon"><use href="#icon-close"></use></svg>
           </a>
         </div>
       </div>
@@ -73,18 +70,12 @@
 
   <div class="dash-artwork-nav">
     {% if previous_artwork %}
-      <a href="{% url 'gallery:artwork_manage' previous_artwork.pk %}" class="dash-btn dash-btn-ghost">
-        <svg class="dash-icon"><use href="#icon-chevron-left"></use></svg>
-        Previous
-      </a>
+      <a href="{% url 'gallery:artwork_manage' previous_artwork.pk %}">&larr; Previous</a>
     {% else %}
       <span></span>
     {% endif %}
     {% if next_artwork %}
-      <a href="{% url 'gallery:artwork_manage' next_artwork.pk %}" class="dash-btn dash-btn-ghost">
-        Next
-        <svg class="dash-icon"><use href="#icon-chevron-right"></use></svg>
-      </a>
+      <a href="{% url 'gallery:artwork_manage' next_artwork.pk %}">Next &rarr;</a>
     {% endif %}
   </div>
 {% endblock %}
