@@ -41,13 +41,26 @@ def artwork_detail(request, pk):
 @login_required
 def dashboard(request):
     query = request.GET.get('q', '').strip()
-    collections = request.user.collections.all()
+    collections = request.user.collections.exclude(status=Collection.STATUS_ARCHIVED)
     if query:
         collections = collections.filter(title__icontains=query)
     return render(
         request,
         'gallery/dashboard.html',
         {'collections': collections, 'query': query},
+    )
+
+
+@login_required
+def collection_archive_list(request):
+    query = request.GET.get('q', '').strip()
+    collections = request.user.collections.filter(status=Collection.STATUS_ARCHIVED)
+    if query:
+        collections = collections.filter(title__icontains=query)
+    return render(
+        request,
+        'gallery/collection_archive_list.html',
+        {'collections': collections, 'query': query, 'active_nav': 'archive'},
     )
 
 
@@ -92,6 +105,7 @@ def collection_manage(request, slug):
     artworks = collection.artworks.all()
     if query:
         artworks = artworks.filter(title__icontains=query)
+    nav = 'archive' if collection.status == Collection.STATUS_ARCHIVED else 'collections'
     return render(
         request,
         'gallery/collection_manage.html',
@@ -99,9 +113,33 @@ def collection_manage(request, slug):
             'collection': collection,
             'artworks': artworks,
             'query': query,
-            'active_nav': 'collections',
+            'active_nav': nav,
         },
     )
+
+
+@login_required
+def collection_archive(request, slug):
+    collection = get_object_or_404(Collection, slug=slug, owner=request.user)
+    if request.method == 'POST':
+        collection.status = Collection.STATUS_ARCHIVED
+        collection.save()
+        messages.success(request, f'Collection "{collection.title}" archived.')
+        return redirect('gallery:dashboard')
+    return redirect('gallery:collection_manage', slug=collection.slug)
+
+
+@login_required
+def collection_unarchive(request, slug):
+    collection = get_object_or_404(Collection, slug=slug, owner=request.user)
+    if request.method == 'POST':
+        collection.status = Collection.STATUS_DRAFT
+        collection.save()
+        messages.success(
+            request, f'Collection "{collection.title}" restored to Draft.'
+        )
+        return redirect('gallery:collection_manage', slug=collection.slug)
+    return redirect('gallery:collection_archive_list')
 
 
 @login_required

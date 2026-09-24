@@ -14,6 +14,11 @@ urlpatterns = [
     ),
     path('artwork/<int:pk>/', views.artwork_detail, name='artwork_detail'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path(
+        'dashboard/archive/',
+        views.collection_archive_list,
+        name='collection_archive_list',
+    ),
     path('dashboard/artworks/', views.artwork_list, name='artwork_list'),
     path(
         'dashboard/artworks/<int:pk>/',
@@ -39,6 +44,16 @@ urlpatterns = [
         'dashboard/collections/<slug:slug>/delete/',
         views.collection_delete,
         name='collection_delete',
+    ),
+    path(
+        'dashboard/collections/<slug:slug>/archive/',
+        views.collection_archive,
+        name='collection_archive',
+    ),
+    path(
+        'dashboard/collections/<slug:slug>/unarchive/',
+        views.collection_unarchive,
+        name='collection_unarchive',
     ),
     path(
         'dashboard/collections/<slug:slug>/artworks/new/',
