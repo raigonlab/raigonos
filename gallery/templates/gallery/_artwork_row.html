@@ -5,7 +5,14 @@
     {% else %}
       <span class="dash-thumb-placeholder"></span>
     {% endif %}
-    <span class="dash-artwork-title">{{ artwork.title }}</span>
+    <span class="dash-artwork-text">
+      <span class="dash-artwork-title">{{ artwork.title }}</span>
+      {% if artwork.year or artwork.medium %}
+        <span class="dash-artwork-subtitle">
+          {% if artwork.year %}{{ artwork.year }}{% endif %}{% if artwork.year and artwork.medium %} &middot; {% endif %}{% if artwork.medium %}{{ artwork.medium }}{% endif %}
+        </span>
+      {% endif %}
+    </span>
     {% if show_collection %}
       <span class="dash-artwork-collection">{{ artwork.collection.title }}</span>
     {% endif %}
