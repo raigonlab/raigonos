@@ -10,11 +10,13 @@
 {% block dash_content %}
   <div class="dash-page-header">
     <div>
-      <span class="eyebrow">Collections</span>
+      <span class="eyebrow">Collection</span>
       <h1>{{ collection.title }}</h1>
       <div class="dash-collection-meta">
         {% if collection.status == 'published' %}
           <span class="dash-status dash-status-published">Published</span>
+        {% elif collection.status == 'archived' %}
+          <span class="dash-status dash-status-draft">Archived</span>
         {% else %}
           <span class="dash-status dash-status-draft">Draft</span>
         {% endif %}
@@ -28,17 +30,38 @@
     </div>
   </div>
 
-  <div class="dash-collection-icon-actions dash-collection-manage-actions">
+  <div class="dash-collection-manage-actions" role="group" aria-label="Collection actions">
+    <span class="dash-collection-manage-actions-label">Collection:</span>
     {% if collection.status == 'published' %}
-      <a href="{% url 'gallery:collection_detail' collection.slug %}" class="dash-icon-btn" title="View" aria-label="View published Collection">
+      <a href="{% url 'gallery:collection_detail' collection.slug %}" class="dash-btn dash-btn-ghost dash-btn-sm">
         <svg class="dash-icon"><use href="#icon-eye"></use></svg>
+        View
       </a>
     {% endif %}
-    <a href="{% url 'gallery:collection_update' collection.slug %}" class="dash-icon-btn" title="Edit Collection" aria-label="Edit Collection">
+    <a href="{% url 'gallery:collection_update' collection.slug %}" class="dash-btn dash-btn-ghost dash-btn-sm">
       <svg class="dash-icon"><use href="#icon-edit"></use></svg>
+      Edit Collection
     </a>
-    <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete Collection" aria-label="Delete Collection">
+    {% if collection.status == 'archived' %}
+      <form method="post" action="{% url 'gallery:collection_unarchive' collection.slug %}" class="dash-inline-form">
+        {% csrf_token %}
+        <button type="submit" class="dash-btn dash-btn-ghost dash-btn-sm">
+          <svg class="dash-icon"><use href="#icon-archive"></use></svg>
+          Restore to Draft
+        </button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'gallery:collection_archive' collection.slug %}" class="dash-inline-form">
+        {% csrf_token %}
+        <button type="submit" class="dash-btn dash-btn-ghost dash-btn-sm">
+          <svg class="dash-icon"><use href="#icon-archive"></use></svg>
+          Archive
+        </button>
+      </form>
+    {% endif %}
+    <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-btn dash-btn-danger dash-btn-sm">
       <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+      Delete Collection
     </a>
   </div>
 
