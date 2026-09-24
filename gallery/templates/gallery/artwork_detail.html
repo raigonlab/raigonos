@@ -5,6 +5,18 @@
 {% block title %}{{ artwork.title }} — RaigonOS{% endblock %}
 
 {% block content %}
+  {# Side arrows on wide screens; the inline pager below covers narrow ones. #}
+  {% if previous_artwork %}
+    <a href="{% url 'gallery:artwork_detail' previous_artwork.pk %}" class="artwork-arrow artwork-arrow-prev" rel="prev" aria-label="Previous artwork: {{ previous_artwork.title }}" title="Previous">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+    </a>
+  {% endif %}
+  {% if next_artwork %}
+    <a href="{% url 'gallery:artwork_detail' next_artwork.pk %}" class="artwork-arrow artwork-arrow-next" rel="next" aria-label="Next artwork: {{ next_artwork.title }}" title="Next">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+  {% endif %}
+
   <div class="artwork-layout">
     <div class="artwork-media">
       {% if artwork.image %}
@@ -13,7 +25,7 @@
     </div>
 
     <div class="artwork-info">
-      <span class="eyebrow">Artwork</span>
+      <span class="eyebrow">Artwork &middot; {{ position }} / {{ total }}</span>
       <h1>{{ artwork.title }}</h1>
 
       <p class="artwork-meta">
@@ -22,6 +34,15 @@
       </p>
       <p>{{ artwork.description }}</p>
 
+      <nav class="artwork-pager" aria-label="Artwork navigation">
+        {% if previous_artwork %}
+          <a href="{% url 'gallery:artwork_detail' previous_artwork.pk %}" rel="prev">&larr; Previous</a>
+        {% endif %}
+        {% if next_artwork %}
+          <a href="{% url 'gallery:artwork_detail' next_artwork.pk %}" rel="next">Next &rarr;</a>
+        {% endif %}
+      </nav>
+
       <p class="back-link">
         <a href="{% url 'gallery:collection_detail' artwork.collection.slug %}">
           &larr; Back to {{ artwork.collection.title }}
@@ -29,6 +50,29 @@
       </p>
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    // Left / right arrow keys step through the Collection.
+    document.addEventListener('keydown', function (event) {
+      var link;
+
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
+
+      if (event.key === 'ArrowLeft') {
+        link = document.querySelector('.artwork-arrow-prev');
+      } else if (event.key === 'ArrowRight') {
+        link = document.querySelector('.artwork-arrow-next');
+      }
+
+      if (link) {
+        window.location.href = link.href;
+      }
+    });
+  </script>
 {% endblock %}
 
 {% block path_bar %}

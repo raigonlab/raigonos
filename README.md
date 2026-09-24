@@ -409,6 +409,11 @@ GitHub Issues using MoSCoW prioritisation — see
   and no site menu.
 - Artwork detail: image and metadata/description side by side on wider
   screens (image capped at 70vh so it never dominates the page).
+  Previous / next arrows (and the left / right keys) step through the
+  Collection's artworks, with a "2 / 6" position; on narrow screens they
+  become two inline links.
+- There is no page footer: the slogan and copyright line added nothing to
+  a gallery whose pages should be the work itself.
 
 **Authentication**
 

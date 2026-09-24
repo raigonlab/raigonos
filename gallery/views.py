@@ -62,7 +62,19 @@ def artwork_detail(request, pk):
     artwork = get_object_or_404(
         Artwork, pk=pk, collection__status=Collection.STATUS_PUBLISHED
     )
-    return render(request, 'gallery/artwork_detail.html', {'artwork': artwork})
+    siblings = list(artwork.collection.artworks.all())
+    index = siblings.index(artwork)
+    return render(
+        request,
+        'gallery/artwork_detail.html',
+        {
+            'artwork': artwork,
+            'previous_artwork': siblings[index - 1] if index > 0 else None,
+            'next_artwork': siblings[index + 1] if index < len(siblings) - 1 else None,
+            'position': index + 1,
+            'total': len(siblings),
+        },
+    )
 
 
 @login_required

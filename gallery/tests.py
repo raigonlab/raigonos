@@ -76,6 +76,36 @@ class PublicGalleryViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class ArtworkDetailNavigationTests(TestCase):
+    def setUp(self):
+        owner = User.objects.create_user('nav_owner', password='pass12345')
+        collection = Collection.objects.create(
+            owner=owner, title='Series', status=Collection.STATUS_PUBLISHED
+        )
+        self.works = [
+            Artwork.objects.create(
+                collection=collection, title=title, image=tiny_image(), display_order=i
+            )
+            for i, title in enumerate(['First', 'Second', 'Third'])
+        ]
+
+    def detail(self, artwork):
+        return self.client.get(reverse('gallery:artwork_detail', args=[artwork.pk]))
+
+    def test_middle_artwork_links_both_ways(self):
+        response = self.detail(self.works[1])
+        self.assertEqual(response.context['previous_artwork'], self.works[0])
+        self.assertEqual(response.context['next_artwork'], self.works[2])
+        self.assertEqual((response.context['position'], response.context['total']), (2, 3))
+
+    def test_ends_have_only_one_direction(self):
+        self.assertIsNone(self.detail(self.works[0]).context['previous_artwork'])
+        self.assertIsNone(self.detail(self.works[2]).context['next_artwork'])
+
+    def test_no_footer_slogan_on_public_pages(self):
+        self.assertNotContains(self.detail(self.works[0]), 'Legacy')
+
+
 class CollectionListViewTests(TestCase):
     def setUp(self):
         owner = User.objects.create_user('list_owner', password='pass12345')
