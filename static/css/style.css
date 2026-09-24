@@ -1560,6 +1560,36 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   font-size: 0.8rem;
 }
 
+/* Current-image thumbnail shown by ImagePreviewInput on the edit forms */
+
+.dash-image-preview {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.4rem;
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius-sm);
+}
+
+.dash-image-preview img {
+  display: block;
+  max-width: 220px;
+  max-height: 180px;
+  border-radius: 4px;
+}
+
+.dash-image-clear {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  color: var(--dash-muted);
+}
+
+.dash-form input[type='file'] {
+  color: var(--dash-muted);
+}
+
 .dash-form-actions {
   display: flex;
   align-items: center;
