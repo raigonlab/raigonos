@@ -3,6 +3,8 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_POST
 
 from .forms import ArtworkForm, CollectionForm
 from .models import Artwork, Collection
@@ -236,6 +238,105 @@ def artwork_delete(request, pk):
         return redirect('gallery:dashboard')
     return render(
         request, 'gallery/artwork_confirm_delete.html', {'artwork': artwork}
+    )
+
+
+def _selected_ids(request):
+    return [i for i in request.POST.getlist('ids') if i.isdigit()]
+
+
+def _safe_next(request):
+    """The page a bulk action started from, only if it is on this site."""
+    target = request.POST.get('next', '')
+    if url_has_allowed_host_and_scheme(target, allowed_hosts={request.get_host()}):
+        return target
+    return ''
+
+
+def _redirect_back(request):
+    return redirect(_safe_next(request) or 'gallery:dashboard')
+
+
+BULK_COLLECTION_STATUS = {
+    'draft': (Collection.STATUS_DRAFT, 'moved to Draft'),
+    'publish': (Collection.STATUS_PUBLISHED, 'published'),
+    'archive': (Collection.STATUS_ARCHIVED, 'archived'),
+}
+
+
+@login_required
+@require_POST
+def collection_bulk_action(request):
+    collections = request.user.collections.filter(pk__in=_selected_ids(request))
+    action = request.POST.get('action')
+    count = collections.count()
+    if not count:
+        messages.info(request, 'Nothing was selected.')
+        return _redirect_back(request)
+
+    if action in BULK_COLLECTION_STATUS:
+        status, verb = BULK_COLLECTION_STATUS[action]
+        collections.update(status=status)
+        messages.success(
+            request, f'{count} Collection{"s" if count != 1 else ""} {verb}.'
+        )
+        return _redirect_back(request)
+
+    if action == 'delete':
+        if request.POST.get('confirm'):
+            artwork_count = Artwork.objects.filter(collection__in=collections).count()
+            collections.delete()
+            messages.success(
+                request,
+                f'{count} Collection{"s" if count != 1 else ""} deleted '
+                f'(with {artwork_count} artwork{"s" if artwork_count != 1 else ""}).',
+            )
+            return _redirect_back(request)
+        return render(
+            request,
+            'gallery/bulk_confirm_delete.html',
+            {
+                'kind': 'Collection',
+                'items': collections,
+                'artwork_count': Artwork.objects.filter(
+                    collection__in=collections
+                ).count(),
+                'form_action': request.path,
+                'next': _safe_next(request),
+            },
+        )
+
+    messages.error(request, 'Unknown action.')
+    return _redirect_back(request)
+
+
+@login_required
+@require_POST
+def artwork_bulk_delete(request):
+    artworks = Artwork.objects.filter(
+        pk__in=_selected_ids(request), collection__owner=request.user
+    )
+    count = artworks.count()
+    if not count:
+        messages.info(request, 'Nothing was selected.')
+        return _redirect_back(request)
+
+    if request.POST.get('confirm'):
+        artworks.delete()
+        messages.success(
+            request, f'{count} Artwork{"s" if count != 1 else ""} deleted.'
+        )
+        return _redirect_back(request)
+
+    return render(
+        request,
+        'gallery/bulk_confirm_delete.html',
+        {
+            'kind': 'Artwork',
+            'items': artworks,
+            'form_action': request.path,
+            'next': _safe_next(request),
+        },
     )
 
 

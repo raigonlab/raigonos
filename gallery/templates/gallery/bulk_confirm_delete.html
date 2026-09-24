@@ -1,0 +1,48 @@
+{% extends 'gallery/dashboard_base.html' %}
+
+{% block title %}Delete {{ kind }}s — RaigonOS{% endblock %}
+
+{% block dash_breadcrumb %}
+  <span class="dash-crumb-sep">/</span>
+  <span class="dash-crumb-current">Delete {{ kind }}s</span>
+{% endblock %}
+
+{% block dash_content %}
+  <div class="dash-page-header">
+    <div>
+      <span class="eyebrow">{{ kind }}s</span>
+      <h1>Delete {{ items|length }} {{ kind }}{{ items|length|pluralize }}?</h1>
+    </div>
+  </div>
+
+  <div class="dash-confirm">
+    <div class="dash-card">
+      <ul class="dash-confirm-list">
+        {% for item in items %}
+          <li>{{ item.title }}</li>
+        {% endfor %}
+      </ul>
+      <p>
+        {% if kind == 'Collection' %}
+          This will also delete the {{ artwork_count }} artwork{{ artwork_count|pluralize }}
+          inside {{ items|length|pluralize:"it,them" }}.
+        {% endif %}
+        This cannot be undone.
+      </p>
+
+      <form method="post" action="{{ form_action }}">
+        {% csrf_token %}
+        {% for item in items %}
+          <input type="hidden" name="ids" value="{{ item.pk }}">
+        {% endfor %}
+        {% if kind == 'Collection' %}<input type="hidden" name="action" value="delete">{% endif %}
+        <input type="hidden" name="confirm" value="1">
+        <input type="hidden" name="next" value="{{ next }}">
+        <div class="dash-confirm-actions">
+          <button type="submit">Yes, delete</button>
+          <a href="{% if next %}{{ next }}{% else %}{% url 'gallery:dashboard' %}{% endif %}" class="dash-btn dash-btn-ghost">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

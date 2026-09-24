@@ -26,6 +26,16 @@ urlpatterns = [
         name='artwork_manage',
     ),
     path(
+        'dashboard/collections/bulk/',
+        views.collection_bulk_action,
+        name='collection_bulk_action',
+    ),
+    path(
+        'dashboard/artworks/bulk-delete/',
+        views.artwork_bulk_delete,
+        name='artwork_bulk_delete',
+    ),
+    path(
         'dashboard/collections/new/',
         views.collection_create,
         name='collection_create',
