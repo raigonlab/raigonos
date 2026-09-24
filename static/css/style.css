@@ -461,6 +461,7 @@ body.dashboard-shell {
   --dash-muted: #6f6a5f;
   --dash-faint: #9a9588;
   --dash-zebra: rgba(70, 55, 30, 0.045);
+  --dash-row-hover: rgba(70, 55, 30, 0.1);
   --dash-accent: #d9ad64;
   --dash-accent-ink: #9c6b2c;
   --dash-accent-soft: rgba(185, 134, 63, 0.14);
@@ -477,7 +478,7 @@ body.dashboard-shell {
   background: var(--dash-bg);
   color: var(--dash-text);
   font-family: var(--dash-font);
-  font-size: 0.875rem;
+  font-size: 1.0938rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -492,6 +493,7 @@ html[data-dash-theme='dark'] body.dashboard-shell {
   --dash-muted: #a8a5a0;
   --dash-faint: #77746f;
   --dash-zebra: rgba(255, 255, 255, 0.03);
+  --dash-row-hover: rgba(255, 255, 255, 0.16);
   --dash-accent: #d1a35c;
   --dash-accent-ink: #d1a35c;
   --dash-accent-soft: rgba(209, 163, 92, 0.14);
@@ -540,7 +542,7 @@ body.dashboard-shell main {
   gap: 0.6rem;
   font-family: var(--dash-font);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1.1719rem;
   color: var(--dash-text);
   margin-bottom: 2rem;
 }
@@ -567,7 +569,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-nav-label {
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -581,7 +583,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   gap: 0.65rem;
   padding: 0.45rem 0.75rem;
   border-radius: var(--dash-radius-sm);
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-muted);
 }
 
@@ -607,7 +609,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-nav-link-muted {
-  font-size: 0.85rem;
+  font-size: 1.0625rem;
 }
 
 /* Theme toggle (light default, dark opt-in) */
@@ -621,7 +623,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-theme-toggle-label {
-  font-size: 0.85rem;
+  font-size: 1.0625rem;
   color: var(--dash-muted);
 }
 
@@ -689,13 +691,13 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   border-radius: 50%;
   background: var(--dash-card-hover);
   color: var(--dash-muted);
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   flex-shrink: 0;
 }
 
 .dash-user-name {
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -707,7 +709,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-logout {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--dash-muted);
 }
 
@@ -758,7 +760,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-breadcrumbs {
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-faint);
   display: flex;
   align-items: center;
@@ -822,7 +824,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-page-header .eyebrow {
   margin-bottom: 0.4rem;
-  font-size: 0.65rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.16em;
   color: var(--dash-accent-ink);
 }
@@ -833,7 +835,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-page-intro {
   margin: 0.4rem 0 0;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-faint);
 }
 
@@ -901,7 +903,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   gap: 0.5rem;
   padding: 0.45rem 0.6rem;
   border-radius: 6px;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-muted);
 }
 
@@ -922,7 +924,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   letter-spacing: -0.012em;
   color: var(--dash-text);
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.875rem;
   line-height: 1.25;
 }
 
@@ -959,7 +961,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   border: none;
   background: transparent;
   font: inherit;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-text);
   outline: none;
   width: 160px;
@@ -1031,7 +1033,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   border-radius: var(--dash-radius-sm);
   border: 1px solid transparent;
   font: inherit;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
@@ -1072,7 +1074,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-btn-sm {
   padding: 0.35rem 0.65rem;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
 }
 
 /* Collections list */
@@ -1134,7 +1136,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-collection-name {
-  font-size: 0.9375rem;
+  font-size: 1.1719rem;
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1145,12 +1147,12 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   color: var(--dash-faint);
 }
 
 .dash-page-header .dash-collection-meta {
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-muted);
 }
 
@@ -1269,7 +1271,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-collection-list:not([data-view='grid']) > .dash-collection-card:hover,
 .dash-artwork-list:not([data-view='grid']) > .dash-artwork-row:hover {
-  background: var(--dash-card-hover);
+  background: var(--dash-row-hover);
 }
 
 /* Grid view for the Collections list: cover-first tiles, nested artworks
@@ -1330,7 +1332,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-artworks summary {
   cursor: pointer;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-faint);
   list-style: none;
 }
@@ -1403,7 +1405,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-artwork-title {
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1411,7 +1413,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-artwork-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   color: var(--dash-faint);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1476,7 +1478,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-artwork-collection {
   flex-shrink: 0;
-  font-size: 0.75rem;
+  font-size: 0.9375rem;
   color: var(--dash-faint);
   white-space: nowrap;
 }
@@ -1636,7 +1638,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   border: 1px solid var(--dash-border);
   border-radius: var(--dash-radius);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-muted);
 }
 
@@ -1675,7 +1677,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   margin: 0 0 1rem;
   padding-left: 1.1rem;
   color: var(--dash-text);
-  font-size: 0.875rem;
+  font-size: 1.0938rem;
 }
 
 /* Empty state */
@@ -1711,7 +1713,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-form label {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--dash-muted);
 }
@@ -1738,7 +1740,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   color: var(--dash-danger);
   padding-left: 0;
   list-style: none;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 /* Current-image thumbnail shown by ImagePreviewInput on the edit forms */
@@ -1785,7 +1787,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   background: var(--dash-accent);
   color: var(--dash-accent-text);
   font: inherit;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   font-weight: 500;
   cursor: pointer;
 }
@@ -1806,7 +1808,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-confirm p {
   color: var(--dash-muted);
-  font-size: 0.92rem;
+  font-size: 1.15rem;
 }
 
 .dash-confirm-actions {
@@ -1822,7 +1824,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   background: var(--dash-danger-soft);
   color: var(--dash-danger);
   font: inherit;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   font-weight: 500;
   cursor: pointer;
 }
@@ -1881,7 +1883,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 .dash-artwork-meta-list > div {
   display: flex;
   gap: 0.75rem;
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
 }
 
 .dash-artwork-meta-list dt {
@@ -1901,7 +1903,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 .dash-artwork-description {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: 1.1719rem;
   line-height: 1.75;
   color: var(--dash-muted);
 }
@@ -1914,7 +1916,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 .dash-artwork-nav a {
-  font-size: 0.8125rem;
+  font-size: 1.0156rem;
   color: var(--dash-faint);
 }
 
