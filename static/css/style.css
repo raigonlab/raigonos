@@ -1213,16 +1213,13 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 }
 
 /* Per-row actions sit back until the row/card is hovered or focused. */
-.dash-collection-card .dash-icon-btn,
-.dash-artwork-row .dash-icon-btn {
+.dash-collection-card .dash-icon-btn {
   opacity: 0.6;
   transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
 .dash-collection-card:hover .dash-icon-btn,
-.dash-collection-card:focus-within .dash-icon-btn,
-.dash-artwork-row:hover .dash-icon-btn,
-.dash-artwork-row:focus-within .dash-icon-btn {
+.dash-collection-card:focus-within .dash-icon-btn {
   opacity: 1;
 }
 
@@ -1401,10 +1398,34 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   transform: translateX(0);
 }
 
-.dash-artwork-actions {
-  display: flex;
-  gap: 0.4rem;
+/* Artwork cards stay image-first: the only control is a "..." overflow
+   menu that appears on hover/focus (always faintly visible on touch,
+   where there is no hover). Edit/Delete live inside it. */
+.dash-artwork-menu {
   flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.dash-artwork-row:hover .dash-artwork-menu,
+.dash-artwork-row:focus-within .dash-artwork-menu,
+.dash-artwork-menu[open] {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .dash-artwork-menu {
+    opacity: 0.7;
+  }
+}
+
+.dash-menu-panel-right {
+  left: auto;
+  right: 0;
+}
+
+.dash-artwork-row {
+  position: relative;
 }
 
 /* Flat "All Artworks" list (not nested inside a Collection card) --
@@ -1455,8 +1476,21 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   white-space: normal;
 }
 
-[data-view='grid'] .dash-artwork-actions {
-  margin-top: auto;
+[data-view='grid'] .dash-artwork-menu {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+}
+
+[data-view='grid'] .dash-artwork-menu > summary {
+  background: rgba(15, 16, 18, 0.55);
+  color: #e7e5e2;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+[data-view='grid'] .dash-artwork-menu > summary:hover {
+  background: rgba(15, 16, 18, 0.75);
 }
 
 [data-view='grid'] .dash-artwork-chevron {
