@@ -114,7 +114,9 @@ here to document the reasoning behind decisions like the extensible
 - **A toolbox and a storefront.** Beyond the archive, optional "toolbox"
   modules could reuse the same Collections and Artworks data — the first
   being a storefront that turns catalogued work into a shop (originals,
-  prints, digital files) without re-uploading anything.
+  prints, digital files) without re-uploading anything. Payments
+  is shown as "Coming soon" in the dashboard sidebar, next to The Maker,
+  to make that direction visible.
 - **The Maker.** A dedicated page for the person behind the work, in
   keeping with a system about documenting and preserving work rather than
   building a public persona. Shown as "Coming soon" in the dashboard
