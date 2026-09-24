@@ -376,12 +376,15 @@ GitHub Issues using MoSCoW prioritisation — see
   the published artworks, in random order, drifting slowly past each other
   in a mostly empty room, with the ones far from the centre softened,
   faded and shrunk for depth. Drag, swipe or scroll to move them, or just
-  watch. One quiet bar at the bottom holds everything: play/pause, a
-  light/dark theme switch, a direction switch (rows drifting sideways, or
-  columns falling top to bottom) and full screen, then a hairline and the
-  views — the exhibition itself, the plain **Grid**, and Collections (as
-  icons on narrow screens). Theme and direction are remembered in the
-  browser. The motion is a small vanilla
+  watch. There are no controls on the artwork: everything lives in one
+  **site menu**, a single round button fixed at the top-right of every
+  public page (exhibition, grid, Collections, Artwork pages). It opens a
+  panel with the exhibition tools (pause/play, a direction switch — rows
+  drifting sideways, or columns falling top to bottom — and full screen,
+  shown only while the exhibition is on screen), a light/dark theme
+  switch, the views (Exhibition, Grid, Collections) and the account links
+  (Dashboard when signed in; Log in / Sign up otherwise). Theme and
+  direction are remembered in the browser. The motion is a small vanilla
   JavaScript file (`static/js/exhibition.js`) whose concept follows an
   earlier Raigon Lab project, [raigon-mmxi](https://raigonlab.github.io/raigon-mmxi/),
   rewritten for RaigonOS. Without JavaScript, or after choosing Grid, the
@@ -395,9 +398,12 @@ GitHub Issues using MoSCoW prioritisation — see
   deliberately not an inline breadcrumb, which shifted page content
   between pages of different depth. The home has none: it is the root,
   so the bar would only repeat the page you're already on.
-- The public header is deliberately bare: signed-in, just a Dashboard
-  link (Log out lives in the dashboard's Account menu); signed-out,
-  Log in / Sign up. A Collections link is always there.
+- The public header is deliberately bare: just the logo. Everything else
+  (views, theme, Dashboard / Log in / Sign up) is in the site menu, one
+  button at the top-right, so it is always in the same place. The public
+  gallery pages are deep black by default with a light (cream) option;
+  Log in and Sign up keep the cream look. The dashboard has its own shell
+  and no site menu.
 - Artwork detail: image and metadata/description side by side on wider
   screens (image capped at 70vh so it never dominates the page).
 

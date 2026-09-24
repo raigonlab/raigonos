@@ -2,9 +2,10 @@
 // Rows of artworks drift slowly past in a dark, mostly empty room; the
 // ones far from the centre soften, fade and shrink a little, like objects
 // at different depths. Drag, swipe or scroll to move things along, or just
-// stay and look. A small tools pill switches the drift on and off, flips
-// the theme, and turns the rows into columns that fall top to bottom.
-// Without JavaScript the plain grid underneath is shown.
+// stay and look. The site menu (top-right, see site-menu.js) holds the
+// tools: pause the drift, turn the rows into columns that fall top to
+// bottom, go full screen, and switch between the exhibition and the plain
+// grid. Without JavaScript the plain grid underneath is shown.
 (function () {
   var root = document.querySelector('[data-exhibition]');
   var dataEl = document.getElementById('exhibition-data');
@@ -27,10 +28,9 @@
 
   var doc = document.documentElement;
   var stage = root.querySelector('.ex-stage');
-  var pauseButton = root.querySelector('[data-exhibition-pause]');
-  var themeButton = root.querySelector('[data-exhibition-theme]');
-  var directionButton = root.querySelector('[data-exhibition-direction]');
-  var fullscreenButton = root.querySelector('[data-exhibition-fullscreen]');
+  var pauseButton = document.querySelector('[data-exhibition-pause]');
+  var directionButton = document.querySelector('[data-exhibition-direction]');
+  var fullscreenButton = document.querySelector('[data-exhibition-fullscreen]');
   var reducedMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -299,18 +299,25 @@
     }
   }
 
-  document.querySelectorAll('[data-exhibition-open]').forEach(function (button) {
-    button.hidden = false;
-    button.addEventListener('click', show);
+  // The menu links are real links to /#exhibition and /#grid, so they work
+  // from any page; on this page they just switch the view in place.
+  document.querySelectorAll('[data-exhibition-open]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      show();
+    });
   });
 
-  root.querySelectorAll('[data-exhibition-close]').forEach(function (button) {
-    button.addEventListener('click', hide);
+  document.querySelectorAll('[data-exhibition-close]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      hide();
+    });
   });
 
   // Pointer: drag to move the rows, hover to tilt them very slightly.
   root.addEventListener('pointerdown', function (event) {
-    if (event.target.closest('[data-exhibition-ui]') || event.button > 0) {
+    if (event.button > 0) {
       return;
     }
 
@@ -376,21 +383,6 @@
     });
   }
 
-  function setTheme(theme) {
-    if (theme === 'light') {
-      doc.setAttribute('data-home-theme', 'light');
-    } else {
-      doc.removeAttribute('data-home-theme');
-    }
-
-    if (themeButton) {
-      themeButton.setAttribute(
-        'aria-label',
-        theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'
-      );
-    }
-  }
-
   function setDirection(isVertical) {
     vertical = isVertical;
 
@@ -401,15 +393,6 @@
         vertical ? 'Drift sideways' : 'Drift top to bottom'
       );
     }
-  }
-
-  if (themeButton) {
-    themeButton.addEventListener('click', function () {
-      var next = doc.getAttribute('data-home-theme') === 'light' ? 'dark' : 'light';
-
-      setTheme(next);
-      remember('localStorage', 'theme', next);
-    });
   }
 
   if (directionButton) {
@@ -424,14 +407,16 @@
   }
 
   if (fullscreenButton) {
-    if (!root.requestFullscreen) {
+    // The whole page goes full screen (not just the exhibition) so the
+    // menu stays reachable.
+    if (!doc.requestFullscreen) {
       fullscreenButton.hidden = true;
     } else {
       fullscreenButton.addEventListener('click', function () {
         if (document.fullscreenElement) {
           document.exitFullscreen();
         } else {
-          root.requestFullscreen();
+          doc.requestFullscreen();
         }
       });
     }
@@ -454,10 +439,14 @@
     }, 250);
   });
 
-  setTheme(remembered('localStorage', 'theme'));
   setDirection(remembered('localStorage', 'direction') === 'vertical');
 
-  if (remembered('sessionStorage', 'view') !== 'grid') {
+  // A #grid or #exhibition link wins over whatever was chosen last.
+  var wanted = location.hash.replace('#', '') || remembered('sessionStorage', 'view');
+
+  if (wanted !== 'grid') {
     show();
+  } else {
+    hide();
   }
 })();

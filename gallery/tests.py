@@ -101,6 +101,22 @@ class ArtworkGalleryViewTests(TestCase):
         self.assertContains(response, 'Visible Piece')
         self.assertNotContains(response, 'Hidden Piece')
 
+    def test_public_pages_have_the_site_menu(self):
+        response = self.client.get(reverse('gallery:artwork_gallery'))
+        self.assertContains(response, 'data-site-menu')
+        self.assertContains(response, 'Log in')
+
+    def test_site_menu_offers_the_dashboard_when_signed_in(self):
+        self.client.login(username='gallery_owner', password='pass12345')
+        response = self.client.get(reverse('gallery:collection_list'))
+        self.assertContains(response, 'data-site-menu')
+        self.assertContains(response, 'Dashboard')
+
+    def test_dashboard_has_no_site_menu(self):
+        self.client.login(username='gallery_owner', password='pass12345')
+        response = self.client.get(reverse('gallery:dashboard'))
+        self.assertNotContains(response, 'data-site-menu')
+
     def test_exhibition_data_lists_only_published_artworks(self):
         response = self.client.get(reverse('gallery:artwork_gallery'))
         titles = [work['title'] for work in response.context['exhibition']]

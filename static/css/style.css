@@ -86,18 +86,6 @@ header nav a:hover {
   opacity: 0.7;
 }
 
-.nav-auth {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.9rem;
-  color: var(--color-muted);
-}
-
-.nav-auth form {
-  margin: 0;
-}
-
 /* The public-site button[type='submit'] rule further down styles
    Save/primary buttons; these selectors keep it from overriding plain
    link-styled buttons (e.g. "Log out") that also happen to be
@@ -265,14 +253,29 @@ h1 i {
   font-style: italic;
 }
 
-/* Public home -- deep black by default, artwork first. Two views of the
-   same work: the exhibition (a full-screen room of slowly drifting
-   artworks, driven by static/js/exhibition.js) and, underneath, the plain
-   grid, which is what you get without JavaScript or after choosing
-   "Grid". The viewer can switch the whole home to a light theme; both
-   themes are just these variables. */
+/* Public gallery theme -- deep black by default, artwork first, with a
+   light (cream) option from the site menu. The public gallery pages opt in
+   with body.public-theme; login/signup keep the cream look. The --hd-*
+   variables hold the palette (light values at :root so the menu also works
+   on pages that are not themed), and body.public-theme re-points the
+   site-wide --color-* variables at them, so existing public styles follow. */
 
-body.home-dark {
+:root {
+  --hd-bg: #f7f4ee;
+  --hd-text: #121212;
+  --hd-muted: #6b6657;
+  --hd-faint: #9a9588;
+  --hd-line: #e6e1d6;
+  --hd-line-strong: #d8d3c6;
+  --hd-card: #ffffff;
+  --hd-chip: #ece8de;
+  --hd-panel: #fbf9f5;
+  --hd-shadow: rgba(40, 30, 10, 0.28);
+  --hd-pill: rgba(247, 244, 238, 0.8);
+  --hd-logo-filter: none;
+}
+
+body.public-theme {
   --hd-bg: #0a0a0a;
   --hd-text: #ece9e2;
   --hd-muted: #a19d92;
@@ -281,66 +284,46 @@ body.home-dark {
   --hd-line-strong: #2a2a2a;
   --hd-card: #141414;
   --hd-chip: #1c1c1c;
+  --hd-panel: #121212;
   --hd-shadow: rgba(0, 0, 0, 0.65);
   --hd-pill: rgba(10, 10, 10, 0.7);
   --hd-logo-filter: invert(1);
 
-  background: var(--hd-bg);
-  color: var(--hd-text);
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-html[data-home-theme='light'] body.home-dark {
-  --hd-bg: #f4f1ea;
-  --hd-text: #1d1d1b;
+html[data-site-theme='light'] body.public-theme {
+  --hd-bg: #f7f4ee;
+  --hd-text: #121212;
   --hd-muted: #6b6657;
   --hd-faint: #9a9588;
   --hd-line: #e6e1d6;
   --hd-line-strong: #d8d3c6;
-  --hd-card: #ebe7dd;
-  --hd-chip: #e6e1d6;
+  --hd-card: #ffffff;
+  --hd-chip: #ece8de;
+  --hd-panel: #fbf9f5;
   --hd-shadow: rgba(40, 30, 10, 0.28);
-  --hd-pill: rgba(244, 241, 234, 0.75);
+  --hd-pill: rgba(247, 244, 238, 0.8);
   --hd-logo-filter: none;
 }
 
-body.home-dark header {
-  border-bottom-color: var(--hd-line);
+body.public-theme {
+  --color-bg: var(--hd-bg);
+  --color-surface: var(--hd-card);
+  --color-text: var(--hd-text);
+  --color-muted: var(--hd-muted);
+  --color-border: var(--hd-line);
 }
 
-body.home-dark .brand-logo {
+body.public-theme .brand-logo {
   filter: var(--hd-logo-filter);
 }
 
-body.home-dark .nav-auth {
-  color: var(--hd-muted);
-}
-
-body.home-dark .nav-auth a:hover {
-  color: var(--hd-text);
-  text-decoration: none;
-}
-
-body.home-dark footer {
-  border-top-color: var(--hd-line);
-  color: var(--hd-faint);
-}
-
-body.home-dark .card-image {
+body.public-theme .card-image {
   background: var(--hd-card);
 }
 
-body.home-dark .card-title,
-body.home-dark .card-empty {
-  color: var(--hd-muted);
-}
-
 .home-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.5rem;
   margin-bottom: 2.5rem;
 }
 
@@ -356,20 +339,139 @@ body.home-dark .card-empty {
   color: var(--hd-text);
 }
 
-.home-toggle {
+/* Site menu: one button, fixed top-right on every public page, opening a
+   panel with the exhibition tools, theme, views and account links. It sits
+   above the exhibition overlay (z-index 100). */
+
+.site-menu {
+  position: fixed;
+  top: 1.2rem;
+  right: 2rem;
+  z-index: 200;
+}
+
+.site-menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   padding: 0;
+  border: 1px solid var(--hd-line-strong);
+  border-radius: 50%;
+  background: var(--hd-pill);
+  backdrop-filter: blur(6px);
+  color: var(--hd-text);
+  cursor: pointer;
+}
+
+.site-menu-toggle:hover,
+.site-menu.is-open .site-menu-toggle {
+  background: var(--hd-chip);
+}
+
+.site-menu-toggle svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.site-menu-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 15.5rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.4rem;
+  border: 1px solid var(--hd-line-strong);
+  border-radius: 16px;
+  background: var(--hd-panel);
+  box-shadow: 0 16px 48px var(--hd-shadow);
+}
+
+.site-menu-section + .site-menu-section {
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--hd-line);
+}
+
+.site-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.55rem 0.7rem;
   border: none;
+  border-radius: 10px;
   background: none;
-  font: inherit;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: left;
   color: var(--hd-muted);
   cursor: pointer;
 }
 
-.home-toggle:hover {
+.site-menu-item:hover {
+  background: var(--hd-chip);
   color: var(--hd-text);
+  text-decoration: none;
+}
+
+.site-menu-item[aria-current='page'],
+html.is-exhibition .site-menu [data-view='exhibition'],
+html:not(.is-exhibition) body.is-home .site-menu [data-view='grid'] {
+  color: var(--hd-text);
+  font-weight: 500;
+}
+
+.site-menu .mi {
+  display: inline-flex;
+}
+
+.site-menu svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-menu svg.mi-fill,
+.site-menu-toggle svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* Items with two states (a-state by default, b-state when switched). */
+
+.site-menu .mi-b {
+  display: none;
+}
+
+.site-menu .is-paused .mi-a,
+.site-menu .is-vertical .mi-a,
+html[data-site-theme='light'] .site-menu [data-site-theme-toggle] .mi-a {
+  display: none;
+}
+
+.site-menu .is-paused .mi-b,
+.site-menu .is-vertical .mi-b,
+html[data-site-theme='light'] .site-menu [data-site-theme-toggle] .mi-b {
+  display: inline-flex;
+}
+
+/* Exhibition tools only make sense while the exhibition is showing; the
+   theme switch only on pages that have a public theme. */
+
+html:not(.is-exhibition) .site-menu-tools,
+body:not(.public-theme) .site-menu-theme {
+  display: none;
+}
+
+.site-menu-tools + .site-menu-section {
+  margin-top: 0.35rem;
 }
 
 /* The exhibition: hidden until the script switches it on (html.is-exhibition). */
@@ -438,8 +540,6 @@ html.is-exhibition {
   -webkit-user-drag: none;
 }
 
-/* Quiet chrome: logo, welcome, a login link, a tools pill, a views pill. */
-
 .ex-logo {
   position: absolute;
   top: 1.75rem;
@@ -467,177 +567,17 @@ html.is-exhibition {
   color: var(--hd-muted);
 }
 
-.ex-top {
-  position: absolute;
-  top: 1.75rem;
-  right: 2rem;
-}
-
-.ex-link,
-.ex-view {
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--hd-muted);
-}
-
-.ex-link:hover,
-.ex-view:hover {
-  color: var(--hd-text);
-  text-decoration: none;
-}
-
-.ex-icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: none;
-  color: var(--hd-muted);
-  cursor: pointer;
-}
-
-.ex-icon-btn:hover {
-  color: var(--hd-text);
-  background: var(--hd-chip);
-}
-
-.ex-icon-btn svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.ex-icon-btn svg.ex-fill {
-  fill: currentColor;
-  stroke: none;
-}
-
-/* Each tool shows the icon of the state it will switch to. */
-
-.ex-show-paused,
-.ex-show-light,
-.ex-show-vertical,
-.ex-icon-btn.is-paused .ex-show-playing,
-html[data-home-theme='light'] .ex-show-dark,
-.ex-icon-btn.is-vertical .ex-show-horizontal {
-  display: none;
-}
-
-.ex-icon-btn.is-paused .ex-show-paused,
-html[data-home-theme='light'] .ex-show-light,
-.ex-icon-btn.is-vertical .ex-show-vertical {
-  display: block;
-}
-
-/* One bar for everything: viewing tools, a hairline, then the views. */
-
-.ex-bar {
-  position: absolute;
-  left: 50%;
-  bottom: 1.5rem;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  padding: 0.3rem;
-  border: 1px solid var(--hd-line-strong);
-  border-radius: var(--radius-pill);
-  background: var(--hd-pill);
-  backdrop-filter: blur(6px);
-}
-
-.ex-bar-group {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-}
-
-.ex-bar-divider {
-  width: 1px;
-  height: 20px;
-  margin: 0 0.6rem;
-  background: var(--hd-line-strong);
-}
-
-.ex-view {
-  display: inline-flex;
-  align-items: center;
-  height: 36px;
-  padding: 0 0.9rem;
-  border: none;
-  border-radius: var(--radius-pill);
-  background: none;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.ex-view svg {
-  display: none;
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.ex-pill-current {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--hd-chip);
-  color: var(--hd-text);
-}
-
-.ex-pill-current svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
 @media (max-width: 640px) {
+  .site-menu {
+    right: 1.25rem;
+  }
+
   .ex-logo {
     left: 1.25rem;
   }
 
-  .ex-top {
-    right: 1.25rem;
-  }
-
   .ex-welcome {
     top: 4.5rem;
-  }
-
-  /* Narrow screens: the two text views become icons so the bar fits. */
-
-  .ex-bar-divider {
-    margin: 0 0.35rem;
-  }
-
-  .ex-view {
-    justify-content: center;
-    width: 36px;
-    padding: 0;
-  }
-
-  .ex-view svg {
-    display: block;
-  }
-
-  .ex-view-label {
-    display: none;
   }
 }
 

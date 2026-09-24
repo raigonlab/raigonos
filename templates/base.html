@@ -9,24 +9,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {# Apply the saved public theme before first paint, to avoid a flash. #}
+  <script>try{if(localStorage.getItem('raigonos-theme')==='light'){document.documentElement.setAttribute('data-site-theme','light');}}catch(e){}</script>
   {% block extra_head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
+  {% block site_menu %}
+    {% include '_site_menu.html' %}
+    <script src="{% static 'js/site-menu.js' %}"></script>
+  {% endblock %}
+
   {% block site_header %}
   <header>
     <nav>
       <a href="{% url 'gallery:artwork_gallery' %}" class="brand">
         <img src="{% static 'images/logo.svg' %}" alt="RaigonOS" class="brand-logo">
       </a>
-      <div class="nav-auth">
-        <a href="{% url 'gallery:collection_list' %}">Collections</a>
-        {% if user.is_authenticated %}
-          <a href="{% url 'gallery:dashboard' %}">Dashboard</a>
-        {% else %}
-          <a href="{% url 'login' %}">Log in</a>
-          <a href="{% url 'signup' %}">Sign up</a>
-        {% endif %}
-      </div>
     </nav>
   </header>
   {% endblock %}
