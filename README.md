@@ -189,6 +189,8 @@ bureaucracy standing between them and presenting it to the world.
 - `/dashboard/archive/` — owner's archived Collections (kept on record,
   never public); archive/unarchive are single-click POST actions
 - `/dashboard/artworks/` — owner's Artworks across all Collections
+- `/dashboard/collections/bulk/`, `/dashboard/artworks/bulk-delete/` —
+  POST-only endpoints behind the Select mode's bulk actions
 - `/dashboard/artworks/<id>/` — Artwork preview (full page, not a modal),
   with Previous/Next through the rest of its Collection
 - `/accounts/login/`, `/accounts/logout/`, `/accounts/signup/`
@@ -367,6 +369,15 @@ GitHub Issues using MoSCoW prioritisation — see
 - **Grid/List toggle**, remembered per browser, available everywhere
   Artworks or Collections are listed — both are the same underlying
   list, rendered two ways in CSS.
+- **Bulk management** — a "Select" button next to the search box turns
+  the current list (Collections, All Artworks, or one Collection's
+  Artworks) into selectable cards with a contextual action bar: Move to
+  Draft / Publish / Archive for Collections, Delete for both. Deleting
+  goes through the usual server-rendered confirmation page (no JS
+  confirm dialog), and every selected id is re-checked against the
+  logged-in owner, so other users' items are silently ignored. Artworks
+  have no status of their own (it comes from their Collection), so
+  Draft/Publish apply to Collections only.
 - **Light/dark theme toggle** for the dashboard specifically (light by
   default, matching the public site's palette); the public gallery has
   no dark mode by design.
