@@ -285,6 +285,30 @@ class CollectionCrudTests(TestCase):
         self.assertFalse(Artwork.objects.filter(title='Gone Too').exists())
 
 
+class EditFormThumbnailTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('thumb_owner', password='pass12345')
+        self.client.login(username='thumb_owner', password='pass12345')
+        self.collection = Collection.objects.create(owner=self.owner, title='Thumbs')
+        self.artwork = Artwork.objects.create(
+            collection=self.collection, title='Pic', image=tiny_image()
+        )
+
+    def test_artwork_edit_form_shows_current_image_thumbnail(self):
+        response = self.client.get(
+            reverse('gallery:artwork_update', args=[self.artwork.pk])
+        )
+        self.assertContains(response, 'dash-image-preview')
+        self.assertContains(response, self.artwork.image.url)
+        self.assertNotContains(response, 'Currently:')
+
+    def test_new_artwork_form_has_no_thumbnail(self):
+        response = self.client.get(
+            reverse('gallery:artwork_create', args=[self.collection.slug])
+        )
+        self.assertNotContains(response, 'dash-image-preview')
+
+
 class ArtworkListViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('lister', password='pass12345')
