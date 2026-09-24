@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Count, Max, Min
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -36,7 +37,13 @@ def artwork_gallery(request):
 
 
 def collection_list(request):
-    collections = Collection.objects.filter(status=Collection.STATUS_PUBLISHED)
+    collections = Collection.objects.filter(
+        status=Collection.STATUS_PUBLISHED
+    ).annotate(
+        artwork_count=Count('artworks'),
+        first_year=Min('artworks__year'),
+        last_year=Max('artworks__year'),
+    )
     return render(
         request, 'gallery/collection_list.html', {'collections': collections}
     )

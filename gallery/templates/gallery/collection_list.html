@@ -9,17 +9,26 @@
   <h1>Collections</h1>
   <p><a href="{% url 'gallery:artwork_gallery' %}">&larr; All Artworks</a></p>
 
-  <ul class="card-grid">
+  <ul class="collection-list">
     {% for collection in collections %}
-      <li class="card">
-        <a href="{% url 'gallery:collection_detail' collection.slug %}">
-          <div class="card-image">
+      <li>
+        <a href="{% url 'gallery:collection_detail' collection.slug %}" class="collection-row">
+          <div class="collection-cover">
             {% if collection.cover_image %}
               <img src="{{ collection.cover_image.url }}" alt="{{ collection.title }}">
             {% endif %}
           </div>
-          <div class="card-body">
-            <span class="card-title">{{ collection.title }}</span>
+          <div class="collection-info">
+            <h2 class="collection-title">{{ collection.title }}</h2>
+            <p class="collection-meta">
+              {{ collection.artwork_count }} artwork{{ collection.artwork_count|pluralize }}
+              {% if collection.first_year %}
+                &middot; {{ collection.first_year }}{% if collection.last_year != collection.first_year %}&ndash;{{ collection.last_year }}{% endif %}
+              {% endif %}
+            </p>
+            {% if collection.description %}
+              <p class="collection-blurb">{{ collection.description|truncatechars:180 }}</p>
+            {% endif %}
           </div>
         </a>
       </li>

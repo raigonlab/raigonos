@@ -76,6 +76,29 @@ class PublicGalleryViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class CollectionListViewTests(TestCase):
+    def setUp(self):
+        owner = User.objects.create_user('list_owner', password='pass12345')
+        collection = Collection.objects.create(
+            owner=owner,
+            title='Rows Collection',
+            description='A short note about the series.',
+            status=Collection.STATUS_PUBLISHED,
+        )
+        Artwork.objects.create(
+            collection=collection, title='One', image=tiny_image(), year=2016
+        )
+        Artwork.objects.create(
+            collection=collection, title='Two', image=tiny_image(), year=2020
+        )
+
+    def test_row_shows_count_years_and_description(self):
+        response = self.client.get(reverse('gallery:collection_list'))
+        self.assertContains(response, '2 artworks')
+        self.assertContains(response, '2016&ndash;2020')
+        self.assertContains(response, 'A short note about the series.')
+
+
 class ArtworkGalleryViewTests(TestCase):
     def setUp(self):
         owner = User.objects.create_user('gallery_owner', password='pass12345')

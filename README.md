@@ -390,7 +390,10 @@ GitHub Issues using MoSCoW prioritisation — see
   rewritten for RaigonOS. Without JavaScript, or after choosing Grid, the
   page is the plain grid, so every published artwork is always reachable.
 - `/collections/` lists published Collections instead, for browsing by
-  series rather than a flat feed.
+  series rather than a flat feed. It is one Collection per row, each with
+  its cover, title, how many artworks it holds, the year (or span of years,
+  taken from its artworks) and a short note (the Collection's description,
+  shortened), so a visitor knows what they are about to open.
 - Collection and Artwork detail pages.
 - A persistent **path bar** fixed to the bottom of every public page
   except the home (`Gallery / Collections / <Collection> / <Artwork>`)
