@@ -1,0 +1,12 @@
+{% if widget.is_initial %}
+  <span class="dash-image-preview">
+    <img src="{{ widget.value.url }}" alt="Current image">
+  </span>
+{% endif %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+{% if widget.is_initial and not widget.required %}
+  <label class="dash-image-clear" for="{{ widget.checkbox_id }}">
+    <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
+    Remove current image
+  </label>
+{% endif %}
