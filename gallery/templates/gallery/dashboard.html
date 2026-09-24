@@ -55,6 +55,12 @@
                 <a href="{% url 'gallery:artwork_create' collection.slug %}" class="dash-icon-btn" title="Add artwork" aria-label="Add Artwork">
                   <svg class="dash-icon"><use href="#icon-plus"></use></svg>
                 </a>
+                <form method="post" action="{% url 'gallery:collection_archive' collection.slug %}" class="dash-inline-form">
+                  {% csrf_token %}
+                  <button type="submit" class="dash-icon-btn" title="Archive" aria-label="Archive Collection">
+                    <svg class="dash-icon"><use href="#icon-archive"></use></svg>
+                  </button>
+                </form>
                 <a href="{% url 'gallery:collection_delete' collection.slug %}" class="dash-icon-btn dash-icon-btn-danger" title="Delete" aria-label="Delete Collection">
                   <svg class="dash-icon"><use href="#icon-trash"></use></svg>
                 </a>
