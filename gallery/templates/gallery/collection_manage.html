@@ -19,6 +19,7 @@
     <div class="dash-page-actions">
       {% include 'gallery/_search_box.html' with search_placeholder='Search this Collection' %}
       {% include 'gallery/_view_toggle.html' %}
+      {% include 'gallery/_select_toggle.html' %}
       <a href="{% url 'gallery:artwork_create' collection.slug %}" class="dash-btn dash-btn-primary">+ Add Artwork</a>
     </div>
   </div>
@@ -65,9 +66,11 @@
   </div>
 
   {% if artworks %}
+    {% url 'gallery:artwork_bulk_delete' as bulk_url %}
+    {% include 'gallery/_bulk_bar.html' with bulk_kind='artworks' %}
     <ul class="dash-artwork-list dash-artwork-list-flat" data-dash-view-target>
       {% for artwork in artworks %}
-        {% include 'gallery/_artwork_row.html' %}
+        {% include 'gallery/_artwork_row.html' with selectable=True %}
       {% endfor %}
     </ul>
     {% include 'gallery/_view_init_script.html' %}

@@ -16,13 +16,16 @@
     <div class="dash-page-actions">
       {% include 'gallery/_search_box.html' with search_placeholder='Search Artworks' %}
       {% include 'gallery/_view_toggle.html' %}
+      {% include 'gallery/_select_toggle.html' %}
     </div>
   </div>
 
   {% if artworks %}
+    {% url 'gallery:artwork_bulk_delete' as bulk_url %}
+    {% include 'gallery/_bulk_bar.html' with bulk_kind='artworks' %}
     <ul class="dash-artwork-list dash-artwork-list-flat" data-dash-view-target>
       {% for artwork in artworks %}
-        {% include 'gallery/_artwork_row.html' with show_collection=True %}
+        {% include 'gallery/_artwork_row.html' with show_collection=True selectable=True %}
       {% endfor %}
     </ul>
     {% include 'gallery/_view_init_script.html' %}

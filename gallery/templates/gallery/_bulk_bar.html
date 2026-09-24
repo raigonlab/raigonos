@@ -1,0 +1,21 @@
+{% comment %}
+  Contextual bulk-action bar, shown only while the page is in Select mode.
+  Checkboxes inside the cards point at this form via form="bulk-form".
+{% endcomment %}
+<form method="post" action="{{ bulk_url }}" id="bulk-form" class="dash-bulk-bar" data-dash-bulk-bar hidden>
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+  <span class="dash-bulk-count"><strong data-dash-bulk-count>0</strong> selected</span>
+  <button type="button" class="dash-bulk-link" data-dash-select-all>Select all</button>
+  <span class="dash-bulk-spacer"></span>
+  {% if bulk_kind == 'collections' %}
+    <button type="submit" name="action" value="draft" class="dash-btn dash-btn-quiet dash-btn-sm" data-dash-bulk-action>Move to Draft</button>
+    <button type="submit" name="action" value="publish" class="dash-btn dash-btn-quiet dash-btn-sm" data-dash-bulk-action>Publish</button>
+    <button type="submit" name="action" value="archive" class="dash-btn dash-btn-quiet dash-btn-sm" data-dash-bulk-action>Archive</button>
+  {% endif %}
+  <button type="submit" name="action" value="delete" class="dash-btn dash-btn-danger dash-btn-sm" data-dash-bulk-action>
+    <svg class="dash-icon"><use href="#icon-trash"></use></svg>
+    Delete
+  </button>
+  <button type="button" class="dash-bulk-link" data-dash-select-cancel>Cancel</button>
+</form>

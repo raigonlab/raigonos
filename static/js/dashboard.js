@@ -109,6 +109,101 @@
   });
 })();
 
+// Select mode (bulk management): the "Select" button turns the list into
+// selectable cards and reveals the bulk-action bar. Clicking a card
+// toggles it instead of opening it; Escape or Cancel leaves the mode.
+// Deleting still goes through a server-rendered confirmation page.
+(function () {
+  var toggle = document.querySelector('[data-dash-select-toggle]');
+  if (!toggle) {
+    return;
+  }
+
+  var target = document.querySelector('[data-dash-view-target]');
+  var bar = document.querySelector('[data-dash-bulk-bar]');
+  if (!target || !bar) {
+    toggle.hidden = true;
+    return;
+  }
+
+  var boxes = Array.prototype.slice.call(target.querySelectorAll('.dash-select-box'));
+  var countEl = bar.querySelector('[data-dash-bulk-count]');
+  var actionButtons = bar.querySelectorAll('[data-dash-bulk-action]');
+
+  function selecting() {
+    return target.classList.contains('is-selecting');
+  }
+
+  function sync() {
+    var count = 0;
+    boxes.forEach(function (box) {
+      if (box.checked) {
+        count += 1;
+      }
+      box.closest('li').classList.toggle('is-selected', box.checked);
+    });
+    countEl.textContent = count;
+    actionButtons.forEach(function (btn) {
+      btn.disabled = count === 0;
+    });
+  }
+
+  function setSelecting(on) {
+    target.classList.toggle('is-selecting', on);
+    bar.hidden = !on;
+    toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    toggle.classList.toggle('is-active', on);
+    if (!on) {
+      boxes.forEach(function (box) {
+        box.checked = false;
+      });
+    }
+    sync();
+  }
+
+  toggle.addEventListener('click', function () {
+    setSelecting(!selecting());
+  });
+
+  bar.querySelector('[data-dash-select-cancel]').addEventListener('click', function () {
+    setSelecting(false);
+  });
+
+  bar.querySelector('[data-dash-select-all]').addEventListener('click', function () {
+    var all = boxes.every(function (box) {
+      return box.checked;
+    });
+    boxes.forEach(function (box) {
+      box.checked = !all;
+    });
+    sync();
+  });
+
+  target.addEventListener('click', function (event) {
+    if (!selecting()) {
+      return;
+    }
+    var item = event.target.closest('li');
+    var box = item && item.querySelector(':scope > .dash-select-box');
+    if (!box || event.target === box) {
+      return;
+    }
+    event.preventDefault();
+    box.checked = !box.checked;
+    sync();
+  });
+
+  target.addEventListener('change', sync);
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && selecting()) {
+      setSelecting(false);
+    }
+  });
+
+  sync();
+})();
+
 // Overflow menus (<details data-dash-menu>): close on outside click or
 // Escape, like a native menu.
 (function () {

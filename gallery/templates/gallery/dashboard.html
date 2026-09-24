@@ -11,15 +11,19 @@
     <div class="dash-page-actions">
       {% include 'gallery/_search_box.html' with search_placeholder='Search Collections' %}
       {% include 'gallery/_view_toggle.html' %}
+      {% include 'gallery/_select_toggle.html' %}
       <a href="{% url 'gallery:collection_create' %}" class="dash-btn dash-btn-primary">+ New Collection</a>
     </div>
   </div>
 
   {% if collections %}
+    {% url 'gallery:collection_bulk_action' as bulk_url %}
+    {% include 'gallery/_bulk_bar.html' with bulk_kind='collections' %}
     <ul class="dash-collection-list" data-dash-view-target>
       {% for collection in collections %}
         {% with count=collection.artworks.count %}
           <li class="dash-collection-card">
+            <input type="checkbox" class="dash-select-box" name="ids" value="{{ collection.pk }}" form="bulk-form" aria-label="Select {{ collection.title }}">
             <div class="dash-collection-header">
               <a href="{% url 'gallery:collection_manage' collection.slug %}" class="dash-collection-link">
                 <div class="dash-collection-cover">

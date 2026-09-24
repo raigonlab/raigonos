@@ -1,4 +1,7 @@
 <li class="dash-artwork-row">
+  {% if selectable %}
+    <input type="checkbox" class="dash-select-box" name="ids" value="{{ artwork.pk }}" form="bulk-form" aria-label="Select {{ artwork.title }}">
+  {% endif %}
   <a href="{% url 'gallery:artwork_manage' artwork.pk %}" class="dash-artwork-link">
     {% if artwork.image %}
       <img src="{{ artwork.image.url }}" alt="" class="dash-thumb">
