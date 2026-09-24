@@ -33,12 +33,7 @@
                 <div class="dash-collection-info">
                   <strong class="dash-collection-name">{{ collection.title }}</strong>
                   <div class="dash-collection-meta">
-                    {% if collection.status == 'published' %}
-                      <span class="dash-status dash-status-published">Published</span>
-                    {% else %}
-                      <span class="dash-status dash-status-draft">Draft</span>
-                    {% endif %}
-                    <span>{{ count }} artwork{{ count|pluralize }}</span>
+                    <span>{% if collection.status != 'published' %}Draft &middot; {% endif %}{{ count }} artwork{{ count|pluralize }}</span>
                   </div>
                 </div>
               </a>
