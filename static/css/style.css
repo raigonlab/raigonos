@@ -265,90 +265,317 @@ h1 i {
   font-style: italic;
 }
 
-/* Public home hero -- the artist's storefront: a quiet welcome line, then
-   the published artworks drifting slowly past, a glimpse of the
-   exhibition-in-motion idea (see README, long-term vision). CSS only; the
-   animation stops for visitors who ask for reduced motion. */
+/* Public home -- deep black, artwork first. Two views of the same work:
+   the exhibition (a full-screen room of slowly drifting artworks, driven
+   by static/js/exhibition.js) and, underneath, the plain grid, which is
+   what you get without JavaScript or after choosing "Grid". */
 
-.hero {
-  overflow: hidden;
-  padding: 2.75rem 2rem 0;
-  background: #0d0d0e;
+body.home-dark {
+  background: #0a0a0a;
   color: #ece9e2;
 }
 
-.hero-welcome {
-  max-width: 1200px;
-  margin: 0 auto;
+body.home-dark header {
+  border-bottom-color: #1b1b1b;
+}
+
+body.home-dark .brand-logo {
+  filter: invert(1);
+}
+
+body.home-dark .nav-auth {
+  color: #a19d92;
+}
+
+body.home-dark .nav-auth a:hover {
+  color: #ece9e2;
+  text-decoration: none;
+}
+
+body.home-dark footer {
+  border-top-color: #1b1b1b;
+  color: #77746f;
+}
+
+body.home-dark .card-image {
+  background: #141414;
+}
+
+body.home-dark .card-title,
+body.home-dark .card-empty {
+  color: #a19d92;
+}
+
+.home-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.home-welcome {
+  margin: 0;
   font-size: 1.05rem;
   font-weight: 500;
   letter-spacing: 0.01em;
   color: #a19d92;
 }
 
-.hero-welcome em {
+.home-welcome em {
   color: #ece9e2;
 }
 
-.hero-welcome:last-child {
-  padding-bottom: 2.75rem;
+.home-toggle {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a19d92;
+  cursor: pointer;
 }
 
-.hero-drift {
-  margin: 2rem -2rem 0;
-  padding-bottom: 3rem;
+.home-toggle:hover {
+  color: #ece9e2;
 }
 
-.hero-track {
-  display: flex;
-  width: max-content;
-  animation: hero-drift 120s linear infinite;
+/* The exhibition: hidden until the script switches it on (html.is-exhibition). */
+
+.exhibition {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  background: #0a0a0a;
+  color: #a19d92;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.hero-drift:hover .hero-track {
-  animation-play-state: paused;
+html.is-exhibition .exhibition {
+  display: block;
 }
 
-/* Each strip is at least one viewport wide, so the loop (-50%) is
-   seamless even with only a few artworks. */
+html.is-exhibition {
+  overflow: hidden;
+}
 
-.hero-strip {
+.exhibition:active {
+  cursor: grabbing;
+}
+
+.ex-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.ex-row {
+  position: absolute;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  gap: 3.5rem;
-  min-width: 100vw;
-  padding: 0 1.75rem;
-  height: 19rem;
+  will-change: transform;
 }
 
-.hero-strip img {
+.ex-card {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, filter;
+}
+
+.ex-card:hover {
+  text-decoration: none;
+}
+
+.ex-card img {
+  display: block;
   width: auto;
-  height: 12rem;
-  border-radius: 4px;
-  opacity: 0.88;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+  object-fit: contain;
+  border-radius: 3px;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.65);
+  -webkit-user-drag: none;
 }
 
-.hero-strip img:nth-child(3n + 1) {
-  height: 14rem;
-  align-self: flex-start;
+/* Quiet chrome: logo, welcome, a couple of links, a player, a pill. */
+
+.ex-logo {
+  position: absolute;
+  top: 1.75rem;
+  left: 2rem;
+  height: 26px;
+  width: auto;
+  border-radius: 0;
+  filter: invert(1);
+  opacity: 0.9;
 }
 
-.hero-strip img:nth-child(3n + 2) {
-  height: 10rem;
-  align-self: flex-end;
+.ex-welcome {
+  position: absolute;
+  top: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  white-space: nowrap;
+  color: #77746f;
 }
 
-@keyframes hero-drift {
-  to {
-    transform: translateX(-50%);
+.ex-welcome em {
+  color: #a19d92;
+}
+
+.ex-top {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.ex-link,
+.ex-pill a,
+.ex-pill button {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a19d92;
+}
+
+.ex-link:hover,
+.ex-pill a:hover,
+.ex-pill button:hover {
+  color: #ece9e2;
+  text-decoration: none;
+}
+
+.ex-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: #a19d92;
+  cursor: pointer;
+}
+
+.ex-icon-btn:hover {
+  color: #ece9e2;
+}
+
+.ex-icon-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ex-icon-play,
+.ex-icon-btn.is-paused .ex-icon-pause {
+  display: none;
+}
+
+.ex-icon-btn.is-paused .ex-icon-play {
+  display: block;
+  fill: currentColor;
+  stroke: none;
+}
+
+.ex-player {
+  position: absolute;
+  left: 2rem;
+  bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ex-progress {
+  display: block;
+  width: 150px;
+  height: 1px;
+  background: #2a2a2a;
+}
+
+.ex-progress-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: #c9a45c;
+  opacity: 0.7;
+}
+
+.ex-pill {
+  position: absolute;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.4rem 1.5rem 0.4rem 0.4rem;
+  border: 1px solid #2a2a2a;
+  border-radius: var(--radius-pill);
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.ex-pill button {
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ex-pill-current {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1c1c1c;
+  color: #ece9e2;
+}
+
+.ex-pill-current svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+@media (max-width: 640px) {
+  .ex-logo {
+    left: 1.25rem;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-track {
-    animation: none;
+  .ex-top {
+    right: 1.25rem;
+  }
+
+  .ex-welcome {
+    top: 4.5rem;
+  }
+
+  .ex-player {
+    display: none;
   }
 }
 

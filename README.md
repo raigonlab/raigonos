@@ -101,11 +101,10 @@ here to document the reasoning behind decisions like the extensible
   project, [raigon-mmxi](https://raigonlab.github.io/raigon-mmxi/) — an
   inspiration for the motion and atmosphere, not something to copy; it
   will be redesigned in the RaigonOS visual language (deep black, soft
-  contrast, subtle type, very restrained gold). It is deliberately **not**
-  built in this milestone, so that a visually complex feature cannot put
-  the core CRUD work at risk; the current public pages are the simple
-  version, and the routes are already separate from the dashboard so the
-  experience can replace them later.
+  contrast, subtle type, very restrained gold). A first version now lives
+  on the public home (see Existing Features); the rest of the public site
+  (Collections, Collection and Artwork pages) still uses the earlier cream
+  design and is the next step towards the same atmosphere.
 - **A way in for street artists.** Street art is ephemeral — pieces are
   painted over and documentation ends up scattered across phone galleries
   and feeds. A free, low-barrier place to catalogue and organise that
@@ -372,13 +371,17 @@ GitHub Issues using MoSCoW prioritisation — see
 
 - Home page (`/`) lists every published Artwork across all Collections in a
   uniform 4:5 portrait grid (1/2/4 columns depending on screen width) —
-  the default a visitor lands on. It is the artist's storefront, so it
-  opens with a dark band holding just a quiet "Welcome to <artist>'s
-  gallery" line (the name comes from the `ARTIST_NAME` setting) and the
-  published artworks drifting slowly past (CSS-only, decorative, paused on
-  hover, off for visitors who prefer reduced motion) — a small glimpse of
-  the moving-exhibition idea under the long-term vision. Nothing pitches
-  the product here; the work is what's shown.
+  the default a visitor lands on. It is the artist's storefront, so the
+  whole page is deep black and opens as an **exhibition**: three rows of
+  the published artworks, in random order, drifting slowly past each other
+  in a mostly empty room, with the ones far from the centre softened,
+  faded and shrunk for depth. Drag, swipe or scroll to move them, or just
+  watch; there is a pause control, full screen and a small pill to switch
+  to the plain **Grid** or go to Collections. The motion is a small vanilla
+  JavaScript file (`static/js/exhibition.js`) whose concept follows an
+  earlier Raigon Lab project, [raigon-mmxi](https://raigonlab.github.io/raigon-mmxi/),
+  rewritten for RaigonOS. Without JavaScript, or after choosing Grid, the
+  page is the plain grid, so every published artwork is always reachable.
 - `/collections/` lists published Collections instead, for browsing by
   series rather than a flat feed.
 - Collection and Artwork detail pages.
@@ -471,7 +474,7 @@ GitHub Issues using MoSCoW prioritisation — see
 | Could-have | Invitation system for private Collections |
 | Could-have | Contact/inquiry form for direct messages to the artist |
 | Won't-have (this cycle) | Multi-artist public sign-up (marketplace mode) |
-| Won't-have (this cycle) | Public gallery as a moving exhibition (structure prepared, experience deferred) |
+| Could-have | Public home as a moving exhibition (built for the home page; other public pages still to follow) |
 | Won't-have (this cycle) | "The Maker" profile page (shown as "Coming soon" in the sidebar) |
 | Won't-have (this cycle) | Street-artist onboarding, toolbox and storefront |
 | Won't-have (this cycle) | Advanced filtering (by medium, year, status) beyond title search |

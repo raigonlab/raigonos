@@ -101,6 +101,12 @@ class ArtworkGalleryViewTests(TestCase):
         self.assertContains(response, 'Visible Piece')
         self.assertNotContains(response, 'Hidden Piece')
 
+    def test_exhibition_data_lists_only_published_artworks(self):
+        response = self.client.get(reverse('gallery:artwork_gallery'))
+        titles = [work['title'] for work in response.context['exhibition']]
+        self.assertEqual(titles, ['Visible Piece'])
+        self.assertContains(response, 'id="exhibition-data"')
+
     @override_settings(ARTIST_NAME='Test Artist')
     def test_welcomes_visitors_to_the_artists_gallery(self):
         response = self.client.get(reverse('gallery:artwork_gallery'))

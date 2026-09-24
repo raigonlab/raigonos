@@ -1,31 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Artworks — RaigonOS{% endblock %}
 
-{% block body_class %}no-path-bar{% endblock %}
-
-{% block hero %}
-  <section class="hero">
-    <h1 class="hero-welcome">Welcome to <em>{{ artist_name }}</em>&rsquo;s gallery</h1>
-
-    {% if artworks %}
-      {# Decorative only: the same artworks are listed (with links) below. #}
-      <div class="hero-drift" aria-hidden="true">
-        <div class="hero-track">
-          {% for copy in '12' %}
-            <div class="hero-strip">
-              {% for artwork in artworks|slice:":12" %}
-                <img src="{{ artwork.image.url }}" alt="" loading="lazy">
-              {% endfor %}
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
-  </section>
-{% endblock %}
+{% block body_class %}no-path-bar home-dark{% endblock %}
 
 {% block content %}
+  <div class="home-head">
+    <h1 class="home-welcome">Welcome to <em>{{ artist_name }}</em>&rsquo;s gallery</h1>
+    <button type="button" class="home-toggle" data-exhibition-open hidden>View as exhibition</button>
+  </div>
+
   <ul class="card-grid">
     {% for artwork in artworks %}
       <li class="card">
@@ -42,4 +27,46 @@
       <li class="card-empty">No artworks published yet.</li>
     {% endfor %}
   </ul>
+
+  {% if exhibition %}
+    {{ exhibition|json_script:"exhibition-data" }}
+
+    {# The exhibition covers the whole page; without JavaScript it stays hidden and the grid above is what you see. #}
+    <div class="exhibition" data-exhibition aria-label="Exhibition of published artworks">
+      <div class="ex-stage"></div>
+
+      <img src="{% static 'images/logo.svg' %}" alt="RaigonOS" class="ex-logo">
+      <p class="ex-welcome">Welcome to <em>{{ artist_name }}</em>&rsquo;s gallery</p>
+
+      <div class="ex-top" data-exhibition-ui>
+        {% if user.is_authenticated %}
+          <a href="{% url 'gallery:dashboard' %}" class="ex-link">Dashboard</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="ex-link">Log in</a>
+        {% endif %}
+        <button type="button" class="ex-icon-btn" data-exhibition-fullscreen aria-label="Toggle full screen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
+      </div>
+
+      <div class="ex-player" data-exhibition-ui>
+        <button type="button" class="ex-icon-btn" data-exhibition-pause aria-label="Pause drift">
+          <svg class="ex-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+          <svg class="ex-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"/></svg>
+        </button>
+        <span class="ex-progress"><span class="ex-progress-fill"></span></span>
+      </div>
+
+      <nav class="ex-pill" data-exhibition-ui aria-label="Views">
+        <span class="ex-pill-current" aria-current="page" title="Exhibition">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="1.7"/><circle cx="16" cy="8" r="1.7"/><circle cx="8" cy="16" r="1.7"/><circle cx="16" cy="16" r="1.7"/></svg>
+        </span>
+        <button type="button" data-exhibition-close>Grid</button>
+        <a href="{% url 'gallery:collection_list' %}">Collections</a>
+      </nav>
+    </div>
+
+    {# Sync (not deferred) so the exhibition is up before the first paint. #}
+    <script src="{% static 'js/exhibition.js' %}"></script>
+  {% endif %}
 {% endblock %}

@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
@@ -15,10 +16,22 @@ def artwork_gallery(request):
     artworks = Artwork.objects.filter(
         collection__status=Collection.STATUS_PUBLISHED
     ).select_related('collection')
+    exhibition = [
+        {
+            'title': artwork.title,
+            'src': artwork.image.url,
+            'url': reverse('gallery:artwork_detail', args=[artwork.pk]),
+        }
+        for artwork in artworks
+    ]
     return render(
         request,
         'gallery/artwork_gallery.html',
-        {'artworks': artworks, 'artist_name': settings.ARTIST_NAME},
+        {
+            'artworks': artworks,
+            'exhibition': exhibition,
+            'artist_name': settings.ARTIST_NAME,
+        },
     )
 
 
