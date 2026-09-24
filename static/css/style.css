@@ -94,10 +94,13 @@ header nav a:hover {
   margin: 0;
 }
 
-/* button[type='submit'] below styles Save/primary buttons; the extra
-   type selector here keeps that rule from overriding plain link-styled
-   buttons (e.g. "Log out") that also happen to be type="submit". */
-button[type='submit'].link-button {
+/* The public-site button[type='submit'] rule further down styles
+   Save/primary buttons; these selectors keep it from overriding plain
+   link-styled buttons (e.g. "Log out") that also happen to be
+   type="submit". The body:not(...) form matches that rule's own
+   specificity plus one class, so it wins on public pages too. */
+button[type='submit'].link-button,
+body:not(.dashboard-shell) button[type='submit'].link-button {
   background: none;
   border: none;
   padding: 0;
@@ -363,7 +366,11 @@ form.model-form textarea {
   color: var(--color-text);
 }
 
-button[type='submit'] {
+/* Public-site pill buttons only. Scoped away from the dashboard shell,
+   which has its own button system (.dash-btn / .dash-icon-btn) -- the
+   old unscoped rule had higher specificity than those classes, so any
+   <button type="submit"> inside the dashboard came out as a black pill. */
+body:not(.dashboard-shell) button[type='submit'] {
   padding: 0.75rem 2rem;
   border: 1px solid var(--color-text);
   border-radius: var(--radius-pill);
@@ -373,7 +380,7 @@ button[type='submit'] {
   cursor: pointer;
 }
 
-button[type='submit']:hover {
+body:not(.dashboard-shell) button[type='submit']:hover {
   opacity: 0.85;
 }
 
@@ -779,8 +786,37 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   margin-top: 0.6rem;
 }
 
+.dash-page-intro {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--dash-muted);
+}
+
+/* Forms used purely to POST a button (Archive / Restore) -- strip the
+   default form margin so they sit in flex rows like the <a> buttons. */
+.dash-inline-form {
+  margin: 0;
+  display: inline-flex;
+}
+
+/* Collection-level actions on its manage page: labelled text+icon
+   buttons, not bare icons -- feedback that page-level actions (affect
+   the whole Collection) next to per-row icon-only actions (affect one
+   Artwork) read as ambiguous when both looked the same. */
 .dash-collection-manage-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
   margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.dash-collection-manage-actions-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--dash-muted);
 }
 
 .dash-collection-card:hover {
@@ -1102,7 +1138,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 [data-view='grid'].dash-collection-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
 }
 
@@ -1224,10 +1260,24 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   text-decoration: underline;
 }
 
-.dash-artwork-title {
+.dash-artwork-text {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.dash-artwork-title {
   font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-artwork-subtitle {
+  font-size: 0.78rem;
+  color: var(--dash-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1276,7 +1326,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
 
 [data-view='grid'].dash-artwork-list-flat {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 0.85rem;
 }
 
@@ -1297,7 +1347,8 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   height: 130px;
 }
 
-[data-view='grid'] .dash-artwork-title {
+[data-view='grid'] .dash-artwork-title,
+[data-view='grid'] .dash-artwork-subtitle {
   white-space: normal;
 }
 
