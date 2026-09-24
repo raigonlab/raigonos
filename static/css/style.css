@@ -599,6 +599,24 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   font-weight: 500;
 }
 
+/* Placeholder for a planned page: visible so the direction is clear,
+   but not a link and visually quieter than the real nav items. */
+
+.dash-nav-soon {
+  cursor: default;
+  color: var(--dash-faint);
+}
+
+.dash-nav-soon-tag {
+  margin-left: auto;
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--dash-border);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 /* Sidebar footer: quiet settings group, then a minimal account entry.
    Rows share the nav links' horizontal padding so everything lines up. */
 
