@@ -34,13 +34,13 @@
       {% with nav=active_nav|default:'collections' %}
         <nav class="dash-nav" aria-label="Dashboard">
           <span class="dash-nav-label">Workspace</span>
-          <a href="{% url 'gallery:dashboard' %}" class="dash-nav-link{% if nav == 'collections' %} is-active{% endif %}">
-            <svg class="dash-icon"><use href="#icon-collections"></use></svg>
-            Collections
-          </a>
           <a href="{% url 'gallery:artwork_list' %}" class="dash-nav-link{% if nav == 'artworks' %} is-active{% endif %}">
             <svg class="dash-icon"><use href="#icon-artworks"></use></svg>
             All Artworks
+          </a>
+          <a href="{% url 'gallery:dashboard' %}" class="dash-nav-link{% if nav == 'collections' %} is-active{% endif %}">
+            <svg class="dash-icon"><use href="#icon-collections"></use></svg>
+            Collections
           </a>
         </nav>
       {% endwith %}
