@@ -1,11 +1,6 @@
-// Public home: the artist's published work as an "exhibition in motion".
-// Rows of artworks drift slowly past in a dark, mostly empty room; the
-// ones far from the centre soften, fade and shrink a little, like objects
-// at different depths. Drag, swipe or scroll to move things along, or just
-// stay and look. The site menu (top-right, see site-menu.js) holds the
-// tools: pause the drift, turn the rows into columns that fall top to
-// bottom, go full screen, and switch between the exhibition and the plain
-// grid. Without JavaScript the plain grid underneath is shown.
+// Exhibition view for the public home: rows of published artworks drift
+// across a dark room, softening near the edges. Tools live in the site
+// menu (site-menu.js). No JS: falls back to the plain grid.
 (function () {
   var root = document.querySelector('[data-exhibition]');
   var dataEl = document.getElementById('exhibition-data');
@@ -34,10 +29,7 @@
   var reducedMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Position of each lane across the screen (share of the viewport height
-  // for rows, of the width for columns), relative size and drift speed
-  // (px per second). Lanes share a direction but not a speed, so they
-  // slide against each other.
+  // Lane position (share of viewport), relative size, speed (px/s).
   var ROWS = [
     { y: 0.23, size: 1, speed: 20 },
     { y: 0.53, size: 0.85, speed: 15 },
@@ -48,8 +40,7 @@
     { y: 0.7, size: 0.9, speed: 24 }
   ];
 
-  // Depth-of-field: how far from the centre (share of the width) the
-  // effect reaches, and how strong it gets at the edges.
+  // Depth-of-field tuning: reach and strength of the blur/fade/scale.
   var REACH = 0.55;
   var BLUR = 1.9;
   var FADE = 0.55;
@@ -73,12 +64,11 @@
   var dragDistance = 0;
   var suppressClick = false;
 
-  // Small per-viewer conveniences; the page works the same without them.
   function remember(store, key, value) {
     try {
       window[store].setItem('raigonos-home-' + key, value);
     } catch (err) {
-      // Private mode etc.: the choice just isn't remembered.
+      // Private mode etc. -- not fatal.
     }
   }
 
@@ -101,7 +91,7 @@
     return list;
   }
 
-  // On Cloudinary, ask for a screen-sized copy instead of the original.
+  // Cloudinary: request a screen-sized copy.
   function thumb(src) {
     return src.replace('/image/upload/', '/image/upload/w_700,q_auto,f_auto/');
   }
@@ -128,15 +118,14 @@
     layout.forEach(function (config, rowIndex) {
       var pool = shuffle(works.slice());
 
-      // With plenty of work, each lane shows its own share, so the same
-      // piece is not on screen twice. With little, every lane shows all.
+      // Split artwork across lanes once there's enough of it.
       if (works.length >= layout.length * 4) {
         pool = pool.filter(function (work, i) {
           return i % layout.length === rowIndex;
         });
       }
 
-      // Repeat the lane's sequence until one lap is longer than the screen.
+      // Repeat until one lap is wider than the screen.
       var repeats = Math.max(1, Math.ceil((span * 1.5) / (pool.length * slot)));
       var count = pool.length * repeats;
       var period = count * slot;
@@ -150,8 +139,7 @@
 
       el.className = 'ex-row' + (vertical ? ' is-vertical' : '');
 
-      // Three identical laps, starting one lap back, so there is always
-      // artwork on both sides of the visible window.
+      // Three laps, starting one back, so both sides stay filled.
       if (vertical) {
         el.style.left = (config.y * 100) + '%';
         el.style.top = (-period) + 'px';
@@ -224,12 +212,11 @@
 
     rows.forEach(function (row, rowIndex) {
       if (!paused && !reducedMotion && !dragging) {
-        // Sideways drift goes left; the vertical one falls downwards.
+        // Sideways drifts left; vertical falls.
         row.target += (vertical ? 1 : -1) * row.speed * dt;
       }
 
-      // Keep one lap's worth of travel; the laps are identical, so the
-      // jump is invisible.
+      // Wrap after one lap; laps are identical so the jump is invisible.
       while (row.target <= -row.period) {
         row.target += row.period;
         row.offset += row.period;
@@ -299,8 +286,7 @@
     }
   }
 
-  // The menu links are real links to /#exhibition and /#grid, so they work
-  // from any page; on this page they just switch the view in place.
+  // Real links (work from any page); here they just switch view in place.
   document.querySelectorAll('[data-exhibition-open]').forEach(function (link) {
     link.addEventListener('click', function (event) {
       event.preventDefault();
@@ -315,7 +301,7 @@
     });
   });
 
-  // Pointer: drag to move the rows, hover to tilt them very slightly.
+  // Drag to move the rows; hover tilts them slightly.
   root.addEventListener('pointerdown', function (event) {
     if (event.button > 0) {
       return;
@@ -349,7 +335,7 @@
 
   window.addEventListener('pointerup', function () {
     if (dragging && dragDistance > 6) {
-      // A drag is not a click on whichever artwork the pointer ended on.
+      // A drag isn't a click on whatever it ends on.
       suppressClick = true;
       setTimeout(function () {
         suppressClick = false;
@@ -407,8 +393,7 @@
   }
 
   if (fullscreenButton) {
-    // The whole page goes full screen (not just the exhibition) so the
-    // menu stays reachable.
+    // Full-screens the whole page so the menu stays reachable.
     if (!doc.requestFullscreen) {
       fullscreenButton.hidden = true;
     } else {
@@ -422,8 +407,7 @@
     }
   }
 
-  // Slots are sized from the viewport, so lay the rows out again when it
-  // changes (ignoring the small height jitter of mobile address bars).
+  // Re-layout on real size changes (ignore mobile address-bar jitter).
   var resizeTimer;
 
   window.addEventListener('resize', function () {
@@ -441,7 +425,7 @@
 
   setDirection(remembered('localStorage', 'direction') === 'vertical');
 
-  // A #grid or #exhibition link wins over whatever was chosen last.
+  // #grid / #exhibition in the URL wins over the remembered choice.
   var wanted = location.hash.replace('#', '') || remembered('sessionStorage', 'view');
 
   if (wanted !== 'grid') {

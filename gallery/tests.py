@@ -402,7 +402,7 @@ class BulkActionTests(TestCase):
         )
         self.foreign.refresh_from_db()
         self.assertEqual(self.foreign.status, Collection.STATUS_PUBLISHED)
-        response = self.client.post(
+        self.client.post(
             self.url, {'ids': [self.foreign.pk], 'action': 'delete', 'confirm': '1'}
         )
         self.assertTrue(Collection.objects.filter(pk=self.foreign.pk).exists())

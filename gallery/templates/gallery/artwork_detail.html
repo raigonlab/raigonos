@@ -5,7 +5,7 @@
 {% block title %}{{ artwork.title }} — RaigonOS{% endblock %}
 
 {% block content %}
-  {# Side arrows on wide screens; the inline pager below covers narrow ones. #}
+  {# Side arrows on wide screens; inline pager below on narrow ones. #}
   {% if previous_artwork %}
     <a href="{% url 'gallery:artwork_detail' previous_artwork.pk %}" class="artwork-arrow artwork-arrow-prev" rel="prev" aria-label="Previous artwork: {{ previous_artwork.title }}" title="Previous">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>

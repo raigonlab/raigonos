@@ -245,12 +245,8 @@ h1 i {
   font-style: italic;
 }
 
-/* Public gallery theme -- deep black by default, artwork first, with a
-   light (cream) option from the site menu. The public gallery pages opt in
-   with body.public-theme; login/signup keep the cream look. The --hd-*
-   variables hold the palette (light values at :root so the menu also works
-   on pages that are not themed), and body.public-theme re-points the
-   site-wide --color-* variables at them, so existing public styles follow. */
+/* Public gallery theme: black by default, light via the site menu.
+   body.public-theme opts in; --hd-* holds the palette (light at :root). */
 
 :root {
   --hd-bg: #f7f4ee;
@@ -331,9 +327,7 @@ body.public-theme .card-image {
   color: var(--hd-text);
 }
 
-/* Site menu: one button, fixed top-right on every public page, opening a
-   panel with the exhibition tools, theme, views and account links. It sits
-   above the exhibition overlay (z-index 100). */
+/* Site menu: fixed top-right button opening tools/theme/views/account. */
 
 .site-menu {
   position: fixed;
@@ -436,7 +430,7 @@ html:not(.is-exhibition) body.is-home .site-menu [data-view='grid'] {
   stroke: none;
 }
 
-/* Items with two states (a-state by default, b-state when switched). */
+/* Two-state items: a-state default, b-state when switched. */
 
 .site-menu .mi-b {
   display: none;
@@ -454,8 +448,7 @@ html[data-site-theme='light'] .site-menu [data-site-theme-toggle] .mi-b {
   display: inline-flex;
 }
 
-/* Exhibition tools only make sense while the exhibition is showing; the
-   theme switch only on pages that have a public theme. */
+/* Exhibition tools only while showing; theme switch only on themed pages. */
 
 html:not(.is-exhibition) .site-menu-tools,
 body:not(.public-theme) .site-menu-theme {
@@ -466,7 +459,7 @@ body:not(.public-theme) .site-menu-theme {
   margin-top: 0.35rem;
 }
 
-/* The exhibition: hidden until the script switches it on (html.is-exhibition). */
+/* Hidden until html.is-exhibition is set by the script. */
 
 .exhibition {
   display: none;
@@ -573,9 +566,7 @@ html.is-exhibition {
   }
 }
 
-/* Collections list: one Collection per row -- cover, title, how many
-   artworks and from when, and a short note, so you know what you are
-   about to open. */
+/* Collections list: one row per Collection -- cover, count, years, note. */
 
 .collection-list {
   max-width: 56rem;
@@ -725,8 +716,7 @@ html.is-exhibition {
   max-height: 70vh;
 }
 
-/* Previous / next through the Collection: quiet arrows fixed at the sides on
-   wide screens, an inline pair of links on narrow ones. */
+/* Previous/next: side arrows on wide screens, inline links on narrow. */
 
 .artwork-arrow {
   position: fixed;
@@ -1028,8 +1018,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   font-weight: 500;
 }
 
-/* Placeholder for a planned page: visible so the direction is clear,
-   but not a link and visually quieter than the real nav items. */
+/* Placeholder for a planned page: not a link, quieter than real nav items. */
 
 .dash-nav-soon {
   cursor: default;
@@ -1046,8 +1035,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   text-transform: uppercase;
 }
 
-/* Sidebar footer: quiet settings group, then a minimal account entry.
-   Rows share the nav links' horizontal padding so everything lines up. */
+/* Sidebar footer: settings group, then a minimal account entry. */
 
 .dash-sidebar-footer {
   margin-top: auto;
@@ -1735,10 +1723,7 @@ html[data-dash-theme='dark'] .dash-brand-logo {
   color: var(--dash-danger);
 }
 
-/* List view, Finder-style: no box around each row -- rows alternate
-   between the page colour and a barely-there tint, so the eye is guided
-   without an outline competing with the artwork. Grid view keeps its
-   cards, where the frame is what separates one image from the next. */
+/* List view, Finder-style: borderless rows, alternating tint. Grid keeps cards. */
 
 .dash-collection-list:not([data-view='grid']),
 .dash-artwork-list:not([data-view='grid']) {

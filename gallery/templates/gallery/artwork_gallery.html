@@ -30,7 +30,7 @@
   {% if exhibition %}
     {{ exhibition|json_script:"exhibition-data" }}
 
-    {# The exhibition covers the whole page; without JavaScript it stays hidden and the grid above is what you see. #}
+    {# Hidden without JavaScript; the grid above is the fallback. #}
     <div class="exhibition" data-exhibition aria-label="Exhibition of published artworks">
       <div class="ex-stage"></div>
 
@@ -38,7 +38,7 @@
       <p class="ex-welcome">Welcome to <em>{{ artist_name }}</em>&rsquo;s gallery</p>
     </div>
 
-    {# Sync (not deferred) so the exhibition is up before the first paint. #}
+    {# Not deferred: runs before first paint. #}
     <script src="{% static 'js/exhibition.js' %}"></script>
   {% endif %}
 {% endblock %}

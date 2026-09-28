@@ -1,4 +1,4 @@
-{# One menu for every public page: always top-right, so tools, views and account access are never further than a click away. #}
+{# One menu, top-right, on every public page. #}
 <div class="site-menu" data-site-menu>
   <button type="button" class="site-menu-toggle" data-site-menu-toggle aria-label="Menu" aria-expanded="false" aria-controls="site-menu-panel">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="1.7"/><circle cx="16" cy="8" r="1.7"/><circle cx="8" cy="16" r="1.7"/><circle cx="16" cy="16" r="1.7"/></svg>
@@ -6,7 +6,7 @@
 
   <div class="site-menu-panel" id="site-menu-panel" hidden>
     {% if exhibition %}
-      {# Only meaningful while the exhibition is on screen (see CSS). #}
+      {# Shown only while the exhibition is on screen (see CSS). #}
       <div class="site-menu-section site-menu-tools">
         <button type="button" class="site-menu-item" data-exhibition-pause data-keep-open>
           <span class="mi mi-a"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg></span>

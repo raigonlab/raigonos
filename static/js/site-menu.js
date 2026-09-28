@@ -1,7 +1,5 @@
-// Public site menu: the one button, always top-right, that opens tools,
-// views, theme and account links. Also owns the light/dark theme, which
-// applies to every public gallery page (the saved choice is applied by a
-// tiny inline script in base.html before first paint).
+// Top-right site menu: tools, views, theme and account links. Owns the
+// light/dark theme (applied pre-paint by the inline script in base.html).
 (function () {
   var menu = document.querySelector('[data-site-menu]');
 
@@ -24,8 +22,7 @@
     setOpen(panel.hidden);
   });
 
-  // Choosing something closes the menu, except the switches you flip
-  // repeatedly (data-keep-open) while watching the effect.
+  // Closes on choice, except repeat-flip switches (data-keep-open).
   panel.addEventListener('click', function (event) {
     if (event.target.closest('a, button') && !event.target.closest('[data-keep-open]')) {
       setOpen(false);
