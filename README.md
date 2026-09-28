@@ -653,8 +653,7 @@ needed for this domain.
 - Pillow (image handling)
 - Git & GitHub
 - Render (deployment)
-- Figma (wireframes) 🚧
-- Google Fonts 🚧
+- Google Fonts
 
 ---
 
@@ -770,7 +769,7 @@ To run the project locally:
   Grid/List toggle, the per-Collection and Artwork preview pages, the
   fixed path bar on public pages, search, and the hand-drawn icon set.
   This involvement is reflected in the project's commit history.
-- [fonts.google.com](https://fonts.google.com) 🚧
+- [fonts.google.com](https://fonts.google.com) — Playfair Display and Inter
 
 ### Media
 
