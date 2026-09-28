@@ -66,6 +66,7 @@ against the deployed pages.
 | Public gallery home | https://raigonos.onrender.com/ | 0 errors, 0 warnings | |
 | Login | https://raigonos.onrender.com/accounts/login/ | 0 errors, 0 warnings | |
 | Signup | https://raigonos.onrender.com/accounts/signup/ | 0 errors, 0 warnings | |
+| 404 | https://raigonos.onrender.com/pagina-que-nao-existe/ | 0 errors, 0 warnings | <a href="documentation/validation/404-html-terminal.png"><img src="documentation/validation/404-html-terminal.png" width="140" alt="screenshot"></a> — the checker's "Validate by URI" refuses pages with a non-200 status, same as it did for the dashboard pages, so the HTML was fetched directly and POSTed to the checker instead |
 | Collections | https://raigonos.onrender.com/collections/ | 0 errors, 0 warnings | <a href="documentation/validation/html/collections.png"><img src="documentation/validation/html/collections.png" width="140" alt="collections.png"></a> |
 | Collection detail | https://raigonos.onrender.com/collection/flow-lines/ | 0 errors, 0 warnings | <a href="documentation/validation/html/collection-detail.png"><img src="documentation/validation/html/collection-detail.png" width="140" alt="collection-detail.png"></a> |
 | Artwork detail | https://raigonos.onrender.com/artwork/25/ | 0 errors, 0 warnings | <a href="documentation/validation/html/artwork-detail.png"><img src="documentation/validation/html/artwork-detail.png" width="140" alt="artwork-detail.png"></a> |
@@ -139,6 +140,7 @@ Screenshots saved to `documentation/responsiveness/`.
 | Artwork detail | <a href="documentation/responsiveness/artwork-detail-mobile.png"><img src="documentation/responsiveness/artwork-detail-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/artwork-detail-tablet.png"><img src="documentation/responsiveness/artwork-detail-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/artwork-detail-desktop.png"><img src="documentation/responsiveness/artwork-detail-desktop.png" width="140" alt="screenshot"></a> |
 | Login | <a href="documentation/responsiveness/login-mobile.png"><img src="documentation/responsiveness/login-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/login-tablet.png"><img src="documentation/responsiveness/login-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/login-desktop.png"><img src="documentation/responsiveness/login-desktop.png" width="140" alt="screenshot"></a> |
 | Signup | <a href="documentation/responsiveness/signup-mobile.png"><img src="documentation/responsiveness/signup-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/signup-tablet.png"><img src="documentation/responsiveness/signup-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/signup-desktop.png"><img src="documentation/responsiveness/signup-desktop.png" width="140" alt="screenshot"></a> |
+| 404 | <a href="documentation/responsiveness/404-mobile.png"><img src="documentation/responsiveness/404-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/404-tablet.png"><img src="documentation/responsiveness/404-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/404-desktop.png"><img src="documentation/responsiveness/404-desktop.png" width="140" alt="screenshot"></a> |
 
 No overflow, broken layout or unreadable text at any of the three
 widths on the pages above.
@@ -236,6 +238,16 @@ error handling.
 ## Bugs
 
 ### Fixed Bugs
+
+* **`DEBUG=True` live in production** — found while re-checking the 404
+  page for the testing docs: the deployed site was rendering Django's
+  technical debug error page (stack traces, full settings, the
+  complete URLconf pattern list) on 404s instead of the custom
+  `404.html`, meaning any real 500 would have exposed the same
+  internal detail to visitors. The `DEBUG` environment variable on
+  Render had been set to `True`. Fixed by setting it back to `False`
+  and redeploying; verified against a fresh (non-cached) URL that the
+  custom error pages render correctly again.
 
 * **File uploads broken after adding WhiteNoise (`STORAGES` misconfiguration)** — while seeding local test data, saving an `Artwork` image raised `InvalidStorageError: Could not find config for 'default' in settings.STORAGES`. Defining a custom `STORAGES` dict for WhiteNoise's static file backend had overwritten Django's default file storage entry entirely, since `STORAGES` replaces the whole setting rather than extending it. Fixed by adding an explicit `'default'` entry (`django.core.files.storage.FileSystemStorage`) alongside `'staticfiles'`.
 
