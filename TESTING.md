@@ -50,14 +50,17 @@ flake8 --max-line-length=99 --exclude=venv,migrations gallery raigonos manage.py
 Validated with the [W3C Nu HTML Checker](https://validator.w3.org/nu/)
 against the deployed pages.
 
-| Page | URL checked | Result |
-| ---- | ----------- | ------ |
-| Public gallery home | https://raigonos.onrender.com/ | 0 errors, 0 warnings |
-| Login | https://raigonos.onrender.com/accounts/login/ | 0 errors, 0 warnings |
-| Signup | https://raigonos.onrender.com/accounts/signup/ | 0 errors, 0 warnings |
+| Page | URL checked | Result | Screenshot |
+| ---- | ----------- | ------ | ---------- |
+| Public gallery home | https://raigonos.onrender.com/ | 0 errors, 0 warnings | |
+| Login | https://raigonos.onrender.com/accounts/login/ | 0 errors, 0 warnings | |
+| Signup | https://raigonos.onrender.com/accounts/signup/ | 0 errors, 0 warnings | |
+| Collections | https://raigonos.onrender.com/collections/ | 0 errors, 0 warnings | [collections.png](documentation/validation/html/collections.png) |
+| Collection detail | https://raigonos.onrender.com/collection/flow-lines/ | 0 errors, 0 warnings | [collection-detail.png](documentation/validation/html/collection-detail.png) |
+| Artwork detail | https://raigonos.onrender.com/artwork/25/ | 0 errors, 0 warnings | [artwork-detail.png](documentation/validation/html/artwork-detail.png) |
 
-🚧 Collection detail, Artwork detail and Dashboard pages will be
-re-validated once real content exists to render them against.
+🚧 Dashboard pages (require login) will be validated via "Validate by
+Direct Input" and added here.
 
 ### CSS
 
