@@ -1,5 +1,9 @@
 # RaigonOS
 
+> This file configures the Claude Code AI assistant used during this
+> project's development — see the README's Credits section for how it
+> was used.
+
 Django gallery-management app: an artist catalogues **Collections** of
 **Artworks** behind auth-gated CRUD; the public sees only published
 Collections, read-only. Built for Code Institute's Milestone Project 3
