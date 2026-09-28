@@ -210,11 +210,11 @@ error handling.
 | As the site owner | Sign up and log in securely | Achieved — verified on the deployed site |
 | As the site owner | Create a Collection | Achieved — covered by automated test `test_create_collection` |
 | As the site owner | Edit or delete a Collection | Achieved — covered by automated tests `test_update_collection`, `test_delete_collection_cascades_to_artworks` |
-| As the site owner | Add an Artwork to a Collection | Achieved — covered by automated test `test_create_artwork`; 🚧 manual browser confirmation pending |
-| As the site owner | Edit or delete an Artwork | Achieved — covered by automated tests `test_update_artwork`, `test_delete_artwork`; 🚧 manual browser confirmation pending |
+| As the site owner | Add an Artwork to a Collection | Achieved — covered by automated test `test_create_artwork`; manually confirmed on the deployed site (created, appeared in the Collection) |
+| As the site owner | Edit or delete an Artwork | Achieved — covered by automated tests `test_update_artwork`, `test_delete_artwork`; manually confirmed on the deployed site (deleted, disappeared from the list) |
 | As a visitor | Browse public Collections | Achieved — only `published` Collections listed, verified by automated test |
-| As a visitor | View an Artwork's detail | Achieved — 🚧 manual browser confirmation pending |
-| As a visitor | Use the site on any device | 🚧 Pending manual responsiveness testing |
+| As a visitor | View an Artwork's detail | Achieved — manually confirmed: the test Artwork appeared on the public gallery once its Collection was published |
+| As a visitor | Use the site on any device | Achieved — see [Responsiveness](#responsiveness) |
 
 ---
 
@@ -243,6 +243,7 @@ None known at this time.
 | Issue | Notes |
 | ----- | ----- |
 | Cold start delay on first request | The Render free-tier Web Service spins down after inactivity; the first request after idle can take 30–50 seconds while it wakes up. This is a hosting-plan limitation, not an application bug. |
+| Production database expires 2026-10-09 | Render's free PostgreSQL plan is deleted 90 days after creation. Decision: upgrade to a paid plan before that date (tracked outside this repo, not yet actioned). |
 
 ---
 
