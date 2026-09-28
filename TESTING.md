@@ -161,13 +161,14 @@ layout at any of the three widths.
 
 ## Browser Compatibility
 
-🚧 To be tested manually across major browsers, with screenshots saved
-to `documentation/browsers/`.
+Tested manually against the deployed site on macOS.
 
-| Section | Chrome | Firefox | Safari | Notes |
-| ------- | ------ | ------- | ------ | ----- |
-| Public gallery home | | | | |
-| Dashboard / CRUD forms | | | | |
+| Section | Chrome | Firefox | Safari |
+| ------- | ------ | ------- | ------ |
+| Public gallery home | <a href="documentation/browsers/chrome-home.png"><img src="documentation/browsers/chrome-home.png" width="140" alt="screenshot"></a> | <a href="documentation/browsers/firefox-home.png"><img src="documentation/browsers/firefox-home.png" width="140" alt="screenshot"></a> | <a href="documentation/browsers/safari-home.png"><img src="documentation/browsers/safari-home.png" width="140" alt="screenshot"></a> |
+| Dashboard (All Artworks) | <a href="documentation/browsers/chrome-dashboard.png"><img src="documentation/browsers/chrome-dashboard.png" width="140" alt="screenshot"></a> | <a href="documentation/browsers/firefox-dashboard.png"><img src="documentation/browsers/firefox-dashboard.png" width="140" alt="screenshot"></a> | <a href="documentation/browsers/safari-dashboard.png"><img src="documentation/browsers/safari-dashboard.png" width="140" alt="screenshot"></a> |
+
+No visual or functional differences across the three browsers.
 
 ---
 
