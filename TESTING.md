@@ -70,8 +70,27 @@ against the deployed pages.
 | Collection detail | https://raigonos.onrender.com/collection/flow-lines/ | 0 errors, 0 warnings | [collection-detail.png](documentation/validation/html/collection-detail.png) |
 | Artwork detail | https://raigonos.onrender.com/artwork/25/ | 0 errors, 0 warnings | [artwork-detail.png](documentation/validation/html/artwork-detail.png) |
 
-🚧 Dashboard pages (require login) will be validated via "Validate by
-Direct Input" and added here.
+Dashboard pages require login, so the checker can't fetch them by URL —
+each was validated via "Validate by Direct Input" (page source copied
+from an authenticated session):
+
+| Page | Result | Screenshot |
+| ---- | ------ | ---------- |
+| Dashboard — Collections | 0 errors, 0 warnings | [dashboard-collections.png](documentation/validation/html/dashboard-collections.png) |
+| Dashboard — Archive | 0 errors, 0 warnings | [dashboard-archive.png](documentation/validation/html/dashboard-archive.png) |
+| Dashboard — All Artworks | 0 errors, 0 warnings | [dashboard-all-artworks.png](documentation/validation/html/dashboard-all-artworks.png) |
+| Dashboard — Collection page | 0 errors, 0 warnings | [dashboard-collection-page.png](documentation/validation/html/dashboard-collection-page.png) |
+| Dashboard — Artwork preview | 0 errors, 0 warnings | [dashboard-artwork-preview.png](documentation/validation/html/dashboard-artwork-preview.png) |
+| Collection form (create) | 0 errors, 0 warnings | [dashboard-collection-form.png](documentation/validation/html/dashboard-collection-form.png) |
+| Artwork form (create) | 0 errors, 0 warnings | [dashboard-artwork-form.png](documentation/validation/html/dashboard-artwork-form.png) |
+| Collection — confirm delete | 0 errors, 0 warnings | [dashboard-collection-confirm-delete.png](documentation/validation/html/dashboard-collection-confirm-delete.png) |
+| Artwork — confirm delete | 0 errors, 0 warnings | [dashboard-artwork-confirm-delete.png](documentation/validation/html/dashboard-artwork-confirm-delete.png) |
+| Bulk — confirm delete | 0 errors, 0 warnings | [dashboard-html-terminal.png](documentation/validation/dashboard-html-terminal.png) — reached via a scripted authenticated request rather than a browser, since it's only rendered mid-flow (Select → Delete) |
+
+All 10 were cross-checked with a second method: HTML fetched through an
+authenticated Django test-client session, POSTed straight to the W3C
+Nu Checker's HTTP API for each template — same result, 0 errors/0
+warnings across the board (screenshot above).
 
 ### CSS
 
@@ -81,7 +100,9 @@ against the deployed stylesheet.
 
 | File | Result |
 | ---- | ------ |
-| `static/css/style.css` | Valid CSS3. 0 errors, 1 warning (`-apple-system` flagged as a vendor extension — expected and harmless, used intentionally as part of the system-font fallback stack) |
+| `static/css/style.css` | Valid CSS3. 0 errors, 15 warnings — 7 "CSS variables are not statically checked" (the validator can't resolve `var(--font-serif)`/`var(--font-sans)`, both of which do end in a generic fallback), 8 vendor-prefix notices (`-webkit-user-select`, `-webkit-user-drag`, `-webkit-font-smoothing`, `-webkit-backdrop-filter`, `-webkit-appearance`, `::-webkit-details-marker` ×2) — all intentional, same reasoning as the `-apple-system` fallback |
+
+![CSS validation, 0 errors](documentation/validation/css-validation.png)
 
 ### JavaScript
 
