@@ -661,11 +661,12 @@ needed for this domain.
 
 GitHub Issues are used to plan and track development, prioritised with
 MoSCoW labels (`must have`, `should have`, `could have`, `wont-have`).
-The five must-have issues covering the MVP (project setup, the
-Collection and Artwork models with CRUD, authentication and the public
-gallery pages) are closed, matching the features actually shipped;
-should/could/won't-have issues record everything considered beyond the
-MVP, including the long-term ideas discussed under
+All eight must-have issues (project setup; the Collection and Artwork
+models with CRUD; authentication; the public gallery pages; visual
+identity, responsive layout and custom error pages; password reset;
+and this README itself) are closed, matching the features actually
+shipped; should/could/won't-have issues record everything considered
+beyond the MVP, including the long-term ideas discussed under
 [Rationale](#project-introduction-and-rationale).
 
 [Issues board →](https://github.com/raigonlab/raigonos/issues?q=is%3Aissue)
