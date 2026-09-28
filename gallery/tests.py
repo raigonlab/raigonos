@@ -397,6 +397,76 @@ class CollectionCrudTests(TestCase):
         self.assertFalse(Artwork.objects.filter(title='Gone Too').exists())
 
 
+# Create/update/delete an Artwork through the dashboard forms, mirroring
+# CollectionCrudTests above — including that a blank required field is
+# rejected, same as Collection.
+class ArtworkCrudTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user('artwork_creator', password='pass12345')
+        self.client.login(username='artwork_creator', password='pass12345')
+        self.collection = Collection.objects.create(owner=self.owner, title='Studies')
+
+    def test_create_artwork(self):
+        response = self.client.post(
+            reverse('gallery:artwork_create', args=[self.collection.slug]),
+            {
+                'title': 'New Artwork',
+                'image': tiny_image(),
+                'medium': '',
+                'year': '',
+                'description': '',
+                'display_order': 0,
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        artwork = Artwork.objects.get(title='New Artwork')
+        self.assertEqual(artwork.collection, self.collection)
+
+    def test_update_artwork(self):
+        artwork = Artwork.objects.create(
+            collection=self.collection, title='Old Title', image=tiny_image()
+        )
+        url = reverse('gallery:artwork_update', args=[artwork.pk])
+        response = self.client.post(
+            url,
+            {
+                'title': 'New Title',
+                'medium': '',
+                'year': '',
+                'description': '',
+                'display_order': 0,
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        artwork.refresh_from_db()
+        self.assertEqual(artwork.title, 'New Title')
+
+    def test_blank_title_does_not_create_artwork(self):
+        response = self.client.post(
+            reverse('gallery:artwork_create', args=[self.collection.slug]),
+            {
+                'title': '',
+                'image': tiny_image(),
+                'medium': '',
+                'year': '',
+                'description': '',
+                'display_order': 0,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response.context['form'], 'title', 'This field is required.')
+        self.assertFalse(Artwork.objects.filter(collection=self.collection).exists())
+
+    def test_delete_artwork(self):
+        artwork = Artwork.objects.create(
+            collection=self.collection, title='To Delete', image=tiny_image()
+        )
+        url = reverse('gallery:artwork_delete', args=[artwork.pk])
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Artwork.objects.filter(pk=artwork.pk).exists())
+
+
 # The dashboard's "Select" mode: bulk status changes and bulk delete,
 # including that another user's Collections/Artworks are silently
 # excluded even if their ids are included in the request.

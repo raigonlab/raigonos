@@ -6,7 +6,7 @@
 
 ## Automated Testing
 
-15 automated tests live in `gallery/tests.py`, covering models, public
+60 automated tests live in `gallery/tests.py`, covering models, public
 visibility rules, ownership permissions, and CRUD operations. Run them
 with:
 
@@ -19,13 +19,24 @@ python manage.py test
 | `CollectionModelTests` | Slug auto-generation from title, uniqueness of duplicate-title slugs, `__str__` |
 | `ArtworkModelTests` | `__str__` |
 | `PublicGalleryViewTests` | Public pages only list `published` Collections; `draft` Collections 404 on direct access |
+| `ArtworkDetailNavigationTests` | Previous/Next links and position counter on the public Artwork detail page |
+| `CollectionListViewTests` | Each row on the public Collections list shows the right count, year range and description |
+| `ArtworkGalleryViewTests` | Public home page: only published Artworks listed; site menu links vary by auth state |
 | `DashboardPermissionTests` | Dashboard requires login; a user cannot edit or delete another user's Collection/Artwork (404, not just hidden) |
+| `DashboardSearchTests` | Title search (`?q=`) on the main dashboard list |
+| `CollectionManageViewTests` | Per-Collection dashboard page: login required, 404 for non-owner, shows its Artworks |
+| `ArtworkManageViewTests` | Artwork preview page: permission checks plus Previous/Next neighbour logic |
 | `CollectionCrudTests` | Create/update/delete via the dashboard forms; blank required field is rejected; deleting a Collection cascades to its Artworks |
+| `ArtworkCrudTests` | Create/update/delete an Artwork via the dashboard forms; blank required field is rejected |
+| `BulkActionTests` | Bulk status changes and bulk delete via "Select" mode; another user's items are silently excluded |
+| `EditFormThumbnailTests` | The custom image-preview widget shows on Edit forms, not on Create forms |
+| `ArtworkListViewTests` | "All Artworks" page only shows the logged-in owner's own Artworks |
+| `CollectionArchiveTests` | Archive status: hidden from public/dashboard, own Archive page, archive/unarchive is POST-only and always lands on Draft |
 
-**Result:** 15/15 passing.
+**Result:** 60/60 passing.
 
 ```
-Ran 15 tests in 4.024s
+Ran 60 tests in 20.753s
 
 OK
 ```
@@ -145,7 +156,7 @@ error handling.
 | Required field validation | Collection cannot be created without a title | Submitted the create form with an empty `title` | Form redisplayed with "This field is required.", no record created — verified by automated test |
 | CSRF protection | Forms reject requests without a valid CSRF token | Django's `CsrfViewMiddleware` is active project-wide (enabled by default, not disabled anywhere in `settings.py`) | Enforced framework-wide |
 | Production error visibility | Stack traces are not exposed to visitors | Checked `DEBUG` on the deployed site | `DEBUG=False` in production; generic error pages only |
-| 🚧 Empty form fields (Artwork) | Same required-field protection applies to Artwork | | |
+| Required field validation (Artwork) | Artwork cannot be created without a title | Submitted the create form with an empty `title` | Form redisplayed with "This field is required.", no record created — verified by automated test `test_blank_title_does_not_create_artwork` |
 | 🚧 Navigation | Back/forward buttons never break the site | | |
 
 ---
@@ -157,8 +168,8 @@ error handling.
 | As the site owner | Sign up and log in securely | Achieved — verified on the deployed site |
 | As the site owner | Create a Collection | Achieved — covered by automated test `test_create_collection` |
 | As the site owner | Edit or delete a Collection | Achieved — covered by automated tests `test_update_collection`, `test_delete_collection_cascades_to_artworks` |
-| As the site owner | Add an Artwork to a Collection | Achieved — CRUD view implemented; 🚧 manual browser confirmation pending |
-| As the site owner | Edit or delete an Artwork | Achieved — CRUD view implemented; 🚧 manual browser confirmation pending |
+| As the site owner | Add an Artwork to a Collection | Achieved — covered by automated test `test_create_artwork`; 🚧 manual browser confirmation pending |
+| As the site owner | Edit or delete an Artwork | Achieved — covered by automated tests `test_update_artwork`, `test_delete_artwork`; 🚧 manual browser confirmation pending |
 | As a visitor | Browse public Collections | Achieved — only `published` Collections listed, verified by automated test |
 | As a visitor | View an Artwork's detail | Achieved — 🚧 manual browser confirmation pending |
 | As a visitor | Use the site on any device | 🚧 Pending manual responsiveness testing |
