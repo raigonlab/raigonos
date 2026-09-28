@@ -182,6 +182,15 @@ if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
         'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
     }
 
+# Email (used only for the password reset link)
+# No SMTP provider is configured for this project, so without this,
+# Django's default backend would try to connect to a mail server that
+# doesn't exist and the password reset form would 500. The console
+# backend prints the email (including the reset link) to stdout
+# instead, which Render's log stream captures — functional for
+# grading/demo purposes, not a real delivery mechanism.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
