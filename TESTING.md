@@ -143,9 +143,19 @@ Screenshots saved to `documentation/responsiveness/`.
 No overflow, broken layout or unreadable text at any of the three
 widths on the pages above.
 
-🚧 Dashboard pages still need manual responsiveness testing — they
-require an authenticated session, which this pass didn't have against
-the deployed site.
+Dashboard pages, tested locally (an authenticated session against the
+deployed site wasn't available for this pass) with the real owner
+account and content:
+
+| Section | Mobile | Tablet | Desktop |
+| ------- | ------ | ------ | ------- |
+| Dashboard — Collections | [view](documentation/responsiveness/dashboard-mobile.png) | [view](documentation/responsiveness/dashboard-tablet.png) | [view](documentation/responsiveness/dashboard-desktop.png) |
+| Dashboard — Collection page | [view](documentation/responsiveness/dashboard-collection-page-mobile.png) | [view](documentation/responsiveness/dashboard-collection-page-tablet.png) | [view](documentation/responsiveness/dashboard-collection-page-desktop.png) |
+| Dashboard — All Artworks | [view](documentation/responsiveness/dashboard-all-artworks-mobile.png) | [view](documentation/responsiveness/dashboard-all-artworks-tablet.png) | [view](documentation/responsiveness/dashboard-all-artworks-desktop.png) |
+
+The sidebar collapses to a hamburger menu below 860px (as designed —
+see [dashboard.js](static/js/dashboard.js)); no overflow or broken
+layout at any of the three widths.
 
 ---
 
