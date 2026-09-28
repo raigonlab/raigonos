@@ -148,6 +148,36 @@ main {
   border: 1px solid var(--color-border);
 }
 
+.not-found {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.not-found-illustration {
+  width: 220px;
+  height: 190px;
+  flex-shrink: 0;
+  color: var(--color-muted);
+}
+
+.not-found-text {
+  min-width: 260px;
+  max-width: 32rem;
+}
+
+@media (max-width: 640px) {
+  .not-found {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .not-found-text {
+    width: 100%;
+  }
+}
+
 .eyebrow {
   display: inline-block;
   margin-bottom: 0.5rem;

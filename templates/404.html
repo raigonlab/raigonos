@@ -3,15 +3,68 @@
 {% block title %}Page not found — RaigonOS{% endblock %}
 
 {% block content %}
-  <span class="eyebrow">Error 404</span>
-  <h1>This page doesn't exist.</h1>
-  <p>
-    The page you're looking for may have been moved, renamed, or never
-    existed. Let's get you back to the gallery.
-  </p>
-  <p>
-    <a href="{% url 'gallery:artwork_gallery' %}" class="button-link">
-      Back to Gallery
-    </a>
-  </p>
+  <div class="not-found">
+    <svg class="not-found-illustration" viewBox="0 0 320 280" fill="none"
+         stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+         stroke-linejoin="round" aria-hidden="true">
+      <!-- easel: ledge, front legs, back leg -->
+      <path d="M95 200 L225 200" />
+      <path d="M100 200 L80 255" />
+      <path d="M220 200 L240 255" />
+      <path d="M160 200 L172 255" stroke-width="1.3" opacity="0.75" />
+
+      <!-- canvas corners, just peeking out under the cloth -->
+      <path d="M104 178 L104 200" />
+      <path d="M216 178 L216 200" />
+
+      <!-- dust cloth draped over the canvas -->
+      <path d="M78,108
+               C 82,58 118,30 160,30
+               C 202,30 238,58 242,108
+               C 244,128 236,126 238,148
+               C 240,172 230,166 226,193
+               C 222,212 208,202 196,210
+               C 184,217 176,204 163,211
+               C 150,218 142,205 128,211
+               C 114,217 106,204 96,194
+               C 90,182 96,168 92,150
+               C 88,128 80,128 78,108 Z" />
+
+      <!-- fold creases -->
+      <path d="M126 48 C 120 82, 134 118, 122 165" stroke-width="1.1" opacity="0.6" />
+      <path d="M178 40 C 188 80, 174 132, 190 198" stroke-width="1.1" opacity="0.6" />
+
+      <!-- cobweb, top-left corner -->
+      <g stroke-width="1.15" opacity="0.85">
+        <path d="M16 16 L82 16" />
+        <path d="M16 16 L73.2 49" />
+        <path d="M16 16 L49 73.2" />
+        <path d="M16 16 L16 82" />
+        <path d="M40 16 A24 24 0 0 1 16 40" />
+        <path d="M61 16 A45 45 0 0 1 16 61" />
+      </g>
+
+      <!-- a very committed spider, hanging by a thread -->
+      <path d="M51 51 L44 96" stroke-width="1.1" stroke-dasharray="1 4.5" opacity="0.8" />
+      <circle cx="44" cy="105" r="5.5" />
+      <circle cx="44" cy="96" r="3" />
+      <path d="M38 101 L29 97 M38 105 L29 109 M50 101 L59 97 M50 105 L59 109"
+            stroke-width="1.2" />
+    </svg>
+
+    <div class="not-found-text">
+      <span class="eyebrow">Error 404</span>
+      <h1>Nothing's hung here.</h1>
+      <p>
+        This page doesn't exist — the only things on display are a dust
+        sheet and a very committed spider. Let's get you back to the
+        gallery.
+      </p>
+      <p>
+        <a href="{% url 'gallery:artwork_gallery' %}" class="button-link">
+          Back to Gallery
+        </a>
+      </p>
+    </div>
+  </div>
 {% endblock %}
