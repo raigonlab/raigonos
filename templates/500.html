@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Something went wrong — RaigonOS</title>
+  <style>
+    /* Self-contained on purpose: Django renders 500.html without the
+       usual request context, so this can't rely on extending the base
+       template, the static tag, or anything else that might not
+       resolve mid-error. */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7f4ee;
+      color: #121212;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+    .wrap { max-width: 28rem; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6b6657;
+    }
+    h1 {
+      margin: 0 0 0.75rem;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 2rem;
+    }
+    p { line-height: 1.6; color: #2a2824; }
+    a.button-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.75rem 2rem;
+      border: 1px solid #121212;
+      border-radius: 999px;
+      background: #121212;
+      color: #f7f4ee;
+      text-decoration: none;
+      font: inherit;
+    }
+    a.button-link:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="eyebrow">Error 500</span>
+    <h1>Something went wrong on our end.</h1>
+    <p>
+      Not you — us. The gallery hit a snag loading this page. Try
+      again in a moment, or head back home.
+    </p>
+    <a href="/" class="button-link">Back to Gallery</a>
+  </div>
+</body>
+</html>
