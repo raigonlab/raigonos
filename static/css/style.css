@@ -210,7 +210,7 @@ h1 i {
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.25rem var(--gap);
+  gap: 4rem 2.5rem;
 }
 
 @media (min-width: 560px) {
