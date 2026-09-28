@@ -247,9 +247,13 @@ built today:
 
 #### 4. Skeleton
 
-🚧 Wireframes (mobile/tablet/desktop) are planned before templates are
-built, following the same process as the previous project (low-fidelity
-sketches → Figma wireframes). Will be added here once produced.
+Two low-fidelity wireframe sheets, one per surface (see
+[Wireframes](#wireframes) below): the public gallery's four core screens
+(Grid, Collections, Exhibition and the shared top navigation) and the
+dashboard's two list layouts (thumbnail/grid and list view) plus its
+shared header controls. Sketched by hand rather than in Figma, and
+produced to document the structure already settled on through
+development, rather than drafted upfront before templates existed.
 
 ---
 
@@ -340,7 +344,15 @@ sans-serif for everything functional.
 
 ## Wireframes
 
-🚧 To be added before templates are built (see [Skeleton](#4-skeleton)).
+**Public gallery** — the Grid, Collections and Exhibition screens, plus
+the shared top navigation/site menu:
+
+![Public gallery wireframes](documentation/wireframes/public-gallery.png)
+
+**Dashboard** — the Collections list in its thumbnail and list layouts,
+plus the shared header controls (search, view toggle, New Collection):
+
+![Dashboard wireframes](documentation/wireframes/dashboard.png)
 
 ---
 
@@ -357,7 +369,7 @@ sans-serif for everything functional.
 | As a visitor | I want to view an Artwork's detail | So I can see its title, medium, year and description |
 | As a visitor | I want the site to work on any device | So I have a consistent experience on mobile and desktop |
 
-🚧 Full backlog (including could-have / won't-have items) is tracked as
+Full backlog (including could-have / won't-have items) is tracked as
 GitHub Issues using MoSCoW prioritisation — see
 [Agile Development Process](#agile-development-process).
 
@@ -627,10 +639,15 @@ needed for this domain.
 ## Agile Development Process
 
 GitHub Issues are used to plan and track development, prioritised with
-MoSCoW labels (must/should/could/won't-have).
+MoSCoW labels (`must have`, `should have`, `could have`, `wont-have`).
+The five must-have issues covering the MVP (project setup, the
+Collection and Artwork models with CRUD, authentication and the public
+gallery pages) are closed, matching the features actually shipped;
+should/could/won't-have issues record everything considered beyond the
+MVP, including the long-term ideas discussed under
+[Rationale](#project-introduction-and-rationale).
 
-🚧 [Link to Issues](https://github.com/raigonlab/raigonos/issues) — to be
-populated as issues are created.
+[Issues board →](https://github.com/raigonlab/raigonos/issues?q=is%3Aissue)
 
 ---
 
