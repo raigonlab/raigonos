@@ -173,13 +173,24 @@ to `documentation/browsers/`.
 
 ## Lighthouse Audit
 
-🚧 To be run via Chrome DevTools against the deployed site, with
-screenshots saved to `documentation/lighthouse/`.
+Run with the [Lighthouse CLI](https://github.com/GoogleChrome/lighthouse)
+against the deployed site.
 
-| Page | Mobile | Desktop |
-| ---- | ------ | ------- |
-| Public gallery home | | |
-| Dashboard | | |
+| Page | Performance | Accessibility | Best Practices | SEO | Screenshot |
+| ---- | ----------- | -------------- | --------------- | --- | ---------- |
+| Public gallery home — Mobile | 69 | 95 | 96 | 91 | [home-mobile.png](documentation/lighthouse/home-mobile.png) |
+| Public gallery home — Desktop | 69 | 95 | 96 | 91 | [home-desktop.png](documentation/lighthouse/home-desktop.png) |
+
+Accessibility, Best Practices and SEO are all strong. Performance is
+held down by Largest Contentful Paint (8.9s desktop / 15.7s mobile),
+driven by the unoptimised artwork image files (Lighthouse estimates
+~12MB of possible savings) plus the Render free-tier cold start — see
+[Known Issues](#known-issues). Not a regression to fix under deadline
+pressure; noted here for a future image-optimisation pass (responsive
+`srcset`/WebP via Cloudinary's own transformation URLs).
+
+🚧 Dashboard pages need a login Lighthouse can't provide by URL alone
+— pending.
 
 ---
 
@@ -244,6 +255,7 @@ None known at this time.
 | ----- | ----- |
 | Cold start delay on first request | The Render free-tier Web Service spins down after inactivity; the first request after idle can take 30–50 seconds while it wakes up. This is a hosting-plan limitation, not an application bug. |
 | Production database expires 2026-10-09 | Render's free PostgreSQL plan is deleted 90 days after creation. Decision: upgrade to a paid plan before that date (tracked outside this repo, not yet actioned). |
+| Lighthouse Performance score (69) | Held down by Largest Contentful Paint on unoptimised artwork images and the Render free-tier cold start, not a code defect. A future pass would serve responsive/WebP images via Cloudinary's transformation URLs. |
 
 ---
 
