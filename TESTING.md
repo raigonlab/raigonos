@@ -176,10 +176,13 @@ to `documentation/browsers/`.
 Run with the [Lighthouse CLI](https://github.com/GoogleChrome/lighthouse)
 against the deployed site.
 
-| Page | Performance | Accessibility | Best Practices | SEO | Screenshot |
-| ---- | ----------- | -------------- | --------------- | --- | ---------- |
-| Public gallery home — Mobile | 69 | 95 | 96 | 91 | [home-mobile.png](documentation/lighthouse/home-mobile.png) |
-| Public gallery home — Desktop | 69 | 95 | 96 | 91 | [home-desktop.png](documentation/lighthouse/home-desktop.png) |
+| Page | Performance | Accessibility | Best Practices | SEO |
+| ---- | ----------- | -------------- | --------------- | --- |
+| Public gallery home — Mobile | 69 | 95 | 96 | 91 |
+| Public gallery home — Desktop | 69 | 95 | 96 | 91 |
+
+![Lighthouse — desktop](documentation/lighthouse/home-desktop.png)
+![Lighthouse — mobile](documentation/lighthouse/home-mobile.png)
 
 Accessibility, Best Practices and SEO are all strong. Performance is
 held down by Largest Contentful Paint (8.9s desktop / 15.7s mobile),
@@ -216,16 +219,16 @@ error handling.
 
 ## User Story Testing
 
-| Target | Expectation | Result |
-| ------ | ----------- | ------ |
-| As the site owner | Sign up and log in securely | Achieved — verified on the deployed site |
-| As the site owner | Create a Collection | Achieved — covered by automated test `test_create_collection` |
-| As the site owner | Edit or delete a Collection | Achieved — covered by automated tests `test_update_collection`, `test_delete_collection_cascades_to_artworks` |
-| As the site owner | Add an Artwork to a Collection | Achieved — covered by automated test `test_create_artwork`; manually confirmed on the deployed site (created, appeared in the Collection) |
-| As the site owner | Edit or delete an Artwork | Achieved — covered by automated tests `test_update_artwork`, `test_delete_artwork`; manually confirmed on the deployed site (deleted, disappeared from the list) |
-| As a visitor | Browse public Collections | Achieved — only `published` Collections listed, verified by automated test |
-| As a visitor | View an Artwork's detail | Achieved — manually confirmed: the test Artwork appeared on the public gallery once its Collection was published |
-| As a visitor | Use the site on any device | Achieved — see [Responsiveness](#responsiveness) |
+| Target | Expectation | Result | Screenshot |
+| ------ | ----------- | ------ | ---------- |
+| As the site owner | Sign up and log in securely | Achieved — verified on the deployed site | [view](documentation/responsiveness/login-desktop.png) |
+| As the site owner | Create a Collection | Achieved — covered by automated test `test_create_collection` | [view](documentation/validation/html/dashboard-collection-form.png) |
+| As the site owner | Edit or delete a Collection | Achieved — covered by automated tests `test_update_collection`, `test_delete_collection_cascades_to_artworks` | [view](documentation/validation/html/dashboard-collection-confirm-delete.png) |
+| As the site owner | Add an Artwork to a Collection | Achieved — covered by automated test `test_create_artwork`; manually confirmed on the deployed site (created, appeared in the Collection) | [view](documentation/validation/html/dashboard-artwork-form.png) |
+| As the site owner | Edit or delete an Artwork | Achieved — covered by automated tests `test_update_artwork`, `test_delete_artwork`; manually confirmed on the deployed site (deleted, disappeared from the list) | [view](documentation/validation/html/dashboard-artwork-confirm-delete.png) |
+| As a visitor | Browse public Collections | Achieved — only `published` Collections listed, verified by automated test | [view](documentation/responsiveness/collections-desktop.png) |
+| As a visitor | View an Artwork's detail | Achieved — manually confirmed: the test Artwork appeared on the public gallery once its Collection was published | [view](documentation/responsiveness/artwork-detail-desktop.png) |
+| As a visitor | Use the site on any device | Achieved — see [Responsiveness](#responsiveness) | [view](documentation/responsiveness/dashboard-mobile.png) |
 
 ---
 
