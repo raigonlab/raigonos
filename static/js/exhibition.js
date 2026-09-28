@@ -96,6 +96,10 @@
     return src.replace('/image/upload/', '/image/upload/w_700,q_auto,f_auto/');
   }
 
+  // AI-assisted (Claude Code), directed by Railson Gonçalves: seamless
+  // looping needed each lane's lap made wide enough to tile without a
+  // gap or a visible jump, which is what the repeats/period math below
+  // works out.
   function build() {
     stage.innerHTML = '';
     rows = [];
@@ -195,6 +199,9 @@
     });
   }
 
+  // AI-assisted (Claude Code), directed by Railson Gonçalves: the per-frame
+  // loop -- frame-rate-independent easing, wrapping each lane after one
+  // lap, and the depth-of-field falloff by distance from centre.
   function frame(now) {
     if (!running) {
       return;
@@ -313,6 +320,9 @@
     dragDistance = 0;
   });
 
+  // AI-assisted (Claude Code), directed by Railson Gonçalves: drag delta
+  // applies along whichever axis is active (rows vs. columns), scaled per
+  // lane by its depth, so a drag moves the nearer lanes further.
   window.addEventListener('pointermove', function (event) {
     if (viewW && viewH) {
       mouseTargetX = event.clientX / viewW - 0.5;
