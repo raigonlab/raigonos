@@ -104,17 +104,27 @@ npx jshint static/js/dashboard.js static/js/exhibition.js static/js/site-menu.js
 
 ## Responsiveness
 
-🚧 To be tested manually across mobile, tablet and desktop breakpoints
-using browser dev tools, with screenshots saved to
-`documentation/responsiveness/`.
+Public pages tested against the deployed site at three breakpoints —
+Mobile 375×812, Tablet 768×1024, Desktop 1440×900 — using a real Chrome
+instance with the viewport set directly via CDP (not just a resized
+window), so each screenshot reflects genuine layout at that width.
+Screenshots saved to `documentation/responsiveness/`.
 
-| Section | Mobile | Tablet | Desktop | Notes |
-| ------- | ------ | ------ | ------- | ----- |
-| Public gallery home | | | | |
-| Collection detail | | | | |
-| Artwork detail | | | | |
-| Dashboard | | | | |
-| Login / Signup | | | | |
+| Section | Mobile | Tablet | Desktop |
+| ------- | ------ | ------ | ------- |
+| Public gallery home (exhibition) | [view](documentation/responsiveness/home-mobile.png) | [view](documentation/responsiveness/home-tablet.png) | [view](documentation/responsiveness/home-desktop.png) |
+| Collections | [view](documentation/responsiveness/collections-mobile.png) | [view](documentation/responsiveness/collections-tablet.png) | [view](documentation/responsiveness/collections-desktop.png) |
+| Collection detail | [view](documentation/responsiveness/collection-detail-mobile.png) | [view](documentation/responsiveness/collection-detail-tablet.png) | [view](documentation/responsiveness/collection-detail-desktop.png) |
+| Artwork detail | [view](documentation/responsiveness/artwork-detail-mobile.png) | [view](documentation/responsiveness/artwork-detail-tablet.png) | [view](documentation/responsiveness/artwork-detail-desktop.png) |
+| Login | [view](documentation/responsiveness/login-mobile.png) | [view](documentation/responsiveness/login-tablet.png) | [view](documentation/responsiveness/login-desktop.png) |
+| Signup | [view](documentation/responsiveness/signup-mobile.png) | [view](documentation/responsiveness/signup-tablet.png) | [view](documentation/responsiveness/signup-desktop.png) |
+
+No overflow, broken layout or unreadable text at any of the three
+widths on the pages above.
+
+🚧 Dashboard pages still need manual responsiveness testing — they
+require an authenticated session, which this pass didn't have against
+the deployed site.
 
 ---
 
