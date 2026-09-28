@@ -157,7 +157,8 @@ error handling.
 | CSRF protection | Forms reject requests without a valid CSRF token | Django's `CsrfViewMiddleware` is active project-wide (enabled by default, not disabled anywhere in `settings.py`) | Enforced framework-wide |
 | Production error visibility | Stack traces are not exposed to visitors | Checked `DEBUG` on the deployed site | `DEBUG=False` in production; generic error pages only |
 | Required field validation (Artwork) | Artwork cannot be created without a title | Submitted the create form with an empty `title` | Form redisplayed with "This field is required.", no record created — verified by automated test `test_blank_title_does_not_create_artwork` |
-| 🚧 Navigation | Back/forward buttons never break the site | | |
+| Navigation | Back/forward buttons never break the site | Checked every custom JS file (`dashboard.js`, `exhibition.js`, `site-menu.js`) for anything that could interfere with browser history — `history.pushState`/`replaceState`, `popstate`, `beforeunload`, a service worker, or a `<base>` tag | None found. All navigation is plain server-rendered page loads via `<a href>`/`window.location.href`; `exhibition.js` only *reads* `location.hash` once (line 439) and never writes it. Nothing overrides default browser history behaviour |
+| Commented-out code | Final code is free of commented-out/dead code (assessment 4.2) | Searched every custom Python, JS and template file for disabled code (`# `/`// `/`{# #}` followed by code-like tokens) | None found — every match was a genuine explanatory comment |
 
 ---
 
