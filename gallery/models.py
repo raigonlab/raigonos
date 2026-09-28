@@ -6,6 +6,10 @@ from django.utils.text import slugify
 class Collection(models.Model):
     """A themed group of Artworks belonging to one owner (artist)."""
 
+    # A Collection is always in one of these three states. Draft and
+    # Archived are only ever shown to the owner in the dashboard; only
+    # Published Collections (and their Artworks) are visible on the
+    # public site.
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
     STATUS_ARCHIVED = 'archived'
@@ -39,11 +43,18 @@ class Collection(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        # The slug only needs generating once, when the Collection is
+        # first created — after that it stays fixed even if the title
+        # changes later, so existing public URLs keep working.
         if not self.slug:
             self.slug = self._generate_unique_slug()
         super().save(*args, **kwargs)
 
     def _generate_unique_slug(self):
+        # Turn the title into a URL-safe slug (e.g. "My Art" -> "my-art").
+        # If that slug is already taken by another Collection, keep
+        # appending a number until it's unique, since slug has to be
+        # unique for the public collection/<slug>/ URL to work.
         base_slug = slugify(self.title)
         slug = base_slug
         counter = 1
@@ -66,6 +77,8 @@ class Artwork(models.Model):
     )
     year = models.PositiveIntegerField(blank=True, null=True)
     description = models.TextField(blank=True)
+    # Lets the owner control the order Artworks appear in within a
+    # Collection, instead of being stuck with creation order.
     display_order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

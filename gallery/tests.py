@@ -1,3 +1,7 @@
+# Automated tests for the gallery app: models, public visibility rules,
+# ownership permissions and CRUD, grouped one TestCase class per feature
+# area. See TESTING.md for the matching summary table and manual test log.
+
 import io
 
 from django.contrib.auth import get_user_model
@@ -13,11 +17,16 @@ User = get_user_model()
 
 def tiny_image(name='test.png'):
     """Return a minimal valid in-memory PNG for ImageField uploads."""
+    # Artwork.image is required, and a real image file is needed for
+    # Pillow/ImageField validation to pass — a 1x1 pixel PNG is the
+    # smallest thing that satisfies that without needing a real fixture
+    # file on disk for every test.
     buf = io.BytesIO()
     Image.new('RGB', (1, 1)).save(buf, format='PNG')
     return SimpleUploadedFile(name, buf.getvalue(), content_type='image/png')
 
 
+# Slug auto-generation and __str__ on the Collection model.
 class CollectionModelTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('owner', password='pass12345')
@@ -38,6 +47,7 @@ class CollectionModelTests(TestCase):
         self.assertEqual(str(collection), 'Accord')
 
 
+# __str__ on the Artwork model.
 class ArtworkModelTests(TestCase):
     def test_str_returns_title(self):
         owner = User.objects.create_user('owner2', password='pass12345')
@@ -48,6 +58,8 @@ class ArtworkModelTests(TestCase):
         self.assertEqual(str(artwork), 'Untitled I')
 
 
+# Public pages only ever list/serve published Collections — a draft
+# Collection's detail page 404s even with a direct link to it.
 class PublicGalleryViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('artist', password='pass12345')
@@ -76,6 +88,8 @@ class PublicGalleryViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+# The Previous/Next links on the public Artwork detail page, and the
+# position counter ("2 / 3") that goes with them.
 class ArtworkDetailNavigationTests(TestCase):
     def setUp(self):
         owner = User.objects.create_user('nav_owner', password='pass12345')
@@ -106,6 +120,8 @@ class ArtworkDetailNavigationTests(TestCase):
         self.assertNotContains(self.detail(self.works[0]), 'Legacy')
 
 
+# Each row on the public Collections list shows the right artwork
+# count, year range and description.
 class CollectionListViewTests(TestCase):
     def setUp(self):
         owner = User.objects.create_user('list_owner', password='pass12345')
@@ -129,6 +145,9 @@ class CollectionListViewTests(TestCase):
         self.assertContains(response, 'A short note about the series.')
 
 
+# The public home page (exhibition/grid): only published Artworks are
+# included, and the site menu shows the right links depending on
+# whether the visitor is logged in.
 class ArtworkGalleryViewTests(TestCase):
     def setUp(self):
         owner = User.objects.create_user('gallery_owner', password='pass12345')
@@ -182,6 +201,10 @@ class ArtworkGalleryViewTests(TestCase):
         self.assertContains(response, 'Welcome to <em>Test Artist</em>')
 
 
+# The core security guarantee of the whole dashboard: it requires
+# login, and a logged-in user can never edit or delete another user's
+# Collection/Artwork — they get a 404, not a 403, so they can't even
+# confirm the other user's content exists.
 class DashboardPermissionTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('owner3', password='pass12345')
@@ -219,6 +242,7 @@ class DashboardPermissionTests(TestCase):
         self.assertTrue(Artwork.objects.filter(pk=self.artwork.pk).exists())
 
 
+# Title search (?q=) on the main dashboard list.
 class DashboardSearchTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('searcher', password='pass12345')
@@ -237,6 +261,8 @@ class DashboardSearchTests(TestCase):
         self.assertNotContains(response, 'Untitled Sketches')
 
 
+# The per-Collection dashboard page: needs login, 404s for a non-owner,
+# and shows that Collection's own Artworks to its owner.
 class CollectionManageViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('manager', password='pass12345')
@@ -267,6 +293,9 @@ class CollectionManageViewTests(TestCase):
         self.assertContains(response, 'Piece I')
 
 
+# The owner's Artwork preview page: permission checks plus the
+# Previous/Next neighbour logic, mirroring ArtworkDetailNavigationTests
+# above but for the dashboard version of the page.
 class ArtworkManageViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('curator', password='pass12345')
@@ -320,6 +349,9 @@ class ArtworkManageViewTests(TestCase):
         self.assertEqual(response.context['next_artwork'], self.second)
 
 
+# Create/update/delete a Collection through the dashboard forms,
+# including that a blank required field is rejected and that deleting a
+# Collection cascades to delete its Artworks too.
 class CollectionCrudTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('creator', password='pass12345')
@@ -365,6 +397,9 @@ class CollectionCrudTests(TestCase):
         self.assertFalse(Artwork.objects.filter(title='Gone Too').exists())
 
 
+# The dashboard's "Select" mode: bulk status changes and bulk delete,
+# including that another user's Collections/Artworks are silently
+# excluded even if their ids are included in the request.
 class BulkActionTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('bulk_owner', password='pass12345')
@@ -454,6 +489,9 @@ class BulkActionTests(TestCase):
         self.assertTrue(Artwork.objects.filter(pk=theirs.pk).exists())
 
 
+# The custom ImagePreviewInput widget: shows a thumbnail on the Edit
+# form (not Django's default "Currently: <path>" text), and shows
+# nothing on the Create form, since there's no existing image yet.
 class EditFormThumbnailTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('thumb_owner', password='pass12345')
@@ -478,6 +516,8 @@ class EditFormThumbnailTests(TestCase):
         self.assertNotContains(response, 'dash-image-preview')
 
 
+# The "All Artworks" dashboard page: only the logged-in owner's own
+# Artworks appear, even though the query spans every Collection.
 class ArtworkListViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('lister', password='pass12345')
@@ -516,6 +556,10 @@ class ArtworkListViewTests(TestCase):
         self.assertNotContains(response, 'Second Piece')
 
 
+# The Archive status: archived Collections are hidden from public pages
+# and from the main dashboard list, live in their own Archive page, and
+# archiving/unarchiving only happens on POST — plus unarchiving always
+# lands back on Draft, never Published.
 class CollectionArchiveTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('keeper', password='pass12345')
