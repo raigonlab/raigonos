@@ -66,9 +66,9 @@ against the deployed pages.
 | Public gallery home | https://raigonos.onrender.com/ | 0 errors, 0 warnings | |
 | Login | https://raigonos.onrender.com/accounts/login/ | 0 errors, 0 warnings | |
 | Signup | https://raigonos.onrender.com/accounts/signup/ | 0 errors, 0 warnings | |
-| Collections | https://raigonos.onrender.com/collections/ | 0 errors, 0 warnings | [collections.png](documentation/validation/html/collections.png) |
-| Collection detail | https://raigonos.onrender.com/collection/flow-lines/ | 0 errors, 0 warnings | [collection-detail.png](documentation/validation/html/collection-detail.png) |
-| Artwork detail | https://raigonos.onrender.com/artwork/25/ | 0 errors, 0 warnings | [artwork-detail.png](documentation/validation/html/artwork-detail.png) |
+| Collections | https://raigonos.onrender.com/collections/ | 0 errors, 0 warnings | <a href="documentation/validation/html/collections.png"><img src="documentation/validation/html/collections.png" width="140" alt="collections.png"></a> |
+| Collection detail | https://raigonos.onrender.com/collection/flow-lines/ | 0 errors, 0 warnings | <a href="documentation/validation/html/collection-detail.png"><img src="documentation/validation/html/collection-detail.png" width="140" alt="collection-detail.png"></a> |
+| Artwork detail | https://raigonos.onrender.com/artwork/25/ | 0 errors, 0 warnings | <a href="documentation/validation/html/artwork-detail.png"><img src="documentation/validation/html/artwork-detail.png" width="140" alt="artwork-detail.png"></a> |
 
 Dashboard pages require login, so the checker can't fetch them by URL —
 each was validated via "Validate by Direct Input" (page source copied
@@ -76,16 +76,16 @@ from an authenticated session):
 
 | Page | Result | Screenshot |
 | ---- | ------ | ---------- |
-| Dashboard — Collections | 0 errors, 0 warnings | [dashboard-collections.png](documentation/validation/html/dashboard-collections.png) |
-| Dashboard — Archive | 0 errors, 0 warnings | [dashboard-archive.png](documentation/validation/html/dashboard-archive.png) |
-| Dashboard — All Artworks | 0 errors, 0 warnings | [dashboard-all-artworks.png](documentation/validation/html/dashboard-all-artworks.png) |
-| Dashboard — Collection page | 0 errors, 0 warnings | [dashboard-collection-page.png](documentation/validation/html/dashboard-collection-page.png) |
-| Dashboard — Artwork preview | 0 errors, 0 warnings | [dashboard-artwork-preview.png](documentation/validation/html/dashboard-artwork-preview.png) |
-| Collection form (create) | 0 errors, 0 warnings | [dashboard-collection-form.png](documentation/validation/html/dashboard-collection-form.png) |
-| Artwork form (create) | 0 errors, 0 warnings | [dashboard-artwork-form.png](documentation/validation/html/dashboard-artwork-form.png) |
-| Collection — confirm delete | 0 errors, 0 warnings | [dashboard-collection-confirm-delete.png](documentation/validation/html/dashboard-collection-confirm-delete.png) |
-| Artwork — confirm delete | 0 errors, 0 warnings | [dashboard-artwork-confirm-delete.png](documentation/validation/html/dashboard-artwork-confirm-delete.png) |
-| Bulk — confirm delete | 0 errors, 0 warnings | [dashboard-html-terminal.png](documentation/validation/dashboard-html-terminal.png) — reached via a scripted authenticated request rather than a browser, since it's only rendered mid-flow (Select → Delete) |
+| Dashboard — Collections | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-collections.png"><img src="documentation/validation/html/dashboard-collections.png" width="140" alt="dashboard-collections.png"></a> |
+| Dashboard — Archive | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-archive.png"><img src="documentation/validation/html/dashboard-archive.png" width="140" alt="dashboard-archive.png"></a> |
+| Dashboard — All Artworks | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-all-artworks.png"><img src="documentation/validation/html/dashboard-all-artworks.png" width="140" alt="dashboard-all-artworks.png"></a> |
+| Dashboard — Collection page | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-collection-page.png"><img src="documentation/validation/html/dashboard-collection-page.png" width="140" alt="dashboard-collection-page.png"></a> |
+| Dashboard — Artwork preview | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-artwork-preview.png"><img src="documentation/validation/html/dashboard-artwork-preview.png" width="140" alt="dashboard-artwork-preview.png"></a> |
+| Collection form (create) | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-collection-form.png"><img src="documentation/validation/html/dashboard-collection-form.png" width="140" alt="dashboard-collection-form.png"></a> |
+| Artwork form (create) | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-artwork-form.png"><img src="documentation/validation/html/dashboard-artwork-form.png" width="140" alt="dashboard-artwork-form.png"></a> |
+| Collection — confirm delete | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-collection-confirm-delete.png"><img src="documentation/validation/html/dashboard-collection-confirm-delete.png" width="140" alt="dashboard-collection-confirm-delete.png"></a> |
+| Artwork — confirm delete | 0 errors, 0 warnings | <a href="documentation/validation/html/dashboard-artwork-confirm-delete.png"><img src="documentation/validation/html/dashboard-artwork-confirm-delete.png" width="140" alt="dashboard-artwork-confirm-delete.png"></a> |
+| Bulk — confirm delete | 0 errors, 0 warnings | <a href="documentation/validation/dashboard-html-terminal.png"><img src="documentation/validation/dashboard-html-terminal.png" width="140" alt="dashboard-html-terminal.png"></a> — reached via a scripted authenticated request rather than a browser, since it's only rendered mid-flow (Select → Delete) |
 
 All 10 were cross-checked with a second method: HTML fetched through an
 authenticated Django test-client session, POSTed straight to the W3C
@@ -133,12 +133,12 @@ Screenshots saved to `documentation/responsiveness/`.
 
 | Section | Mobile | Tablet | Desktop |
 | ------- | ------ | ------ | ------- |
-| Public gallery home (exhibition) | [view](documentation/responsiveness/home-mobile.png) | [view](documentation/responsiveness/home-tablet.png) | [view](documentation/responsiveness/home-desktop.png) |
-| Collections | [view](documentation/responsiveness/collections-mobile.png) | [view](documentation/responsiveness/collections-tablet.png) | [view](documentation/responsiveness/collections-desktop.png) |
-| Collection detail | [view](documentation/responsiveness/collection-detail-mobile.png) | [view](documentation/responsiveness/collection-detail-tablet.png) | [view](documentation/responsiveness/collection-detail-desktop.png) |
-| Artwork detail | [view](documentation/responsiveness/artwork-detail-mobile.png) | [view](documentation/responsiveness/artwork-detail-tablet.png) | [view](documentation/responsiveness/artwork-detail-desktop.png) |
-| Login | [view](documentation/responsiveness/login-mobile.png) | [view](documentation/responsiveness/login-tablet.png) | [view](documentation/responsiveness/login-desktop.png) |
-| Signup | [view](documentation/responsiveness/signup-mobile.png) | [view](documentation/responsiveness/signup-tablet.png) | [view](documentation/responsiveness/signup-desktop.png) |
+| Public gallery home (exhibition) | <a href="documentation/responsiveness/home-mobile.png"><img src="documentation/responsiveness/home-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/home-tablet.png"><img src="documentation/responsiveness/home-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/home-desktop.png"><img src="documentation/responsiveness/home-desktop.png" width="140" alt="screenshot"></a> |
+| Collections | <a href="documentation/responsiveness/collections-mobile.png"><img src="documentation/responsiveness/collections-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/collections-tablet.png"><img src="documentation/responsiveness/collections-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/collections-desktop.png"><img src="documentation/responsiveness/collections-desktop.png" width="140" alt="screenshot"></a> |
+| Collection detail | <a href="documentation/responsiveness/collection-detail-mobile.png"><img src="documentation/responsiveness/collection-detail-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/collection-detail-tablet.png"><img src="documentation/responsiveness/collection-detail-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/collection-detail-desktop.png"><img src="documentation/responsiveness/collection-detail-desktop.png" width="140" alt="screenshot"></a> |
+| Artwork detail | <a href="documentation/responsiveness/artwork-detail-mobile.png"><img src="documentation/responsiveness/artwork-detail-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/artwork-detail-tablet.png"><img src="documentation/responsiveness/artwork-detail-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/artwork-detail-desktop.png"><img src="documentation/responsiveness/artwork-detail-desktop.png" width="140" alt="screenshot"></a> |
+| Login | <a href="documentation/responsiveness/login-mobile.png"><img src="documentation/responsiveness/login-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/login-tablet.png"><img src="documentation/responsiveness/login-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/login-desktop.png"><img src="documentation/responsiveness/login-desktop.png" width="140" alt="screenshot"></a> |
+| Signup | <a href="documentation/responsiveness/signup-mobile.png"><img src="documentation/responsiveness/signup-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/signup-tablet.png"><img src="documentation/responsiveness/signup-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/signup-desktop.png"><img src="documentation/responsiveness/signup-desktop.png" width="140" alt="screenshot"></a> |
 
 No overflow, broken layout or unreadable text at any of the three
 widths on the pages above.
@@ -149,9 +149,9 @@ account and content:
 
 | Section | Mobile | Tablet | Desktop |
 | ------- | ------ | ------ | ------- |
-| Dashboard — Collections | [view](documentation/responsiveness/dashboard-mobile.png) | [view](documentation/responsiveness/dashboard-tablet.png) | [view](documentation/responsiveness/dashboard-desktop.png) |
-| Dashboard — Collection page | [view](documentation/responsiveness/dashboard-collection-page-mobile.png) | [view](documentation/responsiveness/dashboard-collection-page-tablet.png) | [view](documentation/responsiveness/dashboard-collection-page-desktop.png) |
-| Dashboard — All Artworks | [view](documentation/responsiveness/dashboard-all-artworks-mobile.png) | [view](documentation/responsiveness/dashboard-all-artworks-tablet.png) | [view](documentation/responsiveness/dashboard-all-artworks-desktop.png) |
+| Dashboard — Collections | <a href="documentation/responsiveness/dashboard-mobile.png"><img src="documentation/responsiveness/dashboard-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/dashboard-tablet.png"><img src="documentation/responsiveness/dashboard-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/dashboard-desktop.png"><img src="documentation/responsiveness/dashboard-desktop.png" width="140" alt="screenshot"></a> |
+| Dashboard — Collection page | <a href="documentation/responsiveness/dashboard-collection-page-mobile.png"><img src="documentation/responsiveness/dashboard-collection-page-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/dashboard-collection-page-tablet.png"><img src="documentation/responsiveness/dashboard-collection-page-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/dashboard-collection-page-desktop.png"><img src="documentation/responsiveness/dashboard-collection-page-desktop.png" width="140" alt="screenshot"></a> |
+| Dashboard — All Artworks | <a href="documentation/responsiveness/dashboard-all-artworks-mobile.png"><img src="documentation/responsiveness/dashboard-all-artworks-mobile.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/dashboard-all-artworks-tablet.png"><img src="documentation/responsiveness/dashboard-all-artworks-tablet.png" width="140" alt="screenshot"></a> | <a href="documentation/responsiveness/dashboard-all-artworks-desktop.png"><img src="documentation/responsiveness/dashboard-all-artworks-desktop.png" width="140" alt="screenshot"></a> |
 
 The sidebar collapses to a hamburger menu below 860px (as designed —
 see [dashboard.js](static/js/dashboard.js)); no overflow or broken
@@ -221,14 +221,14 @@ error handling.
 
 | Target | Expectation | Result | Screenshot |
 | ------ | ----------- | ------ | ---------- |
-| As the site owner | Sign up and log in securely | Achieved — verified on the deployed site | [view](documentation/responsiveness/login-desktop.png) |
-| As the site owner | Create a Collection | Achieved — covered by automated test `test_create_collection` | [view](documentation/validation/html/dashboard-collection-form.png) |
-| As the site owner | Edit or delete a Collection | Achieved — covered by automated tests `test_update_collection`, `test_delete_collection_cascades_to_artworks` | [view](documentation/validation/html/dashboard-collection-confirm-delete.png) |
-| As the site owner | Add an Artwork to a Collection | Achieved — covered by automated test `test_create_artwork`; manually confirmed on the deployed site (created, appeared in the Collection) | [view](documentation/validation/html/dashboard-artwork-form.png) |
-| As the site owner | Edit or delete an Artwork | Achieved — covered by automated tests `test_update_artwork`, `test_delete_artwork`; manually confirmed on the deployed site (deleted, disappeared from the list) | [view](documentation/validation/html/dashboard-artwork-confirm-delete.png) |
-| As a visitor | Browse public Collections | Achieved — only `published` Collections listed, verified by automated test | [view](documentation/responsiveness/collections-desktop.png) |
-| As a visitor | View an Artwork's detail | Achieved — manually confirmed: the test Artwork appeared on the public gallery once its Collection was published | [view](documentation/responsiveness/artwork-detail-desktop.png) |
-| As a visitor | Use the site on any device | Achieved — see [Responsiveness](#responsiveness) | [view](documentation/responsiveness/dashboard-mobile.png) |
+| As the site owner | Sign up and log in securely | Achieved — verified on the deployed site | <a href="documentation/responsiveness/login-desktop.png"><img src="documentation/responsiveness/login-desktop.png" width="140" alt="screenshot"></a> |
+| As the site owner | Create a Collection | Achieved — covered by automated test `test_create_collection` | <a href="documentation/validation/html/dashboard-collection-form.png"><img src="documentation/validation/html/dashboard-collection-form.png" width="140" alt="screenshot"></a> |
+| As the site owner | Edit or delete a Collection | Achieved — covered by automated tests `test_update_collection`, `test_delete_collection_cascades_to_artworks` | <a href="documentation/validation/html/dashboard-collection-confirm-delete.png"><img src="documentation/validation/html/dashboard-collection-confirm-delete.png" width="140" alt="screenshot"></a> |
+| As the site owner | Add an Artwork to a Collection | Achieved — covered by automated test `test_create_artwork`; manually confirmed on the deployed site (created, appeared in the Collection) | <a href="documentation/validation/html/dashboard-artwork-form.png"><img src="documentation/validation/html/dashboard-artwork-form.png" width="140" alt="screenshot"></a> |
+| As the site owner | Edit or delete an Artwork | Achieved — covered by automated tests `test_update_artwork`, `test_delete_artwork`; manually confirmed on the deployed site (deleted, disappeared from the list) | <a href="documentation/validation/html/dashboard-artwork-confirm-delete.png"><img src="documentation/validation/html/dashboard-artwork-confirm-delete.png" width="140" alt="screenshot"></a> |
+| As a visitor | Browse public Collections | Achieved — only `published` Collections listed, verified by automated test | <a href="documentation/responsiveness/collections-desktop.png"><img src="documentation/responsiveness/collections-desktop.png" width="140" alt="screenshot"></a> |
+| As a visitor | View an Artwork's detail | Achieved — manually confirmed: the test Artwork appeared on the public gallery once its Collection was published | <a href="documentation/responsiveness/artwork-detail-desktop.png"><img src="documentation/responsiveness/artwork-detail-desktop.png" width="140" alt="screenshot"></a> |
+| As a visitor | Use the site on any device | Achieved — see [Responsiveness](#responsiveness) | <a href="documentation/responsiveness/dashboard-mobile.png"><img src="documentation/responsiveness/dashboard-mobile.png" width="140" alt="screenshot"></a> |
 
 ---
 
