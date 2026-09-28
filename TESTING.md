@@ -87,6 +87,8 @@ npx jshint static/js/dashboard.js static/js/exhibition.js static/js/site-menu.js
 | `static/js/exhibition.js` | 0 errors, 0 warnings |
 | `static/js/site-menu.js` | 0 errors, 0 warnings |
 
+![JSHint run, exit code 0](documentation/validation/jshint-terminal.png)
+
 ---
 
 ## Responsiveness
