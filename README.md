@@ -247,12 +247,13 @@ built today:
 
 #### 4. Skeleton
 
-Two low-fidelity wireframe sheets, one per surface (see
-[Wireframes](#wireframes) below): the public gallery's four core screens
-(Grid, Collections, Exhibition and the shared top navigation) and the
-dashboard's two list layouts (thumbnail/grid and list view) plus its
-shared header controls. Sketched by hand rather than in Figma, and
-produced to document the structure already settled on through
+Two passes per surface (see [Wireframes](#wireframes) below): a
+hand-drawn sketch first, covering the full screen set — the public
+gallery's four core screens (Grid, Collections, Exhibition and the
+shared top navigation) and the dashboard's two list layouts (thumbnail/
+grid and list view) plus its shared header controls — then
+higher-fidelity wireframes for the key individual screens of each
+surface. Produced to document the structure already settled on through
 development, rather than drafted upfront before templates existed.
 
 ---
@@ -344,15 +345,36 @@ sans-serif for everything functional.
 
 ## Wireframes
 
-**Public gallery** — the Grid, Collections and Exhibition screens, plus
-the shared top navigation/site menu:
+Two passes per surface: a hand-drawn sketch covering the full screen set
+first, then higher-fidelity wireframes for the key individual screens.
 
-![Public gallery wireframes](documentation/wireframes/public-gallery.png)
+### Public gallery
 
-**Dashboard** — the Collections list in its thumbnail and list layouts,
-plus the shared header controls (search, view toggle, New Collection):
+Sketch — Grid, Collections, Exhibition and the shared top navigation:
 
-![Dashboard wireframes](documentation/wireframes/dashboard.png)
+![Public gallery sketch](documentation/wireframes/public-gallery/01-sketch-overview.png)
+
+Exhibition (free view) with the site menu open:
+
+![Exhibition wireframe](documentation/wireframes/public-gallery/02-exhibition.png)
+
+Grid view:
+
+![Grid wireframe](documentation/wireframes/public-gallery/02-grid.png)
+
+### Dashboard
+
+Sketch — thumbnail/list layouts and the shared header controls:
+
+![Dashboard sketch](documentation/wireframes/dashboard/01-sketch-overview.png)
+
+Collections list, with one row expanded to show its Artworks inline:
+
+![Collections list wireframe](documentation/wireframes/dashboard/02-collections-list.png)
+
+A single Collection's own page (its Artworks):
+
+![Collection detail wireframe](documentation/wireframes/dashboard/02-collection-detail.png)
 
 ---
 
