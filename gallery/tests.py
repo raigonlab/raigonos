@@ -43,7 +43,9 @@ class CollectionModelTests(TestCase):
         self.assertNotEqual(first.slug, second.slug)
 
     def test_str_returns_title(self):
-        collection = Collection.objects.create(owner=self.owner, title='Accord')
+        collection = Collection.objects.create(
+            owner=self.owner, title='Accord'
+        )
         self.assertEqual(str(collection), 'Accord')
 
 
@@ -69,7 +71,9 @@ class PublicGalleryViewTests(TestCase):
             status=Collection.STATUS_PUBLISHED,
         )
         self.draft = Collection.objects.create(
-            owner=self.owner, title='Draft Collection', status=Collection.STATUS_DRAFT
+            owner=self.owner,
+            title='Draft Collection',
+            status=Collection.STATUS_DRAFT,
         )
 
     def test_collection_list_only_shows_published(self):
@@ -98,22 +102,30 @@ class ArtworkDetailNavigationTests(TestCase):
         )
         self.works = [
             Artwork.objects.create(
-                collection=collection, title=title, image=tiny_image(), display_order=i
+                collection=collection,
+                title=title,
+                image=tiny_image(),
+                display_order=i,
             )
             for i, title in enumerate(['First', 'Second', 'Third'])
         ]
 
     def detail(self, artwork):
-        return self.client.get(reverse('gallery:artwork_detail', args=[artwork.pk]))
+        url = reverse('gallery:artwork_detail', args=[artwork.pk])
+        return self.client.get(url)
 
     def test_middle_artwork_links_both_ways(self):
         response = self.detail(self.works[1])
         self.assertEqual(response.context['previous_artwork'], self.works[0])
         self.assertEqual(response.context['next_artwork'], self.works[2])
-        self.assertEqual((response.context['position'], response.context['total']), (2, 3))
+        self.assertEqual(
+            (response.context['position'], response.context['total']),
+            (2, 3),
+        )
 
     def test_ends_have_only_one_direction(self):
-        self.assertIsNone(self.detail(self.works[0]).context['previous_artwork'])
+        first_response = self.detail(self.works[0])
+        self.assertIsNone(first_response.context['previous_artwork'])
         self.assertIsNone(self.detail(self.works[2]).context['next_artwork'])
 
     def test_no_footer_slogan_on_public_pages(self):
@@ -152,10 +164,13 @@ class ArtworkGalleryViewTests(TestCase):
     def setUp(self):
         owner = User.objects.create_user('gallery_owner', password='pass12345')
         published = Collection.objects.create(
-            owner=owner, title='Published Collection', status=Collection.STATUS_PUBLISHED
+            owner=owner,
+            title='Published Collection',
+            status=Collection.STATUS_PUBLISHED,
         )
         draft = Collection.objects.create(
-            owner=owner, title='Draft Collection', status=Collection.STATUS_DRAFT
+            owner=owner, title='Draft Collection',
+            status=Collection.STATUS_DRAFT,
         )
         Artwork.objects.create(
             collection=published, title='Visible Piece', image=tiny_image()
@@ -166,7 +181,9 @@ class ArtworkGalleryViewTests(TestCase):
 
     def test_is_the_site_root(self):
         response = self.client.get('/')
-        self.assertEqual(response.resolver_match.view_name, 'gallery:artwork_gallery')
+        self.assertEqual(
+            response.resolver_match.view_name, 'gallery:artwork_gallery'
+        )
 
     def test_only_shows_artworks_from_published_collections(self):
         response = self.client.get(reverse('gallery:artwork_gallery'))
@@ -208,7 +225,9 @@ class ArtworkGalleryViewTests(TestCase):
 class DashboardPermissionTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('owner3', password='pass12345')
-        self.other_user = User.objects.create_user('intruder', password='pass12345')
+        self.other_user = User.objects.create_user(
+            'intruder', password='pass12345'
+        )
         self.collection = Collection.objects.create(
             owner=self.owner, title='My Collection'
         )
@@ -256,7 +275,9 @@ class DashboardSearchTests(TestCase):
         self.assertContains(response, 'Untitled Sketches')
 
     def test_query_filters_by_title_case_insensitive(self):
-        response = self.client.get(reverse('gallery:dashboard'), {'q': 'night'})
+        response = self.client.get(
+            reverse('gallery:dashboard'), {'q': 'night'}
+        )
         self.assertContains(response, 'Nightfall Studies')
         self.assertNotContains(response, 'Untitled Sketches')
 
@@ -266,7 +287,9 @@ class DashboardSearchTests(TestCase):
 class CollectionManageViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('manager', password='pass12345')
-        self.other_user = User.objects.create_user('rival', password='pass12345')
+        self.other_user = User.objects.create_user(
+            'rival', password='pass12345'
+        )
         self.collection = Collection.objects.create(
             owner=self.owner, title='My Collection'
         )
@@ -299,7 +322,9 @@ class CollectionManageViewTests(TestCase):
 class ArtworkManageViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('curator', password='pass12345')
-        self.other_user = User.objects.create_user('outsider', password='pass12345')
+        self.other_user = User.objects.create_user(
+            'outsider', password='pass12345'
+        )
         self.collection = Collection.objects.create(
             owner=self.owner, title='Sequence'
         )
@@ -367,7 +392,9 @@ class CollectionCrudTests(TestCase):
         self.assertEqual(collection.owner, self.owner)
 
     def test_update_collection(self):
-        collection = Collection.objects.create(owner=self.owner, title='Old Title')
+        collection = Collection.objects.create(
+            owner=self.owner, title='Old Title'
+        )
         url = reverse('gallery:collection_update', args=[collection.slug])
         response = self.client.post(
             url, {'title': 'New Title', 'description': '', 'status': 'draft'}
@@ -382,11 +409,17 @@ class CollectionCrudTests(TestCase):
             {'title': '', 'description': '', 'status': 'draft'},
         )
         self.assertEqual(response.status_code, 200)
-        self.assertFormError(response.context['form'], 'title', 'This field is required.')
-        self.assertFalse(Collection.objects.filter(owner=self.owner).exists())
+        self.assertFormError(
+            response.context['form'], 'title', 'This field is required.'
+        )
+        self.assertFalse(
+            Collection.objects.filter(owner=self.owner).exists()
+        )
 
     def test_delete_collection_cascades_to_artworks(self):
-        collection = Collection.objects.create(owner=self.owner, title='To Delete')
+        collection = Collection.objects.create(
+            owner=self.owner, title='To Delete'
+        )
         Artwork.objects.create(
             collection=collection, title='Gone Too', image=tiny_image()
         )
@@ -402,9 +435,13 @@ class CollectionCrudTests(TestCase):
 # rejected, same as Collection.
 class ArtworkCrudTests(TestCase):
     def setUp(self):
-        self.owner = User.objects.create_user('artwork_creator', password='pass12345')
+        self.owner = User.objects.create_user(
+            'artwork_creator', password='pass12345'
+        )
         self.client.login(username='artwork_creator', password='pass12345')
-        self.collection = Collection.objects.create(owner=self.owner, title='Studies')
+        self.collection = Collection.objects.create(
+            owner=self.owner, title='Studies'
+        )
 
     def test_create_artwork(self):
         response = self.client.post(
@@ -454,8 +491,12 @@ class ArtworkCrudTests(TestCase):
             },
         )
         self.assertEqual(response.status_code, 200)
-        self.assertFormError(response.context['form'], 'title', 'This field is required.')
-        self.assertFalse(Artwork.objects.filter(collection=self.collection).exists())
+        self.assertFormError(
+            response.context['form'], 'title', 'This field is required.'
+        )
+        self.assertFalse(
+            Artwork.objects.filter(collection=self.collection).exists()
+        )
 
     def test_year_out_of_range_is_rejected(self):
         response = self.client.post(
@@ -479,7 +520,8 @@ class ArtworkCrudTests(TestCase):
 
     def test_delete_artwork(self):
         artwork = Artwork.objects.create(
-            collection=self.collection, title='To Delete', image=tiny_image()
+            collection=self.collection, title='To Delete',
+            image=tiny_image(),
         )
         url = reverse('gallery:artwork_delete', args=[artwork.pk])
         response = self.client.post(url)
@@ -492,8 +534,12 @@ class ArtworkCrudTests(TestCase):
 # excluded even if their ids are included in the request.
 class BulkActionTests(TestCase):
     def setUp(self):
-        self.owner = User.objects.create_user('bulk_owner', password='pass12345')
-        self.other = User.objects.create_user('bulk_other', password='pass12345')
+        self.owner = User.objects.create_user(
+            'bulk_owner', password='pass12345'
+        )
+        self.other = User.objects.create_user(
+            'bulk_other', password='pass12345'
+        )
         self.client.login(username='bulk_owner', password='pass12345')
         self.c1 = Collection.objects.create(
             owner=self.owner, title='One', status=Collection.STATUS_PUBLISHED
@@ -502,7 +548,9 @@ class BulkActionTests(TestCase):
             owner=self.owner, title='Two', status=Collection.STATUS_PUBLISHED
         )
         self.foreign = Collection.objects.create(
-            owner=self.other, title='Foreign', status=Collection.STATUS_PUBLISHED
+            owner=self.other,
+            title='Foreign',
+            status=Collection.STATUS_PUBLISHED,
         )
         self.url = reverse('gallery:collection_bulk_action')
 
@@ -528,9 +576,12 @@ class BulkActionTests(TestCase):
         self.foreign.refresh_from_db()
         self.assertEqual(self.foreign.status, Collection.STATUS_PUBLISHED)
         self.client.post(
-            self.url, {'ids': [self.foreign.pk], 'action': 'delete', 'confirm': '1'}
+            self.url,
+            {'ids': [self.foreign.pk], 'action': 'delete', 'confirm': '1'},
         )
-        self.assertTrue(Collection.objects.filter(pk=self.foreign.pk).exists())
+        self.assertTrue(
+            Collection.objects.filter(pk=self.foreign.pk).exists()
+        )
 
     def test_delete_asks_for_confirmation_first(self):
         response = self.client.post(
@@ -541,7 +592,9 @@ class BulkActionTests(TestCase):
         self.assertTrue(Collection.objects.filter(pk=self.c1.pk).exists())
 
     def test_confirmed_delete_removes_collections_and_artworks(self):
-        Artwork.objects.create(collection=self.c1, title='Inside', image=tiny_image())
+        Artwork.objects.create(
+            collection=self.c1, title='Inside', image=tiny_image()
+        )
         self.client.post(
             self.url, {'ids': [self.c1.pk], 'action': 'delete', 'confirm': '1'}
         )
@@ -551,23 +604,33 @@ class BulkActionTests(TestCase):
     def test_requires_post_and_login(self):
         self.assertEqual(self.client.get(self.url).status_code, 405)
         self.client.logout()
-        response = self.client.post(self.url, {'ids': [self.c1.pk], 'action': 'draft'})
+        response = self.client.post(
+            self.url, {'ids': [self.c1.pk], 'action': 'draft'}
+        )
         self.assertEqual(response.status_code, 302)
         self.assertIn('/accounts/login/', response['Location'])
 
     def test_garbage_ids_are_ignored(self):
-        response = self.client.post(self.url, {'ids': ['abc', ''], 'action': 'draft'})
+        response = self.client.post(
+            self.url, {'ids': ['abc', ''], 'action': 'draft'}
+        )
         self.assertEqual(response.status_code, 302)
 
     def test_external_next_is_ignored(self):
         response = self.client.post(
             self.url,
-            {'ids': [self.c1.pk], 'action': 'draft', 'next': 'https://evil.example/'},
+            {
+                'ids': [self.c1.pk],
+                'action': 'draft',
+                'next': 'https://evil.example/',
+            },
         )
         self.assertRedirects(response, reverse('gallery:dashboard'))
 
     def test_bulk_delete_artworks_scoped_to_owner(self):
-        mine = Artwork.objects.create(collection=self.c1, title='Mine', image=tiny_image())
+        mine = Artwork.objects.create(
+            collection=self.c1, title='Mine', image=tiny_image()
+        )
         theirs = Artwork.objects.create(
             collection=self.foreign, title='Theirs', image=tiny_image()
         )
@@ -584,9 +647,13 @@ class BulkActionTests(TestCase):
 # nothing on the Create form, since there's no existing image yet.
 class EditFormThumbnailTests(TestCase):
     def setUp(self):
-        self.owner = User.objects.create_user('thumb_owner', password='pass12345')
+        self.owner = User.objects.create_user(
+            'thumb_owner', password='pass12345'
+        )
         self.client.login(username='thumb_owner', password='pass12345')
-        self.collection = Collection.objects.create(owner=self.owner, title='Thumbs')
+        self.collection = Collection.objects.create(
+            owner=self.owner, title='Thumbs'
+        )
         self.artwork = Artwork.objects.create(
             collection=self.collection, title='Pic', image=tiny_image()
         )
@@ -611,8 +678,12 @@ class EditFormThumbnailTests(TestCase):
 class ArtworkListViewTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('lister', password='pass12345')
-        self.other_user = User.objects.create_user('someone_else', password='pass12345')
-        self.collection = Collection.objects.create(owner=self.owner, title='Mine')
+        self.other_user = User.objects.create_user(
+            'someone_else', password='pass12345'
+        )
+        self.collection = Collection.objects.create(
+            owner=self.owner, title='Mine'
+        )
         self.own_artwork = Artwork.objects.create(
             collection=self.collection, title='My Piece', image=tiny_image()
         )
@@ -620,13 +691,16 @@ class ArtworkListViewTests(TestCase):
             owner=self.other_user, title='Not Mine'
         )
         self.other_artwork = Artwork.objects.create(
-            collection=other_collection, title='Their Piece', image=tiny_image()
+            collection=other_collection,
+            title='Their Piece',
+            image=tiny_image(),
         )
 
     def test_requires_login(self):
         response = self.client.get(reverse('gallery:artwork_list'))
         self.assertRedirects(
-            response, f"/accounts/login/?next={reverse('gallery:artwork_list')}"
+            response,
+            f"/accounts/login/?next={reverse('gallery:artwork_list')}",
         )
 
     def test_only_shows_own_artworks(self):
@@ -639,9 +713,13 @@ class ArtworkListViewTests(TestCase):
     def test_query_filters_by_title_case_insensitive(self):
         self.client.login(username='lister', password='pass12345')
         Artwork.objects.create(
-            collection=self.collection, title='Second Piece', image=tiny_image()
+            collection=self.collection,
+            title='Second Piece',
+            image=tiny_image(),
         )
-        response = self.client.get(reverse('gallery:artwork_list'), {'q': 'my'})
+        response = self.client.get(
+            reverse('gallery:artwork_list'), {'q': 'my'}
+        )
         self.assertContains(response, 'My Piece')
         self.assertNotContains(response, 'Second Piece')
 
@@ -653,7 +731,9 @@ class ArtworkListViewTests(TestCase):
 class CollectionArchiveTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user('keeper', password='pass12345')
-        self.other_user = User.objects.create_user('nosy', password='pass12345')
+        self.other_user = User.objects.create_user(
+            'nosy', password='pass12345'
+        )
         self.archived = Collection.objects.create(
             owner=self.owner,
             title='Stored Away',
@@ -715,7 +795,9 @@ class CollectionArchiveTests(TestCase):
 
     def test_unarchive_restores_to_draft_not_published(self):
         self.client.login(username='keeper', password='pass12345')
-        url = reverse('gallery:collection_unarchive', args=[self.archived.slug])
+        url = reverse(
+            'gallery:collection_unarchive', args=[self.archived.slug]
+        )
         self.client.post(url)
         self.archived.refresh_from_db()
         self.assertEqual(self.archived.status, Collection.STATUS_DRAFT)
