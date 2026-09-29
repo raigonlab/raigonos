@@ -852,6 +852,6 @@ To run the project locally:
 
 ## Acknowledgements
 
-Special thanks to my mentor, Tim Nelson, for guidance and support
-throughout the project, and to Marko Tot and Fernando for their
+Special thanks to my mentor, Marko Tot, for guidance and support
+throughout the project, and to Tim Nelson and Fernando for their
 support and help debugging along the way.
