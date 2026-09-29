@@ -59,7 +59,9 @@ class Collection(models.Model):
         base_slug = slugify(self.title)
         slug = base_slug
         counter = 1
-        while Collection.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+        while Collection.objects.filter(
+            slug=slug
+        ).exclude(pk=self.pk).exists():
             counter += 1
             slug = f'{base_slug}-{counter}'
         return slug
@@ -74,7 +76,8 @@ class Artwork(models.Model):
     title = models.CharField(max_length=200)
     image = models.ImageField(upload_to='artworks/')
     medium = models.CharField(
-        max_length=100, blank=True, help_text='e.g. Digital painting, Oil on canvas'
+        max_length=100, blank=True,
+        help_text='e.g. Digital painting, Oil on canvas',
     )
     # Range check: rules out nonsense values (0, 99999) while staying
     # wide enough to never need revisiting for a living artist's work.

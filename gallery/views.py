@@ -90,7 +90,9 @@ def artwork_detail(request, pk):
         {
             'artwork': artwork,
             'previous_artwork': siblings[index - 1] if index > 0 else None,
-            'next_artwork': siblings[index + 1] if index < len(siblings) - 1 else None,
+            'next_artwork': (
+                siblings[index + 1] if index < len(siblings) - 1 else None
+            ),
             'position': index + 1,
             'total': len(siblings),
         },
@@ -109,7 +111,9 @@ def dashboard(request):
     # The owner's main "My Collections" list: Draft + Published, but not
     # Archived (archived ones have their own separate page below).
     query = request.GET.get('q', '').strip()
-    collections = request.user.collections.exclude(status=Collection.STATUS_ARCHIVED)
+    collections = request.user.collections.exclude(
+        status=Collection.STATUS_ARCHIVED
+    )
     if query:
         collections = collections.filter(title__icontains=query)
     return render(
@@ -122,7 +126,9 @@ def dashboard(request):
 @login_required
 def collection_archive_list(request):
     query = request.GET.get('q', '').strip()
-    collections = request.user.collections.filter(status=Collection.STATUS_ARCHIVED)
+    collections = request.user.collections.filter(
+        status=Collection.STATUS_ARCHIVED
+    )
     if query:
         collections = collections.filter(title__icontains=query)
     return render(
@@ -137,9 +143,9 @@ def artwork_list(request):
     # "All Artworks" flattens every Artwork the owner has, across all of
     # their Collections, into one list/grid.
     query = request.GET.get('q', '').strip()
-    artworks = Artwork.objects.filter(collection__owner=request.user).select_related(
-        'collection'
-    )
+    artworks = Artwork.objects.filter(
+        collection__owner=request.user
+    ).select_related('collection')
     if query:
         artworks = artworks.filter(title__icontains=query)
     return render(
@@ -180,7 +186,8 @@ def collection_manage(request, slug):
     artworks = collection.artworks.all()
     if query:
         artworks = artworks.filter(title__icontains=query)
-    nav = 'archive' if collection.status == Collection.STATUS_ARCHIVED else 'collections'
+    is_archived = collection.status == Collection.STATUS_ARCHIVED
+    nav = 'archive' if is_archived else 'collections'
     return render(
         request,
         'gallery/collection_manage.html',
@@ -241,7 +248,9 @@ def collection_create(request):
             collection = form.save(commit=False)
             collection.owner = request.user
             collection.save()
-            messages.success(request, f'Collection "{collection.title}" created.')
+            messages.success(
+                request, f'Collection "{collection.title}" created.'
+            )
             return redirect('gallery:dashboard')
     else:
         form = CollectionForm()
@@ -255,7 +264,9 @@ def collection_update(request, slug):
         form = CollectionForm(request.POST, request.FILES, instance=collection)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Collection "{collection.title}" updated.')
+            messages.success(
+                request, f'Collection "{collection.title}" updated.'
+            )
             return redirect('gallery:dashboard')
     else:
         form = CollectionForm(instance=collection)
@@ -275,7 +286,9 @@ def collection_delete(request, slug):
         messages.success(request, f'Collection "{title}" deleted.')
         return redirect('gallery:dashboard')
     return render(
-        request, 'gallery/collection_confirm_delete.html', {'collection': collection}
+        request,
+        'gallery/collection_confirm_delete.html',
+        {'collection': collection},
     )
 
 
@@ -356,7 +369,9 @@ def _safe_next(request):
     # pointing at an external site would send the owner there after the
     # action completes.
     target = request.POST.get('next', '')
-    if url_has_allowed_host_and_scheme(target, allowed_hosts={request.get_host()}):
+    if url_has_allowed_host_and_scheme(
+        target, allowed_hosts={request.get_host()}
+    ):
         return target
     return ''
 
@@ -377,7 +392,9 @@ BULK_COLLECTION_STATUS = {
 @login_required
 @require_POST
 def collection_bulk_action(request):
-    collections = request.user.collections.filter(pk__in=_selected_ids(request))
+    collections = request.user.collections.filter(
+        pk__in=_selected_ids(request)
+    )
     action = request.POST.get('action')
     count = collections.count()
     if not count:
@@ -398,12 +415,15 @@ def collection_bulk_action(request):
         # same as the single-item delete views' confirm-page pattern —
         # just server-rendered here instead of a separate page reload.
         if request.POST.get('confirm'):
-            artwork_count = Artwork.objects.filter(collection__in=collections).count()
+            artwork_count = Artwork.objects.filter(
+                collection__in=collections
+            ).count()
             collections.delete()
+            artwork_plural = 's' if artwork_count != 1 else ''
             messages.success(
                 request,
                 f'{count} Collection{"s" if count != 1 else ""} deleted '
-                f'(with {artwork_count} artwork{"s" if artwork_count != 1 else ""}).',
+                f'(with {artwork_count} artwork{artwork_plural}).',
             )
             return _redirect_back(request)
         return render(
@@ -474,7 +494,9 @@ def signup_view(request):
             # authenticated session straight after signing up instead of
             # having to log in again with the password they just typed.
             login(request, user)
-            messages.success(request, f'Welcome, {user.username}! Your account is ready.')
+            messages.success(
+                request, f'Welcome, {user.username}! Your account is ready.'
+            )
             return redirect('gallery:artwork_gallery')
     else:
         form = UserCreationForm()

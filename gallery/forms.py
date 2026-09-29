@@ -28,5 +28,8 @@ class CollectionForm(forms.ModelForm):
 class ArtworkForm(forms.ModelForm):
     class Meta:
         model = Artwork
-        fields = ['title', 'image', 'medium', 'year', 'description', 'display_order']
+        fields = [
+            'title', 'image', 'medium', 'year', 'description',
+            'display_order',
+        ]
         widgets = {'image': ImagePreviewInput}
