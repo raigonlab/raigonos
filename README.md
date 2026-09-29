@@ -655,10 +655,21 @@ needed for this domain.
   hardcoded. `.env` (local secrets) is listed in `.gitignore` and has
   never been committed; `.env.example` documents the required keys
   with empty/placeholder values only.
-- **`DEBUG`** is `False` in production, confirmed by a real incident
-  during development: with it correctly off, a misconfiguration
-  produced only a generic error page, not a stack trace (see
-  [TESTING.md](TESTING.md) for the full account).
+- **`DEBUG`** is `False` in production, confirmed by two real
+  incidents during development: with it correctly off, a
+  misconfiguration once produced only a generic error page rather
+  than a stack trace; separately, the `DEBUG` environment variable on
+  Render was later found set back to `True` (rendering Django's
+  technical error page, URLconf and all, on every 404) and corrected
+  (see [TESTING.md](TESTING.md) for both accounts).
+- **`SECRET_KEY`** is env-var-only in every commit that matters, but
+  the very first scaffold commit (`4a73b9f`) contains Django's
+  auto-generated `django-insecure-...` placeholder from
+  `startproject` — never the real production key, which has only ever
+  lived in Render's environment variables, but still technically a
+  key sitting in git history. Left as-is rather than rewriting commit
+  history this close to submission, which risks breaking the granular
+  commit trail the assessment itself asks to see.
 - **Authentication & ownership** — every create/edit/delete view is
   behind Django's `@login_required`. Editing or deleting another
   user's Collection or Artwork returns `404 Not Found` rather than
@@ -758,6 +769,14 @@ Deployment steps:
      disappear.
 6. Deploy. Render builds the app, runs migrations, and starts Gunicorn
    automatically on every push to `main`.
+
+A `Procfile` is also kept at the repo root (`web: gunicorn
+raigonos.wsgi:application`, `release: python manage.py migrate`) for
+Heroku-style platforms that read it directly. Render's own Web Service
+doesn't use it — it runs the Build/Start Commands set in step 3–4
+above instead — but the Procfile documents the same two commands in
+the platform-agnostic format the assessment brief expects, and keeps
+the option open to redeploy on a Procfile-based host without changes.
 
 **Live link:** [https://raigonos.onrender.com](https://raigonos.onrender.com)
 
