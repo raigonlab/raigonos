@@ -819,9 +819,12 @@ To run the project locally:
 
 ### Content
 
+- [Markdown.2bn.dev](https://markdown.2bn.dev/) — documentation
+- [MDN Web Docs](https://developer.mozilla.org/) — Fetch API and DOM
+  reference
 - Code Institute materials
 - [Django documentation](https://docs.djangoproject.com/)
-- [Claude](https://claude.com/) — AI coding assistant used throughout
+- [Claude](https://claude.com/) — coding assistant, used throughout
   development for planning, debugging and project support, and
   specifically to help design and build the owner-only dashboard's
   UI/UX system in collaboration with the developer: the persistent
@@ -829,12 +832,18 @@ To run the project locally:
   Grid/List toggle, the per-Collection and Artwork preview pages, the
   fixed path bar on public pages, search, and the hand-drawn icon set.
   This involvement is reflected in the project's commit history.
-- [fonts.google.com](https://fonts.google.com) — Playfair Display and Inter
+- ChatGPT — debugging and explanations
+- Gemini — image generation
+- [fonts.google.com](https://fonts.google.com) — Playfair Display and
+  Inter
+- [fireship.dev](https://fireship.dev/)
+- [TinyPNG](https://tinypng.com/) — image compression
+- [ResponsivelyApp](https://responsively.app/) — managing screenshots
 
 ### Media
 
-- All artwork and Collection content, once added, belongs to
-  Railson Gonçalves (© Raigon Lab).
+- All artwork pieces by Railson Gonçalves (© Raigon Lab, MMXXIII)
+- Logo and symbol images are original works by Railson
 
 ---
 
