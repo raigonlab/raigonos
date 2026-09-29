@@ -427,6 +427,19 @@ body.public-theme .card-image {
   cursor: pointer;
 }
 
+/* Small "opens in a new tab" arrow, right after the label, on menu
+   items that leave the site (e.g. Instagram). */
+.site-menu-external {
+  display: inline-flex;
+  margin-left: auto;
+  opacity: 0.6;
+}
+
+.site-menu-external svg {
+  width: 12px;
+  height: 12px;
+}
+
 .site-menu-item:hover {
   background: var(--hd-chip);
   color: var(--hd-text);
