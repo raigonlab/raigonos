@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import slugify
 
@@ -75,7 +76,13 @@ class Artwork(models.Model):
     medium = models.CharField(
         max_length=100, blank=True, help_text='e.g. Digital painting, Oil on canvas'
     )
-    year = models.PositiveIntegerField(blank=True, null=True)
+    # Range check: rules out nonsense values (0, 99999) while staying
+    # wide enough to never need revisiting for a living artist's work.
+    year = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(1000), MaxValueValidator(2100)],
+    )
     description = models.TextField(blank=True)
     # Lets the owner control the order Artworks appear in within a
     # Collection, instead of being stuck with creation order.

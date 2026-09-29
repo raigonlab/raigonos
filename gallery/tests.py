@@ -457,6 +457,26 @@ class ArtworkCrudTests(TestCase):
         self.assertFormError(response.context['form'], 'title', 'This field is required.')
         self.assertFalse(Artwork.objects.filter(collection=self.collection).exists())
 
+    def test_year_out_of_range_is_rejected(self):
+        response = self.client.post(
+            reverse('gallery:artwork_create', args=[self.collection.slug]),
+            {
+                'title': 'Bad Year',
+                'image': tiny_image(),
+                'medium': '',
+                'year': 99999,
+                'description': '',
+                'display_order': 0,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context['form'],
+            'year',
+            'Ensure this value is less than or equal to 2100.',
+        )
+        self.assertFalse(Artwork.objects.filter(title='Bad Year').exists())
+
     def test_delete_artwork(self):
         artwork = Artwork.objects.create(
             collection=self.collection, title='To Delete', image=tiny_image()
