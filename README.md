@@ -5,11 +5,6 @@ Developer: Railson Gonçalves ([raigonlab](https://www.github.com/raigonlab))
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/t/raigonlab/raigonos)](https://www.github.com/raigonlab/raigonos/commits/main)
 [![GitHub last commit](https://img.shields.io/github/last-commit/raigonlab/raigonos)](https://www.github.com/raigonlab/raigonos/commits/main)
 [![GitHub repo size](https://img.shields.io/github/repo-size/raigonlab/raigonos)](https://www.github.com/raigonlab/raigonos)
-[![badge](https://img.shields.io/badge/status-in_development-yellow)](#)
-
-> 🚧 **This README is being written progressively as the project is built.**
-> Sections marked with 🚧 are placeholders and will be completed as the
-> corresponding feature, wireframe or screenshot is produced.
 
 ---
 
@@ -241,7 +236,52 @@ built today:
 
 **User Flow**
 
-🚧 To be documented with screenshots once the templates exist.
+Two flows, one per audience. Visitors never need an account; the owner
+only ever leaves the dashboard deliberately, through its "Public
+Gallery" link.
+
+```mermaid
+flowchart TD
+    V([Visitor]) --> H["Gallery home /<br/>Exhibition or Grid view"]
+    H --> C["Collections<br/>/collections/"]
+    C --> CD["Collection detail<br/>/collection/#lt;slug#gt;/"]
+    H --> AD["Artwork detail<br/>/artwork/#lt;id#gt;/"]
+    CD --> AD
+    AD -- "Previous / Next" --> AD
+
+    O([Owner]) --> L["Log in / Sign up"]
+    L --> D["Dashboard — Collections<br/>/dashboard/"]
+    D --> CM["Collection page<br/>/dashboard/collections/#lt;slug#gt;/"]
+    D -- "New Collection" --> CF["Collection form"]
+    CM -- "Edit" --> CF
+    CM -- "Add Artwork" --> AF["Artwork form"]
+    CM -- "Delete" --> CDEL["Confirm delete page"]
+    CM -- "Archive" --> AR["Archive<br/>/dashboard/archive/"]
+    AR -- "Restore (to Draft)" --> CM
+    D --> AL["All Artworks<br/>/dashboard/artworks/"]
+    AL --> AM["Artwork preview<br/>/dashboard/artworks/#lt;id#gt;/"]
+    AM -- "Edit" --> AF
+    AM -- "Delete" --> ADEL["Confirm delete page"]
+    CF & AF & CDEL & ADEL -- "success message" --> D
+    D -- "Public Gallery" --> H
+```
+
+- **Visitor:** lands on the gallery home, which shows every published
+  Artwork as a drifting exhibition, or as a plain grid (switchable from
+  the site menu). From there they can browse by Collection, and step
+  through a Collection one Artwork at a time with Previous/Next (or the
+  arrow keys) without going back to a list.
+- **Owner:** logs in and lands in the dashboard. Each Collection has its
+  own page, where the owner adds, edits and deletes its Artworks. A new
+  Collection starts as a Draft; the owner publishes it when it's ready.
+  Every create, update and delete returns to the dashboard with a
+  success message. Deletes always go through a confirmation page first.
+  Archived Collections move to the Archive page, and restoring one puts
+  it back to Draft, never straight to Published.
+
+The screens along each flow are shown in
+[Wireframes](#wireframes) and, as built, in the responsiveness
+screenshots in [TESTING.md](TESTING.md#responsiveness).
 
 ---
 
