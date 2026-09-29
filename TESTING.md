@@ -111,7 +111,7 @@ Linted with [JSHint](https://jshint.com) (`v2.13.6`, run via `npx jshint`)
 against every custom JS file:
 
 ```bash
-npx jshint static/js/dashboard.js static/js/exhibition.js static/js/site-menu.js
+npx jshint static/js/dashboard.js static/js/exhibition.js static/js/site-menu.js static/js/artwork-detail.js
 ```
 
 | File | Result |
@@ -119,6 +119,7 @@ npx jshint static/js/dashboard.js static/js/exhibition.js static/js/site-menu.js
 | `static/js/dashboard.js` | 0 errors, 0 warnings |
 | `static/js/exhibition.js` | 0 errors, 0 warnings |
 | `static/js/site-menu.js` | 0 errors, 0 warnings |
+| `static/js/artwork-detail.js` | 0 errors, 0 warnings |
 
 ![JSHint run, exit code 0](documentation/validation/jshint-terminal.png)
 
