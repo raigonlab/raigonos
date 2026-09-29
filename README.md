@@ -722,6 +722,10 @@ beyond the MVP, including the long-term ideas discussed under
 
 [Issues board →](https://github.com/raigonlab/raigonos/issues?q=is%3Aissue)
 
+[Project board →](https://github.com/users/raigonlab/projects/6) — the
+same 18 issues tracked on a Kanban-style board (Todo / In progress /
+Done).
+
 ---
 
 ## Testing
