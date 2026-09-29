@@ -820,8 +820,7 @@ To run the project locally:
 ### Content
 
 - [Markdown.2bn.dev](https://markdown.2bn.dev/) — documentation
-- [MDN Web Docs](https://developer.mozilla.org/) — Fetch API and DOM
-  reference
+- [MDN Web Docs](https://developer.mozilla.org/) — DOM API reference
 - Code Institute materials
 - [Django documentation](https://docs.djangoproject.com/)
 - [Claude](https://claude.com/) — coding assistant, used throughout
