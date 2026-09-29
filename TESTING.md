@@ -68,8 +68,8 @@ against the deployed pages.
 | Signup | https://raigonos.onrender.com/accounts/signup/ | 0 errors, 0 warnings | |
 | 404 | https://raigonos.onrender.com/pagina-que-nao-existe/ | 0 errors, 0 warnings | <a href="documentation/validation/404-html-terminal.png"><img src="documentation/validation/404-html-terminal.png" width="140" alt="screenshot"></a> — the checker's "Validate by URI" refuses pages with a non-200 status, same as it did for the dashboard pages, so the HTML was fetched directly and POSTed to the checker instead |
 | Collections | https://raigonos.onrender.com/collections/ | 0 errors, 0 warnings | <a href="documentation/validation/html/collections.png"><img src="documentation/validation/html/collections.png" width="140" alt="collections.png"></a> |
-| Collection detail | https://raigonos.onrender.com/collection/flow-lines/ | 0 errors, 0 warnings | <a href="documentation/validation/html/collection-detail.png"><img src="documentation/validation/html/collection-detail.png" width="140" alt="collection-detail.png"></a> |
-| Artwork detail | https://raigonos.onrender.com/artwork/25/ | 0 errors, 0 warnings | <a href="documentation/validation/html/artwork-detail.png"><img src="documentation/validation/html/artwork-detail.png" width="140" alt="artwork-detail.png"></a> |
+| Collection detail | https://raigonos.onrender.com/collection/digital-charcoal-2/ | 0 errors, 0 warnings | <a href="documentation/validation/html/collection-detail.png"><img src="documentation/validation/html/collection-detail.png" width="140" alt="collection-detail.png"></a> |
+| Artwork detail | https://raigonos.onrender.com/artwork/10/ | 0 errors, 0 warnings | <a href="documentation/validation/html/artwork-detail.png"><img src="documentation/validation/html/artwork-detail.png" width="140" alt="artwork-detail.png"></a> |
 
 Dashboard pages require login, so the checker can't fetch them by URL —
 each was validated via "Validate by Direct Input" (page source copied
