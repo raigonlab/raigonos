@@ -433,6 +433,32 @@
     }, 250);
   });
 
+  // Fade the chrome (logo, welcome line, site menu) after a few
+  // seconds with no touch/pointer movement, so attention stays on the
+  // art; any interaction brings it back immediately. See the matching
+  // `html.is-exhibition.is-idle` rules in style.css.
+  var IDLE_DELAY = 3000;
+  var idleTimer;
+
+  function scheduleIdle() {
+    clearTimeout(idleTimer);
+    doc.classList.remove('is-idle');
+    idleTimer = setTimeout(function () {
+      doc.classList.add('is-idle');
+    }, IDLE_DELAY);
+  }
+
+  // Listens on the whole document, not just the exhibition stage --
+  // `.site-menu` is a separate element elsewhere in the DOM (fixed
+  // position, rendered on top of it), so a tap on the menu button
+  // wouldn't otherwise reset the timer or un-fade the logo/welcome
+  // line alongside it.
+  ['pointermove', 'pointerdown', 'touchstart', 'touchmove', 'keydown'].forEach(function (evt) {
+    document.addEventListener(evt, scheduleIdle, { passive: true });
+  });
+
+  scheduleIdle();
+
   setDirection(remembered('localStorage', 'direction') === 'vertical');
 
   // #grid / #exhibition in the URL wins over the remembered choice.

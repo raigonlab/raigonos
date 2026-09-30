@@ -364,6 +364,7 @@ body.public-theme .card-image {
   top: 1.2rem;
   right: 2rem;
   z-index: 200;
+  transition: opacity 0.6s ease;
 }
 
 .site-menu-toggle {
@@ -577,6 +578,7 @@ html.is-exhibition {
   border-radius: 0;
   filter: var(--hd-logo-filter);
   opacity: 0.9;
+  transition: opacity 0.6s ease;
 }
 
 .ex-welcome {
@@ -589,10 +591,22 @@ html.is-exhibition {
   font-size: 0.95rem;
   white-space: nowrap;
   color: var(--hd-faint);
+  transition: opacity 0.6s ease;
 }
 
 .ex-welcome em {
   color: var(--hd-muted);
+}
+
+/* After a few seconds with no touch/pointer movement, fade the
+   chrome (logo, welcome line, site menu) so the artwork itself is
+   what holds attention -- any interaction brings it right back. Only
+   while the exhibition is on screen, and never while the menu panel
+   itself is open (nothing should vanish mid-read). */
+html.is-exhibition.is-idle .ex-logo,
+html.is-exhibition.is-idle .ex-welcome,
+html.is-exhibition.is-idle .site-menu:not(.is-open) {
+  opacity: 0.15;
 }
 
 @media (max-width: 640px) {
@@ -604,8 +618,11 @@ html.is-exhibition {
     left: 1.25rem;
   }
 
+  /* Same row as the logo/menu on mobile now (not pushed below them),
+     with a smaller font so "Welcome to <Name>'s gallery" fits in the
+     narrower space between the two without wrapping or overlapping. */
   .ex-welcome {
-    top: 4.5rem;
+    font-size: 0.85rem;
   }
 }
 
