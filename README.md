@@ -799,6 +799,12 @@ the option open to redeploy on a Procfile-based host without changes.
 
 **Live link:** [https://raigonos.onrender.com](https://raigonos.onrender.com)
 
+> **Availability:** the production PostgreSQL database is on a paid
+> Render plan, paid until **2026-11-06**. The live site is guaranteed
+> to be available, with all its data, until that date. Render's free
+> database plan expires after 90 days, which is why it was upgraded
+> (see Known Issues in [TESTING.md](TESTING.md#known-issues)).
+
 ### Local Development
 
 To run the project locally:

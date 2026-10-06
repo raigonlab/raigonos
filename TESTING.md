@@ -344,7 +344,7 @@ None known at this time.
 | Issue | Notes |
 | ----- | ----- |
 | Cold start delay on first request | The Render free-tier Web Service spins down after inactivity; the first request after idle can take 30–50 seconds while it wakes up. This is a hosting-plan limitation, not an application bug. |
-| Production database expires 2026-10-09 | Render's free PostgreSQL plan is deleted 90 days after creation. Decision: upgrade to a paid plan before that date (tracked outside this repo, not yet actioned). |
+| Production database: paid plan active until 2026-11-06 | Render's free PostgreSQL plan is deleted 90 days after creation, which would have removed the production database on 2026-10-09. On 2026-10-06 it was upgraded to a paid Render plan, paid for one month, so the live site and its data are guaranteed to stay available **until 2026-11-06**, covering the assessment period. After that date the plan has to be renewed, or the live site will lose its database. |
 | Lighthouse Performance score (69) | Held down by Largest Contentful Paint on unoptimised artwork images and the Render free-tier cold start, not a code defect. A future pass would serve responsive/WebP images via Cloudinary's transformation URLs. |
 
 ---
