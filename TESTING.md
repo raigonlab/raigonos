@@ -288,16 +288,18 @@ error handling.
 The deployed app was also used by people other than the developer, to
 check that it makes sense without explanation:
 
-- **Mentor (Marko Tot):** reviewed and used the app during a mentor
-  meeting. The follow-ups from that meeting were made in their own
-  commit (`d94b4fc`): a favicon was added (the browser tab had none),
-  the existing GitHub Project board was linked from the README (it
-  existed but wasn't linked anywhere, so it looked missing), and a
-  second, stale README inside `documentation/` was removed because it
-  read as a confusing duplicate of the real one.
-- **Family member (non-developer):** used the live site as a first-time
-  visitor, to check that the gallery's purpose and navigation are
-  clear to someone who has never seen the project before.
+- **Mentor (Marko Tot):** tested the app independently ahead of a
+  mentor meeting, and the findings were discussed at the meeting. The
+  follow-ups were made in their own commit (`d94b4fc`): a favicon was
+  added (the browser tab had none), the existing GitHub Project board
+  was linked from the README (it existed but wasn't linked anywhere, so
+  it looked missing), and a second, stale README inside
+  `documentation/` was removed because it read as a confusing duplicate
+  of the real one.
+- **Family member (software engineer):** used the live site as a
+  first-time visitor who had never seen the project before, to check
+  that the gallery's purpose and navigation are clear without
+  explanation.
 
 ---
 
