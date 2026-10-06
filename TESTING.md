@@ -51,10 +51,13 @@ Validated with [flake8](https://flake8.pycqa.org/) against all custom
 code (`gallery/`, `raigonos/`, `manage.py`, migrations excluded):
 
 ```bash
-flake8 --max-line-length=99 --exclude=venv,migrations gallery raigonos manage.py
+flake8 --exclude=venv,migrations gallery raigonos manage.py
 ```
 
-**Result:** no errors, no warnings.
+**Result:** no errors, no warnings, at flake8's default PEP8 line length
+of 79 characters. An earlier pass used a relaxed 99-character limit. The
+code was later wrapped to the standard 79, so it also passes the Code
+Institute Python Linter, which enforces PEP8 at its default settings.
 
 ### HTML
 
@@ -203,36 +206,45 @@ authenticated session cookie for the real owner account via
 `--extra-headers`, and each report was checked to confirm it audited
 the dashboard page itself rather than the login redirect.
 
+The first run found three real problems, which were then fixed (see
+[Fixed Bugs](#fixed-bugs)), and all six pages were audited again:
+
 | Page | Performance | Accessibility | Best Practices | SEO |
 | ---- | ----------- | -------------- | --------------- | --- |
-| Dashboard — Collections — Mobile | 74 | 96 | 96 | 91 |
-| Dashboard — Collections — Desktop | 76 | 96 | 96 | 91 |
-| Dashboard — Collection page — Mobile | 75 | 96 | 96 | 91 |
-| Dashboard — Collection page — Desktop | 78 | 96 | 96 | 91 |
-| Dashboard — All Artworks — Mobile | 75 | 96 | 96 | 91 |
-| Dashboard — All Artworks — Desktop | 77 | 96 | 96 | 91 |
+| Dashboard — Collections — Mobile | 75 | 100 (was 96) | 100 (was 96) | 100 (was 91) |
+| Dashboard — Collections — Desktop | 76 | 100 (was 96) | 100 (was 96) | 100 (was 91) |
+| Dashboard — Collection page — Mobile | 75 | 100 (was 96) | 100 (was 96) | 100 (was 91) |
+| Dashboard — Collection page — Desktop | 78 | 100 (was 96) | 100 (was 96) | 100 (was 91) |
+| Dashboard — All Artworks — Mobile | 75 | 100 (was 96) | 100 (was 96) | 100 (was 91) |
+| Dashboard — All Artworks — Desktop | 77 | 100 (was 96) | 100 (was 96) | 100 (was 91) |
 
 ![Lighthouse — dashboard, desktop](documentation/lighthouse/dashboard-desktop.png)
 ![Lighthouse — dashboard, mobile](documentation/lighthouse/dashboard-mobile.png)
 
-What held each score back:
+What the first run found, and what changed:
 
-- **Performance:** Largest Contentful Paint again, from full-size
-  artwork images served by Django's local development server with no
-  caching headers. This is the same image-optimisation issue as the
-  public pages, not something specific to the dashboard.
-- **Accessibility:** colour contrast. The dashboard has its own muted
-  text tone (`#9a9588`, used for sidebar labels, breadcrumbs and
-  artwork subtitles). It measures 2.5–2.8:1 against the dashboard
-  backgrounds, below the 4.5:1 WCAG AA minimum. The accent colour used
-  for eyebrow labels and the active sidebar link (`#9c6b2c`) measures
-  3.8–4.2:1. The public site's muted colour was already fixed for the
-  same reason (see [Fixed Bugs](#fixed-bugs)), but the dashboard's
-  separate token wasn't.
-- **Best Practices:** one console error, a 404 for `/favicon.ico`,
-  because the site doesn't declare a favicon.
-- **SEO:** no `<meta name="description">`. This matters little on
-  owner-only pages that search engines can never reach anyway.
+- **Accessibility (96 → 100):** colour contrast. The dashboard has its
+  own faint text tone (`--dash-faint`, used for sidebar labels,
+  breadcrumbs and artwork subtitles), which was never darkened when the
+  public site's muted colour was fixed. It measured only 2.5–2.8:1, and
+  the accent colour on eyebrow labels and the active sidebar link
+  (`--dash-accent-ink`) measured 3.8–4.2:1. Both are below the 4.5:1
+  WCAG AA minimum.
+- **Best Practices (96 → 100):** one console error, a 404 for
+  `/favicon.ico`, because the site didn't declare a favicon.
+- **SEO (91 → 100):** no `<meta name="description">` on any page.
+- **Performance (unchanged):** held down only by Largest Contentful
+  Paint, from full-size artwork images served by Django's local
+  development server with no caching headers. This is the same
+  image-optimisation issue as the public pages (see
+  [Known Issues](#known-issues)), not something specific to the
+  dashboard.
+
+The colour and meta-description fixes also apply to the public pages,
+since they share `base.html` and the faint text token. Re-audited
+locally, the public home and Collections pages now score 100 for
+Accessibility, Best Practices and SEO as well. The production figures
+in the first table above predate these fixes.
 
 ---
 
@@ -271,6 +283,24 @@ error handling.
 
 ---
 
+## Testing by Other People
+
+The deployed app was also used by people other than the developer, to
+check that it makes sense without explanation:
+
+- **Mentor (Marko Tot):** reviewed and used the app during a mentor
+  meeting. The follow-ups from that meeting were made in their own
+  commit (`d94b4fc`): a favicon was added (the browser tab had none),
+  the existing GitHub Project board was linked from the README (it
+  existed but wasn't linked anywhere, so it looked missing), and a
+  second, stale README inside `documentation/` was removed because it
+  read as a confusing duplicate of the real one.
+- **Family member (non-developer):** used the live site as a first-time
+  visitor, to check that the gallery's purpose and navigation are
+  clear to someone who has never seen the project before.
+
+---
+
 ## Bugs
 
 ### Fixed Bugs
@@ -293,9 +323,15 @@ error handling.
 
 * **Automated tests failed after adding the logo image (`Missing staticfiles manifest entry`)** — after referencing `images/logo.svg` in a template, `python manage.py test` started failing with a `ValueError` from WhiteNoise's manifest static storage. The static files manifest (`staticfiles/staticfiles.json`) is only regenerated by `collectstatic`, and had gone stale after the new asset was added. Fixed by re-running `collectstatic` locally; this runs automatically as part of the Render build command in production, so it does not affect deployment.
 
-* **`CLOUDINARY_URL` misconfiguration caused two separate failures in production** — first, `ValueError: Invalid CLOUDINARY_URL scheme`, because the Render environment variable's value had been pasted including the `CLOUDINARY_URL=` prefix instead of just the `cloudinary://...` value. After fixing that, uploads then failed with `cloudinary.exceptions.AuthorizationRequired: Invalid Signature`, traced to a manual `urlparse()`-based parsing of `CLOUDINARY_URL` into a `CLOUDINARY_STORAGE` dict — `urlparse().hostname` lowercases its result, among other subtle mismatches, producing credentials that didn't match Cloudinary's records. Fixed by removing the manual parsing entirely and letting the `cloudinary` package's own built-in `CLOUDINARY_URL` environment parsing configure it, which is what its documentation actually recommends. Diagnosed with the help of the `LOGGING` config added just above, which surfaces full tracebacks for 500 errors in Render's log stream. (The project has since moved on from `CLOUDINARY_URL` entirely — see `raigonos/settings.py`, which now reads `CLOUDINARY_CLOUD_NAME`/`CLOUDINARY_API_KEY`/`CLOUDINARY_API_SECRET` as three separate environment variables, specifically to avoid copy-paste corruption of one long credential string like this bug did.)
+* **`CLOUDINARY_URL` misconfiguration caused two separate failures in production** — first, `ValueError: Invalid CLOUDINARY_URL scheme`, because the Render environment variable's value had been pasted including the `CLOUDINARY_URL=` prefix instead of just the `cloudinary://...` value. After fixing that, uploads then failed with `cloudinary.exceptions.AuthorizationRequired: Invalid Signature`, traced to a manual `urlparse()`-based parsing of `CLOUDINARY_URL` into a `CLOUDINARY_STORAGE` dict — `urlparse().hostname` lowercases its result, among other subtle mismatches, producing credentials that didn't match Cloudinary's records. Fixed by removing the manual parsing entirely and letting the `cloudinary` package's own built-in `CLOUDINARY_URL` environment parsing configure it, which is what its documentation actually recommends. Diagnosed with the help of the `LOGGING` config added just above, which surfaces full tracebacks for 500 errors in Render's log stream. Later, to rule out this whole class of copy-paste error, the single `CLOUDINARY_URL` string was replaced with three separate environment variables (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`). `settings.py` now only switches to Cloudinary when all three are set, which is how it works today (see the README's Deployment section). (The project has since moved on from `CLOUDINARY_URL` entirely — see `raigonos/settings.py`, which now reads `CLOUDINARY_CLOUD_NAME`/`CLOUDINARY_API_KEY`/`CLOUDINARY_API_SECRET` as three separate environment variables, specifically to avoid copy-paste corruption of one long credential string like this bug did.)
 
 * **Muted text colour failed WCAG AA contrast** — a manual contrast-ratio check of the colour palette (script computing relative luminance per the WCAG formula) found `--color-muted` (`#8a8578`, used for eyebrow labels, metadata and footer text) at only 3.35:1 against the page background — below the 4.5:1 minimum for normal-sized text. Fixed by darkening it to `#6b6657` (5.22:1), re-verified with the same script; visually still reads as a muted secondary tone.
+
+* **Dashboard and header "faint" text still failed WCAG AA contrast** — the fix above only covered the public `--color-muted` token. Running Lighthouse on the dashboard (see [Lighthouse Audit](#lighthouse-audit)) showed that the dashboard's own `--dash-faint` (`#9a9588`, used for sidebar labels, breadcrumbs and artwork subtitles) measured only 2.5–2.8:1, and the accent colour `--dash-accent-ink` (`#9c6b2c`, on eyebrow labels and the active sidebar link) measured 3.8–4.2:1. The public header's `--hd-faint` used the same failing values. Fixed by checking candidate colours with the same WCAG luminance script against *every* background each token can sit on (page, panels, cards, hover rows, the active-link highlight), not just the main page colour. Final values: faint `#69645a` (min 4.81:1), accent ink `#85591f` (min 4.98:1), and dark-theme faint `#8f8b85` (min 4.92:1, up from 3.58:1). `--dash-muted` was darkened slightly as well (`#6f6a5f` → `#5a554b`), so it stays visibly darker than the faint tone and the text hierarchy is kept. Re-audited: Accessibility 96 → 100 on every dashboard page.
+
+* **Console error from a missing favicon** — every page logged `Failed to load resource: 404` for `/favicon.ico`, because no icon was declared, so browsers requested the default path. Flagged by Lighthouse's Best Practices audit and by the mentor review (see [Testing by Other People](#testing-by-other-people)). Fixed by declaring the existing `logo.svg` monogram as the icon in `base.html` and the standalone `500.html`.
+
+* **No meta description** — no page had a `<meta name="description">`, which cost 9 points on Lighthouse's SEO audit. Fixed with a default description in `base.html`, inside a `{% block meta_description %}` so any page can override it.
 
 ### Unfixed Bugs
 
