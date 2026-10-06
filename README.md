@@ -533,9 +533,22 @@ GitHub Issues using MoSCoW prioritisation — see
   logged-in owner, so other users' items are silently ignored. Artworks
   have no status of their own (it comes from their Collection), so
   Draft/Publish apply to Collections only.
-- **Light/dark theme toggle** for the dashboard specifically (light by
-  default, matching the public site's palette); the public gallery has
-  no dark mode by design.
+- **Light/dark theme toggle** for the dashboard (light by default,
+  matching the public site's warm palette). The public gallery has its
+  own theme switch in the site menu (dark by default, so the artwork
+  stands out). Each choice is remembered separately in the browser.
+  Three tiny scripts are the only JavaScript kept inline: two in the
+  `<head>` that apply a saved theme
+  ([base.html](templates/base.html),
+  [dashboard_base.html](gallery/templates/gallery/dashboard_base.html)),
+  and one placed right after the dashboard's list
+  ([_view_init_script.html](gallery/templates/gallery/_view_init_script.html))
+  that applies a saved Grid/List preference. This is a deliberate
+  exception to keeping JS in external files linked at the end of
+  `<body>`. Each one has to run before the page is first painted,
+  otherwise a returning user sees the default theme or layout flash
+  before switching to their saved one. Everything else lives in
+  `static/js/`.
 - A persistent left sidebar and a breadcrumb in the top bar are present
   on every dashboard screen, including the Artwork preview — nothing
   ever hides them.
