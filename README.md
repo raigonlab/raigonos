@@ -219,20 +219,22 @@ bureaucracy standing between them and presenting it to the world.
   with Previous/Next through the rest of its Collection
 - `/accounts/login/`, `/accounts/logout/`, `/accounts/signup/`
 
-**Three surfaces**
+**Two surfaces**
 
-RaigonOS is designed as three separate surfaces, even though only two are
-built today:
+RaigonOS is built as two separate surfaces today:
 
-1. **RaigonOS landing page** — introduces the product/platform
-   (future; today `/` doubles as the gallery home).
-2. **Public artist gallery** — what visitors see of an artist's published
+1. **Public artist gallery** — what visitors see of an artist's published
    work. Today a conventional page (`/`, `/collections/`,
    `/collection/<slug>/`, `/artwork/<id>/`); planned to become the moving
    exhibition described under the long-term vision. The dashboard's
    "Public Gallery" link opens this surface.
-3. **Private dashboard** — where the artist manages Collections,
+2. **Private dashboard** — where the artist manages Collections,
    Artworks and the Archive (`/dashboard/...`).
+
+A third surface — a RaigonOS landing page introducing the product/platform
+itself, separate from any one artist's gallery — is explicitly out of
+scope for this submission and tracked as backlog: see
+[Issue #19](https://github.com/raigonlab/raigonos/issues/19).
 
 **User Flow**
 
@@ -723,7 +725,7 @@ beyond the MVP, including the long-term ideas discussed under
 [Issues board →](https://github.com/raigonlab/raigonos/issues?q=is%3Aissue)
 
 [Project board →](https://github.com/users/raigonlab/projects/6) — the
-same 18 issues tracked on a Kanban-style board (Todo / In progress /
+same 20 issues tracked on a Kanban-style board (Todo / In progress /
 Done).
 
 ---
